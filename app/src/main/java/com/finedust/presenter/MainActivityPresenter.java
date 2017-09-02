@@ -95,8 +95,14 @@ public class MainActivityPresenter implements Presenter {
                 @Override
                 public void onResponse(Call<AirConditionList> call, Response<AirConditionList> response) {
                     if(response.isSuccessful()) {
-                        ArrayList<AirCondition> airConditionList = new ArrayList<>();
+                        ArrayList<AirCondition> airConditionList;
                         airConditionList = response.body().getList();
+                        if(airConditionList.size() > 0)
+                            Log.v(TAG, "Check Response Data : "
+                                + "\n Pm10Val : "+ airConditionList.get(0).getPm10Value()
+                                + "\n Pm25Val : "+ airConditionList.get(0).getPm25Value()
+                                + "\n KhaiVal : "+ airConditionList.get(0).getKhaiValue()
+                            );
 
                         // response 받은것을 view에 업데이트 지시.
                         Log.i(TAG, "ORDER to view : updateAirConditionData");

@@ -166,6 +166,7 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void updateAirConditionData(ArrayList<AirCondition> data) {
+        Log.i(TAG, "updating Air Condition Data to List Adapter");
         adapter = new MyAdapter(MainActivity.this, 0, data);
         mainBinding.appBarMain.contentMain.listView.setAdapter(adapter);
     }
