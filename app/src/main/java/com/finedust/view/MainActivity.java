@@ -1,8 +1,12 @@
 package com.finedust.view;
 
+
+import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -26,14 +30,14 @@ import com.finedust.presenter.Presenter;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, MainActivityView{
+        implements NavigationView.OnNavigationItemSelectedListener, Views.MainActivityView{
 
     private static final String TAG = MainActivity.class.getSimpleName();
 
     ActivityMainBinding mainBinding;
     MainActivityPresenter mainActivityPresenter = new MainActivityPresenter(this);
 
-    private MyAdapter adapter;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,26 +54,12 @@ public class MainActivity extends AppCompatActivity
         toggle.syncState();
 
         mainBinding.navView.setNavigationItemSelectedListener(this);
-
-
-        // test : DataBinding 이용해서 TextView setText
-        mainBinding.appBarMain.contentMain.button.setText("버튼");
-
-        // 리스트뷰 아이템 클릭 -> ## Databinding 이용해서 분리할 방법 찾아보기.
-        mainBinding.appBarMain.contentMain.listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                if(adapter != null) {
-                    Toast.makeText(getApplicationContext(),
-                            "PM10 Value : " + adapter.getItem(position).getPm10Value()
-                                    + "\nCO Value : " + adapter.getItem(position).getCoValue()
-                                    + "\nSO2 Value : " + adapter.getItem(position).getSo2Value()
-                            , Toast.LENGTH_LONG).show();
-                }
-            }
-        });
-
         mainActivityPresenter.onCreate();
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(newBase);
     }
 
     @Override
@@ -109,18 +99,38 @@ public class MainActivity extends AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
+        Toast t = new Toast(getApplicationContext());
 
-        if (id == R.id.nav_camera) {
-            // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
+        if (id == R.id.nav_current) {
+            // Save the settings in SharedPreferences.
+            Fragment airConditionFragment = new AirConditionFragment();
+            fragmentReplace(airConditionFragment);
 
-        } else if (id == R.id.nav_slideshow) {
+        } else if (id == R.id.nav_loc_one) {
+            if(mainBinding.navView.getMenu().findItem(R.id.nav_loc_one).getTitle().equals("")) {
+                // Save New Address
+            }
+            else {
+                Fragment airConditionFragment = new AirConditionFragment();
+                fragmentReplace(airConditionFragment);
+            }
 
-        } else if (id == R.id.nav_manage) {
+        } else if (id == R.id.nav_loc_two) {
 
-        } else if (id == R.id.nav_share) {
+        } else if (id == R.id.nav_loc_three) {
 
-        } else if (id == R.id.nav_send) {
+        } else if (id == R.id.nav_forecast) {
+            Fragment forecastFragment = new ForecastFragment();
+            fragmentReplace(forecastFragment);
+            t.makeText(getApplicationContext(), "예보정보 선택", Toast.LENGTH_SHORT).show();
+
+        } else if (id == R.id.nav_airkorea) {
+
+        } else if (id == R.id.nav_kaq) {
+
+        } else if (id == R.id.nav_nullschool) {
+
+        } else if (id == R.id.nav_setting) {
 
         }
 
@@ -138,36 +148,37 @@ public class MainActivity extends AppCompatActivity
         Log.v(TAG, "onFloaotingButtonClick()");
         Snackbar.make(view, temporaryStationName + "의 대기정보를 가져옵니다.", Snackbar.LENGTH_LONG)
                 .setAction("Action", null).show();
-
-
-        mainActivityPresenter.getAirConditionData(getApplicationContext(), temporaryStationName);
     }
 
     @Override
-    public void onSampleButtonClick(View view) {
-        Log.i(TAG, "onSamplelButtonoClick()");
-        mainBinding.appBarMain.contentMain.button.setText("Changed");
+    public void fragmentReplace(Fragment newFragment) {
+        final FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.content_main, newFragment);
 
-        //Presenter를 이용해서 airConditionPresenter의 onSampleButtonClicked() 메소드를 호출.
-        //프리젠터에 호출을 요청하고 난 뒤에 역할 끝.
-
-        // .onSampleButtonClicked() 내부에서 Business Logic을 처리한 후 View에게 업데이트를 요청. (view.showTestToastMessage)
-        mainActivityPresenter.onSampleButtonClicked();
-    }
-
-    /**
-     * 프리젠터에서 요청 시에 뷰에 업데이트 작업을 수행하는 메소드.
-     * */
-
-    @Override
-    public void showTestToastMessage(String msg) {
-        Toast.makeText(this, msg, Toast.LENGTH_LONG).show();
+        transaction.commit();
     }
 
     @Override
-    public void updateAirConditionData(ArrayList<AirCondition> data) {
-        Log.i(TAG, "updating Air Condition Data to List Adapter");
-        adapter = new MyAdapter(MainActivity.this, 0, data);
-        mainBinding.appBarMain.contentMain.listView.setAdapter(adapter);
+    public void setNavigationTitle(String title, int position) {
+        switch(position) {
+            case 0:
+                mainBinding.navView.getMenu()
+                        .findItem(R.id.nav_loc_one)
+                        .setTitle(title)
+                        .setIcon(R.drawable.pin_128);
+                break;
+            case 1:
+                mainBinding.navView.getMenu()
+                        .findItem(R.id.nav_loc_two)
+                        .setTitle(title)
+                        .setIcon(R.drawable.pin_128);
+                break;
+            case 2:
+                mainBinding.navView.getMenu()
+                        .findItem(R.id.nav_loc_three)
+                        .setTitle(title)
+                        .setIcon(R.drawable.pin_128);
+                break;
+        }
     }
 }
