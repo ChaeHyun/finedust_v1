@@ -11,7 +11,6 @@ import retrofit2.http.QueryMap;
 import retrofit2.http.Url;
 
 public interface ApiService {
-
     /**
      * Service Name : MsrstnInfoInqireSvc
      * Operation Method : getNearbyMsrstnList

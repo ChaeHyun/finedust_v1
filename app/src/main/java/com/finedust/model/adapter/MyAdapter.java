@@ -15,10 +15,6 @@ import com.finedust.model.AirCondition;
 
 import java.util.List;
 
-/**
- * Created by CH on 2017-09-02.
- */
-
 public class MyAdapter extends ArrayAdapter<AirCondition> {
 
     List<AirCondition> airConditionList;

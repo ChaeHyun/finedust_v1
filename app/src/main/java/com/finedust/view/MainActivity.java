@@ -21,7 +21,6 @@ import com.finedust.databinding.ActivityMainBinding;
 import com.finedust.model.AirCondition;
 import com.finedust.model.adapter.MyAdapter;
 import com.finedust.presenter.MainActivityPresenter;
-import com.finedust.presenter.Presenter;
 
 import java.util.ArrayList;
 

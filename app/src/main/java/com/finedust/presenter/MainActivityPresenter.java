@@ -11,16 +11,11 @@ import com.finedust.utils.InternetConnection;
 import com.finedust.view.MainActivityView;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Map;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-
-/**
- * Created by CH on 2017-09-02.
- */
 
 public class MainActivityPresenter implements Presenter {
     private static final String TAG = MainActivityPresenter.class.getSimpleName();
@@ -63,7 +58,6 @@ public class MainActivityPresenter implements Presenter {
 
         // update UI with the results.
         String msg = "수행결과값 : 버튼이 클릭 되었습니다.";
-
         view.showTestToastMessage(msg);
     }
 
@@ -75,18 +69,10 @@ public class MainActivityPresenter implements Presenter {
     @Override
     public void getAirConditionData(Context context, String stationName) {
 
-        // Checking InternetConnection
         if(InternetConnection.checkConnection(context)) {
             ApiService apiService = RetrofitClient.getApiService();
 
-            // Prepare Query Parameters
-            Map<String, String> queryParams = new HashMap<>();
-            queryParams.put("dataTerm", "daily");
-            queryParams.put("pageNo" , "1");
-            queryParams.put("numOfRows" , "10");
-            queryParams.put("ver" , "1.1");
-            queryParams.put("_returnType" , "json");
-            queryParams.put("stationName" , stationName);
+            Map<String, String> queryParams = RetrofitClient.setQueryParams(stationName);
 
             Log.v(TAG, "Check URL : " + apiService.getAirConditionData(queryParams).request().url().toString());
             final Call<AirConditionList> requestForAirConditionData = apiService.getAirConditionData(queryParams);
@@ -95,8 +81,7 @@ public class MainActivityPresenter implements Presenter {
                 @Override
                 public void onResponse(Call<AirConditionList> call, Response<AirConditionList> response) {
                     if(response.isSuccessful()) {
-                        ArrayList<AirCondition> airConditionList;
-                        airConditionList = response.body().getList();
+                        ArrayList<AirCondition> airConditionList = response.body().getList();
                         if(airConditionList.size() > 0)
                             Log.v(TAG, "Check Response Data : "
                                 + "\n Pm10Val : "+ airConditionList.get(0).getPm10Value()
