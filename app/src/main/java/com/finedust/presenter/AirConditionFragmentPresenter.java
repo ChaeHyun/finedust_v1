@@ -46,8 +46,7 @@ public class AirConditionFragmentPresenter implements Presenter.AirConditionFrag
                 @Override
                 public void onResponse(Call<AirConditionList> call, Response<AirConditionList> response) {
                     if(response.isSuccessful()) {
-                        ArrayList<AirCondition> airConditionList;
-                        airConditionList = response.body().getList();
+                        ArrayList<AirCondition> airConditionList = response.body().getList();
                         if(airConditionList.size() > 0)
                             /*
                             Log.v(TAG, "Check Response Data : "
