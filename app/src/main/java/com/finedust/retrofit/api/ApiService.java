@@ -2,6 +2,7 @@ package com.finedust.retrofit.api;
 
 import com.finedust.model.AirConditionList;
 import com.finedust.model.Const;
+import com.finedust.model.AddressList;
 
 import java.util.Map;
 
@@ -33,4 +34,8 @@ public interface ApiService {
     @GET
     public Call<AirConditionList> getAirConditionInfo(@Url String url);
 
+    @GET("MsrstnInfoInqireSvc/getTMStdrCrdnt?ServiceKey="+ Const.SERVICEKEY)
+    Call<AddressList> getAddressData(
+            @QueryMap Map<String, String> params
+    );
 }

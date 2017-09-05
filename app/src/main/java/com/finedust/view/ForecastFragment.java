@@ -14,7 +14,7 @@ import com.finedust.databinding.FragmentForecastBinding;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ForecastFragment extends Fragment {
+public class ForecastFragment extends Fragment implements Views.ForecastFragmentView{
 
     FragmentForecastBinding binding;
 

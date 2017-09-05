@@ -28,7 +28,7 @@ public class RetrofitClient {
         return getRetrofitInstance().create(ApiService.class);
     }
 
-    public static Map<String, String> setQueryParams(String stationName) {
+    public static Map<String, String> setQueryParamsForStationName(String stationName) {
         Map<String, String> queryParams = new HashMap<>();
         queryParams.put("dataTerm", "daily");
         queryParams.put("pageNo" , "1");
@@ -38,6 +38,16 @@ public class RetrofitClient {
         queryParams.put("stationName" , stationName);
 
         return queryParams;
+    }
+
+    public static Map<String, String> setQueryParamsForAddress(String umdName) {
+        Map<String, String> queryParmas = new HashMap<>();
+        queryParmas.put("_returnType", "json");
+        queryParmas.put("pageNo", "1");
+        queryParmas.put("numOfRows", "50");
+        queryParmas.put("umdName",umdName);
+
+        return queryParmas;
     }
 
 }

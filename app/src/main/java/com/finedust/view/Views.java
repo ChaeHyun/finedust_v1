@@ -3,6 +3,7 @@ package com.finedust.view;
 import android.support.v4.app.Fragment;
 import android.view.View;
 
+import com.finedust.model.Address;
 import com.finedust.model.AirCondition;
 
 import java.util.ArrayList;
@@ -23,5 +24,14 @@ public interface Views {
         void showToastMessage(String msg);
         void onSampleButtonClick(View view);
         void updateAirConditionData(ArrayList<AirCondition> data);
+    }
+
+    interface ForecastFragmentView {
+
+    }
+
+    interface SearchAddressActivityView {
+        void showToastMessage(String msg);
+        void updateAddressData(ArrayList<Address> data);
     }
 }

@@ -1,7 +1,9 @@
 package com.finedust.view;
 
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
@@ -28,6 +30,8 @@ import com.finedust.presenter.MainActivityPresenter;
 import com.finedust.presenter.Presenter;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, Views.MainActivityView{
@@ -100,29 +104,81 @@ public class MainActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
         Toast t = new Toast(getApplicationContext());
+        Fragment airConditionFragment;
+
+        switch(id) {
+            case R.id.nav_current:
+                // Save the settings in SharedPreferences.
+                airConditionFragment = new AirConditionFragment();
+                fragmentReplace(airConditionFragment);
+                break;
+
+            case R.id.nav_loc_one:
+                if(mainBinding.navView.getMenu().findItem(R.id.nav_loc_one).getTitle().equals("")) {
+                    // Save New Address
+                    Intent intent = new Intent(this, SearchAddressActivity.class);
+                    startActivityForResult(intent, 0);
+                }
+                else {
+                    airConditionFragment = new AirConditionFragment();
+                    fragmentReplace(airConditionFragment);
+                }
+                Log.i(TAG, "Location One Selected");
+                break;
+
+            case R.id.nav_loc_two:
+                if(mainBinding.navView.getMenu().findItem(R.id.nav_loc_two).getTitle().equals("")) {
+                    // Save New Address
+                    Intent intent = new Intent(this, SearchAddressActivity.class);
+                    startActivityForResult(intent, 1);
+                }
+                else {
+                    airConditionFragment = new AirConditionFragment();
+                    fragmentReplace(airConditionFragment);
+                }
+                Log.i(TAG, "Location Two Selected");
+                break;
+
+            case R.id.nav_loc_three:
+                if(mainBinding.navView.getMenu().findItem(R.id.nav_loc_three).getTitle().equals("")) {
+                    // Save New Address
+                    Intent intent = new Intent(this, SearchAddressActivity.class);
+                    startActivityForResult(intent, 2);
+                }
+                else {
+                    airConditionFragment = new AirConditionFragment();
+                    fragmentReplace(airConditionFragment);
+                }
+                Log.i(TAG, "Location Three Selected");
+                break;
+
+            case R.id.nav_forecast:
+                Fragment forecastFragment = new ForecastFragment();
+                fragmentReplace(forecastFragment);
+                t.makeText(getApplicationContext(), "예보정보 선택", Toast.LENGTH_SHORT).show();
+                break;
+
+            case R.id.nav_airkorea:
+                break;
+            case R.id.nav_kaq:
+                break;
+            case R.id.nav_setting:
+                break;
+        }
 
         if (id == R.id.nav_current) {
-            // Save the settings in SharedPreferences.
-            Fragment airConditionFragment = new AirConditionFragment();
-            fragmentReplace(airConditionFragment);
+
+
 
         } else if (id == R.id.nav_loc_one) {
-            if(mainBinding.navView.getMenu().findItem(R.id.nav_loc_one).getTitle().equals("")) {
-                // Save New Address
-            }
-            else {
-                Fragment airConditionFragment = new AirConditionFragment();
-                fragmentReplace(airConditionFragment);
-            }
+
 
         } else if (id == R.id.nav_loc_two) {
 
         } else if (id == R.id.nav_loc_three) {
 
         } else if (id == R.id.nav_forecast) {
-            Fragment forecastFragment = new ForecastFragment();
-            fragmentReplace(forecastFragment);
-            t.makeText(getApplicationContext(), "예보정보 선택", Toast.LENGTH_SHORT).show();
+
 
         } else if (id == R.id.nav_airkorea) {
 
@@ -139,15 +195,57 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        Map<String, String> saveLocation;
+
+        if (resultCode == Activity.RESULT_OK && requestCode == 0) {
+            saveLocation = saveActivityResult(requestCode, data);
+            Log.i(TAG, "Addr : " + saveLocation.get("Addr"));
+
+            Fragment airCondition = new AirConditionFragment();
+            fragmentReplace(airCondition);
+        }
+        else if (resultCode == Activity.RESULT_OK && requestCode == 1) {
+            saveLocation = saveActivityResult(requestCode, data);
+            Log.i(TAG, "Addr : " + saveLocation.get("Addr"));
+
+            Fragment airCondition = new AirConditionFragment();
+            fragmentReplace(airCondition);
+        }
+        else if (resultCode == Activity.RESULT_OK && requestCode == 2) {
+            saveLocation = saveActivityResult(requestCode, data);
+            Log.i(TAG, "Addr : " + saveLocation.get("Addr"));
+
+            Fragment airCondition = new AirConditionFragment();
+            fragmentReplace(airCondition);
+        }
+
+    }
+
+    private Map<String, String> saveActivityResult(int requestCode, Intent data) {
+        Map<String, String> saveLocation = new HashMap<>();
+        // 나중에 SharedPrefence에 값 저장하는걸로 변경.
+        saveLocation.put("UmdName" , data.getStringExtra("Umd"));
+        saveLocation.put("TmX" , data.getStringExtra("TmX"));
+        saveLocation.put("TmY" , data.getStringExtra("TmY"));
+        saveLocation.put("Addr" , data.getStringExtra("Addr"));
+
+        setNavigationTitle(data.getStringExtra("Addr"), requestCode);
+
+        return saveLocation;
+    }
+
     // ------------ MainActivityView Interface --------------------
 
     @Override
     public void onFloatingButtonClick(View view) {
-        final String temporaryStationName = "호림동";
 
         Log.v(TAG, "onFloaotingButtonClick()");
-        Snackbar.make(view, temporaryStationName + "의 대기정보를 가져옵니다.", Snackbar.LENGTH_LONG)
+        Snackbar.make(view, "저장된 주소를 초기화 합니다.", Snackbar.LENGTH_LONG)
                 .setAction("Action", null).show();
+
     }
 
     @Override

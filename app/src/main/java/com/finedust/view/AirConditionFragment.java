@@ -40,21 +40,35 @@ public class AirConditionFragment extends Fragment implements Views.AirCondition
         binding.setAircondition(this);
 
         binding.button.setText("버튼");
-        binding.listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                if(adapter != null) {
-                    Toast.makeText(getContext(),
-                            "PM10 Value : " + adapter.getItem(position).getPm10Value()
-                                    + "\nCO Value : " + adapter.getItem(position).getCoValue()
-                                    + "\nSO2 Value : " + adapter.getItem(position).getSo2Value()
-                            , Toast.LENGTH_LONG).show();
-                }
-            }
-        });
+        binding.listView.setOnItemClickListener(onClickListViewItem);
+//        binding.listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+//                if(adapter != null) {
+//                    Toast.makeText(getContext(),
+//                            "PM10 Value : " + adapter.getItem(position).getPm10Value()
+//                                    + "\nCO Value : " + adapter.getItem(position).getCoValue()
+//                                    + "\nSO2 Value : " + adapter.getItem(position).getSo2Value()
+//                            , Toast.LENGTH_LONG).show();
+//                }
+//            }
+//        });
 
         return binding.getRoot();
     }
+
+    private AdapterView.OnItemClickListener onClickListViewItem = new AdapterView.OnItemClickListener() {
+        @Override
+        public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+            if(adapter != null) {
+                Toast.makeText(getContext(),
+                        "PM10 Value : " + adapter.getItem(position).getPm10Value()
+                                + "\nCO Value : " + adapter.getItem(position).getCoValue()
+                                + "\nSO2 Value : " + adapter.getItem(position).getSo2Value()
+                        , Toast.LENGTH_LONG).show();
+            }
+        }
+    };
 
     @Override
     public void onSampleButtonClick(View view) {

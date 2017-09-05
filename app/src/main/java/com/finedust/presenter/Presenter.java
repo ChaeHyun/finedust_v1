@@ -10,8 +10,6 @@ public interface Presenter {
         void onResume();
         void onDestroy();
 
-
-
     }
 
     interface AirConditionFragmentPresenter {
@@ -20,8 +18,8 @@ public interface Presenter {
 
     }
 
-    interface SearchActivityPresenter {
-
+    interface SearchAddressActivityPresenter {
+        void getAddressData(Context context, String str);
     }
 
     interface ForecastFragmentPresenter {

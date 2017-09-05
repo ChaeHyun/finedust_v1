@@ -6,4 +6,6 @@
 
     <string name="action_settings">설정</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="searching_address">주소검색 기능은 한국환경공단에서 제공하는 주소정보에 의해 동작합니다.</string>
 </resources>
