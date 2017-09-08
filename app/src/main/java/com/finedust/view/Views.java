@@ -33,6 +33,8 @@ public interface Views {
 
     interface SearchAddressActivityView {
         void showToastMessage(String msg);
+        void showSnackBarMessage(String msg);
+        void enableNetworkOptions();
         void updateAddressData(ArrayList<Address> data);
     }
 }

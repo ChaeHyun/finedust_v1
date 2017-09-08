@@ -7,7 +7,7 @@ import com.finedust.model.Address;
 import com.finedust.model.AddressList;
 import com.finedust.retrofit.api.ApiService;
 import com.finedust.retrofit.api.RetrofitClient;
-import com.finedust.utils.InternetConnection;
+import com.finedust.utils.CheckConnectivity;
 import com.finedust.view.Views;
 
 import java.util.ArrayList;
@@ -29,7 +29,7 @@ public class SearchAddressActivityPresenter implements Presenter.SearchAddressAc
     @Override
     public void getAddressData(Context context, String addr) {
 
-        if(InternetConnection.checkConnection(context)) {
+        if(CheckConnectivity.checkNetworkConnection(context)) {
             ApiService  apiService = RetrofitClient.getApiService();
 
             Map<String, String> queryParams = RetrofitClient.setQueryParamsForAddress(addr);
@@ -69,7 +69,7 @@ public class SearchAddressActivityPresenter implements Presenter.SearchAddressAc
             });
         }
         else {
-            view.showToastMessage("Internet Connection is not available now.");
+            view.enableNetworkOptions();
         }
 
     }

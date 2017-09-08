@@ -21,6 +21,7 @@ import com.finedust.databinding.ActivitySearchAddressBinding;
 import com.finedust.model.Address;
 import com.finedust.model.adapter.AddressListAdapter;
 import com.finedust.presenter.SearchAddressActivityPresenter;
+import com.finedust.utils.CheckConnectivity;
 
 import java.util.ArrayList;
 
@@ -116,6 +117,21 @@ public class SearchAddressActivity extends AppCompatActivity implements Views.Se
     @Override
     public void showToastMessage(String msg) {
         Toast.makeText(this, msg, Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void showSnackBarMessage(String msg) {
+        Snackbar.make(binding.getRoot(), msg, 3000).show();
+    }
+
+    @Override
+    public void enableNetworkOptions() {
+        Snackbar.make(binding.getRoot(), "네트워크 연결이 필요합니다.", 5000).setAction("켜기", new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                CheckConnectivity.showNetworkDisabledAlert(SearchAddressActivity.this);
+            }
+        }).show();
     }
 
     @Override

@@ -27,6 +27,7 @@ import com.finedust.model.AirCondition;
 import com.finedust.model.GpsData;
 import com.finedust.model.adapter.MyAdapter;
 import com.finedust.presenter.AirConditionFragmentPresenter;
+import com.finedust.utils.CheckConnectivity;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationRequest;
@@ -145,6 +146,7 @@ public class AirConditionFragment extends Fragment implements Views.AirCondition
         Log.i(TAG,"Location Services Connected");
 
         isPermissionEnabled = checkPermission();
+        CheckConnectivity.checkGpsEnabled(getActivity());
 
         if(isPermissionEnabled)
         {
@@ -227,17 +229,12 @@ public class AirConditionFragment extends Fragment implements Views.AirCondition
         handleNewLocation(location);
     }
 
-    private boolean checkPermission(){
-        //마쉬멜로우 이상 버전인 경우
+    private boolean checkPermission() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if(getContext().checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED){
-
-                //Should we show an explanation?
-                //최초 권한 허락 거부하면 발생 -> 사용자에게 권한 획득이 필요한 이유 설명
-                if(shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_FINE_LOCATION)) {
-                    //Explain to the user why we need to ACCESS_FINE_LOCATION
+            if (getContext().checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                if (shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_FINE_LOCATION)) {
                     AlertDialog.Builder dialog = new AlertDialog.Builder(getActivity());
-                    dialog.setTitle("위치정보 사용권한이 필요합니다.")
+                    dialog.setTitle("위치정보 사용권한이 필요")
                             .setMessage("현재위치의 대기상태를 조회하기 위해 해당 권한이 필요합니다. 허용하시겠습니까?")
                             .setPositiveButton("네",new DialogInterface.OnClickListener() {
                                 @Override
@@ -254,8 +251,6 @@ public class AirConditionFragment extends Fragment implements Views.AirCondition
                                 }
                             }).create().show();
                 }
-
-                //권한 허용할지 말지 선택 팝업
                 requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION,}, MY_PERMISSION_REQUEST_LOCATION);
             }
             else{
