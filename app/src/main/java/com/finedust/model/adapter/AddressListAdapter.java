@@ -24,6 +24,7 @@ import java.util.List;
 
 public class AddressListAdapter extends ArrayAdapter<Address> {
     private static final String TAG = AddressListAdapter.class.getSimpleName();
+
     List<Address> addressList;
     Context context;
     private LayoutInflater mInflater;
