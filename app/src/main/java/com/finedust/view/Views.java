@@ -24,6 +24,7 @@ public interface Views {
         void showToastMessage(String msg);
         void onSampleButtonClick(View view);
         void updateAirConditionData(ArrayList<AirCondition> data);
+        void getGpsCoordinates();
     }
 
     interface ForecastFragmentView {

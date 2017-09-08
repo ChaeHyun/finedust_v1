@@ -1,6 +1,10 @@
 package com.finedust.presenter;
 
 import android.content.Context;
+import android.location.Location;
+import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.finedust.model.AirCondition;
@@ -9,6 +13,9 @@ import com.finedust.retrofit.api.ApiService;
 import com.finedust.retrofit.api.RetrofitClient;
 import com.finedust.utils.InternetConnection;
 import com.finedust.view.Views;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationRequest;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -85,5 +92,6 @@ public class AirConditionFragmentPresenter implements Presenter.AirConditionFrag
 
         view.showToastMessage(msg);
     }
+
 
 }
