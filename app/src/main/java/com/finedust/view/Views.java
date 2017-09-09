@@ -22,9 +22,12 @@ public interface Views {
 
     interface AirConditionFragmentView {
         void showToastMessage(String msg);
+        void showSnackBarMessage(String msg);
         void onSampleButtonClick(View view);
         void updateAirConditionData(ArrayList<AirCondition> data);
-        void getGpsCoordinates();
+        //void getGpsCoordinates();
+        boolean checkPermission();
+        void checkGpsEnabled();
     }
 
     interface ForecastFragmentView {

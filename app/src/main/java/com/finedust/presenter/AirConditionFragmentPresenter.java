@@ -1,29 +1,61 @@
 package com.finedust.presenter;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.IntentSender;
+import android.location.Address;
+import android.location.Geocoder;
+import android.location.Location;
+import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.finedust.model.AirCondition;
 import com.finedust.model.AirConditionList;
+import com.finedust.model.GpsData;
 import com.finedust.retrofit.api.ApiService;
 import com.finedust.retrofit.api.RetrofitClient;
 import com.finedust.utils.CheckConnectivity;
 import com.finedust.view.Views;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationServices;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class AirConditionFragmentPresenter implements Presenter.AirConditionFragmentPresenter {
+public class AirConditionFragmentPresenter
+        implements Presenter.AirConditionFragmentPresenter,
+                GoogleApiClient.ConnectionCallbacks,
+                GoogleApiClient.OnConnectionFailedListener,
+                com.google.android.gms.location.LocationListener {
     private static final String TAG = AirConditionFragmentPresenter.class.getSimpleName();
 
     private Views.AirConditionFragmentView view;
+    Context context;
 
-    public AirConditionFragmentPresenter(Views.AirConditionFragmentView view) {
+    GoogleApiClient googleApiClient;
+    private final static int CONNECTION_FAILURE_RESOLUTION_REQUEST = 9000;
+    boolean isPermissionEnabled = false;
+
+    public AirConditionFragmentPresenter(Views.AirConditionFragmentView view, Context context) {
         this.view = view;
+        this.context = context;
+    }
+
+    @Override
+    public void onPause() {
+        Log.i(TAG, "onPause()\ndisconnectLocationService");
+        disconnectLocationService();
     }
 
     /**
@@ -47,18 +79,10 @@ public class AirConditionFragmentPresenter implements Presenter.AirConditionFrag
                 public void onResponse(Call<AirConditionList> call, Response<AirConditionList> response) {
                     if(response.isSuccessful()) {
                         ArrayList<AirCondition> airConditionList = response.body().getList();
-                        if(airConditionList.size() > 0)
-                            /*
-                            Log.v(TAG, "Check Response Data : "
-                                    + "\n Pm10Val : "+ airConditionList.get(0).getPm10Value()
-                                    + "\n Pm25Val : "+ airConditionList.get(0).getPm25Value()
-                                    + "\n KhaiVal : "+ airConditionList.get(0).getKhaiValue()
-                            );
-                            */
-
-                        // response 받은것을 view에 업데이트 지시.
-                        Log.i(TAG, "ORDER to view : updateAirConditionData");
-                        view.updateAirConditionData(airConditionList);
+                        if (airConditionList.size() > 0) {
+                            Log.i(TAG, "ORDER to view : updateAirConditionData");
+                            view.updateAirConditionData(airConditionList);
+                        }
                     }
                 }
 
@@ -70,7 +94,7 @@ public class AirConditionFragmentPresenter implements Presenter.AirConditionFrag
             });
         }
         else {
-            view.showToastMessage("Internet Connection is not available now.");
+            view.showSnackBarMessage("Internet Connection is not available now.");
         }
 
     }
@@ -86,5 +110,104 @@ public class AirConditionFragmentPresenter implements Presenter.AirConditionFrag
         view.showToastMessage(msg);
     }
 
+    @Override
+    public void getGPSCoordinates() {
+        googleApiClient = new GoogleApiClient.Builder(context)
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .addApi(LocationServices.API)
+                .build();
 
+        googleApiClient.connect();
+    }
+
+    @Override
+    public void onConnected(@Nullable Bundle bundle) {
+        Log.i(TAG, "Location Services Connected ");
+
+        isPermissionEnabled = view.checkPermission();
+        view.checkGpsEnabled();
+
+        if(isPermissionEnabled)
+        {
+            Location lastLocation = LocationServices.FusedLocationApi.getLastLocation(googleApiClient);
+            LocationRequest locationRequest = LocationRequest.create()
+                    .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
+                    .setInterval(15 * 1000)
+                    .setFastestInterval(1 * 1000);
+
+            if(lastLocation != null) {
+                handleNewLocation(context , lastLocation);
+            }
+            else {
+                try {
+                    view.showSnackBarMessage("현재 위치를 찾을 수 없습니다.");
+                    LocationServices.FusedLocationApi.requestLocationUpdates(googleApiClient, locationRequest, this);
+                }
+                catch (IllegalStateException e) {
+                    e.printStackTrace();
+                    Log.i(TAG, "GoogleApiClient is NOT Connected yet");
+                }
+            }
+        }
+        else {
+            view.showSnackBarMessage("권한 허가가 필요합니다.");
+        }
+    }
+
+    private void handleNewLocation(Context context, Location location) {
+        Log.i(TAG, location.toString());
+        {
+            Geocoder gcd = new Geocoder(context, Locale.KOREA);
+
+            GpsData CoordData = new GpsData();
+            CoordData.setWgs_x(String.valueOf(location.getLongitude()));
+            CoordData.setWgs_y(String.valueOf(location.getLatitude()));
+
+            Log.i(TAG, " # Check Wgs Coord : " + CoordData.getWgs_x() + " , " + CoordData.getWgs_y());
+
+            try {
+                List<Address> addresses = gcd.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
+                String msg = addresses.get(0).getLocality() + " " + addresses.get(0).getSubLocality() + " " + addresses.get(0).getThoroughfare();
+                view.showSnackBarMessage(msg);
+            }
+            catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            // 좌표변환
+        }
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+        Log.i(TAG, "Location services suspended. Please reconnect.");
+    }
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+        if(connectionResult.hasResolution()) {
+            try {
+                connectionResult.startResolutionForResult((Activity) context, CONNECTION_FAILURE_RESOLUTION_REQUEST);   // ?
+            }
+            catch (IntentSender.SendIntentException e) {
+                e.printStackTrace();
+            }
+        }
+        else {
+            Log.i(TAG, "Location services connection failed with code -> " + connectionResult.getErrorCode());
+        }
+    }
+
+    @Override
+    public void onLocationChanged(Location location) {
+        handleNewLocation(context, location);
+    }
+
+    private void disconnectLocationService() {
+        if (googleApiClient != null && googleApiClient.isConnected()) {
+            LocationServices.FusedLocationApi.removeLocationUpdates(googleApiClient, this);
+            googleApiClient.disconnect();
+        }
+    }
 }

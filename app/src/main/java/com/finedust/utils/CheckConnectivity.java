@@ -27,9 +27,15 @@ public class CheckConnectivity {
 
     public static void showNetworkDisabledAlert(final Activity activity) {
         AlertDialog.Builder builder = new AlertDialog.Builder(activity);
-        builder.setMessage("앱을 사용하기 위해서 네트워크가 필요합니다.")
+        builder.setMessage("사용할 데이터의 종류를 선택하세요.")
                 .setCancelable(true)
-                .setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                .setNeutralButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.cancel();
+                    }
+                })
+                .setPositiveButton("Mobile", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         Intent networkEnableOptions = new Intent(Intent.ACTION_MAIN, null);
@@ -37,10 +43,12 @@ public class CheckConnectivity {
                         activity.startActivity(networkEnableOptions);
                     }
                 })
-                .setNegativeButton("취소", new DialogInterface.OnClickListener() {
+                .setNegativeButton("WiFi", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        dialogInterface.cancel();
+                        Intent networkEnableOptions = new Intent(Settings.ACTION_WIFI_SETTINGS);
+                        activity.startActivity(networkEnableOptions);
+
                     }
                 }).create().show();
 

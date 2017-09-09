@@ -61,7 +61,7 @@ public class SearchAddressActivity extends AppCompatActivity implements Views.Se
             binding.listViewAddress.setVisibility(View.INVISIBLE);
             binding.listViewAddress.setOnItemClickListener(onClickListViewItem);
 
-            if(!binding.editSearch.getText().toString().equals("")) {
+            if (!binding.editSearch.getText().toString().equals("")) {
                 searchAddressActivityPresenter.getAddressData(getApplicationContext(), binding.editSearch.getText().toString());
             }
             else {
@@ -101,7 +101,7 @@ public class SearchAddressActivity extends AppCompatActivity implements Views.Se
         final String TAG = "OnKeyListener";
         @Override
         public boolean onKey(View view, int i, KeyEvent keyEvent) {
-            if(i == KeyEvent.KEYCODE_ENTER && keyEvent.getAction() == KeyEvent.ACTION_DOWN) {
+            if (i == KeyEvent.KEYCODE_ENTER && keyEvent.getAction() == KeyEvent.ACTION_DOWN) {
                 // Hide keypad
                 InputMethodManager imm = (InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE);
                 imm.hideSoftInputFromWindow(binding.editSearch.getWindowToken(), 0);

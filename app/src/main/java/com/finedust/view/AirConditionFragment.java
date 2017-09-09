@@ -1,6 +1,7 @@
 package com.finedust.view;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.IntentSender;
 import android.content.pm.PackageManager;
@@ -12,6 +13,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
@@ -41,17 +43,12 @@ import java.util.Locale;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class AirConditionFragment extends Fragment implements Views.AirConditionFragmentView, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, com.google.android.gms.location.LocationListener {
+public class AirConditionFragment extends Fragment implements Views.AirConditionFragmentView {
     private static final String TAG = AirConditionFragment.class.getSimpleName();
 
     FragmentAirConditionBinding  binding;
-    AirConditionFragmentPresenter airConditionFragmentPresenter = new AirConditionFragmentPresenter(this);
+    AirConditionFragmentPresenter airConditionFragmentPresenter = new AirConditionFragmentPresenter(this, getContext());
     private MyAdapter adapter;
-
-    GoogleApiClient googleApiClient;
-    Location lastLocation;
-
-    private final static int CONNECTION_FAILURE_RESOLUTION_REQUEST = 9000;
 
     final int MY_PERMISSION_REQUEST_LOCATION = 1000;
     boolean isPermissionEnabled = false;
@@ -70,10 +67,24 @@ public class AirConditionFragment extends Fragment implements Views.AirCondition
         binding.button.setText("버튼");
         binding.listView.setOnItemClickListener(onClickListViewItem);
 
-
-        getGpsCoordinates();
+        airConditionFragmentPresenter = new AirConditionFragmentPresenter(this, getContext());
 
         return binding.getRoot();
+    }
+
+    @Override
+    public void onResume()
+    {
+        super.onResume();
+        Log.i(TAG, "onResume()");
+
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        Log.i(TAG, "onPause()");
+        airConditionFragmentPresenter.onPause();
     }
 
     private AdapterView.OnItemClickListener onClickListViewItem = new AdapterView.OnItemClickListener() {
@@ -90,20 +101,6 @@ public class AirConditionFragment extends Fragment implements Views.AirCondition
     };
 
     @Override
-    public void onResume() {
-        super.onResume();
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        if (googleApiClient != null && googleApiClient.isConnected()) {
-            LocationServices.FusedLocationApi.removeLocationUpdates(googleApiClient, this);
-            googleApiClient.disconnect();
-        }
-    }
-
-    @Override
     public void onSampleButtonClick(View view) {
         String temporaryStationName = "호림동";
         Log.i(TAG, "onSamplelButtonoClick()");
@@ -114,7 +111,9 @@ public class AirConditionFragment extends Fragment implements Views.AirCondition
 
         // .onSampleButtonClicked() 내부에서 Business Logic을 처리한 후 View에게 업데이트를 요청. (view.showTestToastMessage)
         airConditionFragmentPresenter.getAirConditionData(getContext(), temporaryStationName);
-        airConditionFragmentPresenter.onSampleButtonClicked();
+        //airConditionFragmentPresenter.onSampleButtonClicked();
+
+        airConditionFragmentPresenter.getGPSCoordinates();
 
     }
 
@@ -131,105 +130,17 @@ public class AirConditionFragment extends Fragment implements Views.AirCondition
     }
 
     @Override
-    public void getGpsCoordinates() {
-        googleApiClient = new GoogleApiClient.Builder(getActivity())
-                .addConnectionCallbacks(this)
-                .addOnConnectionFailedListener(this)
-                .addApi(LocationServices.API)
-                .build();
-
-        googleApiClient.connect();
+    public void showSnackBarMessage(String msg) {
+        Snackbar.make(binding.getRoot(), msg, 3000).show();
     }
 
     @Override
-    public void onConnected(@Nullable Bundle bundle) {
-        Log.i(TAG,"Location Services Connected");
-
-        isPermissionEnabled = checkPermission();
+    public void checkGpsEnabled() {
         CheckConnectivity.checkGpsEnabled(getActivity());
-
-        if(isPermissionEnabled)
-        {
-            lastLocation = LocationServices.FusedLocationApi.getLastLocation(googleApiClient);
-            LocationRequest locationRequest = LocationRequest.create()
-                    .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
-                    .setInterval(10 * 1000)
-                    .setFastestInterval(1 * 1000);
-
-            if(lastLocation != null) {
-                handleNewLocation(lastLocation);
-            }
-            else {
-                try {
-                    LocationServices.FusedLocationApi.requestLocationUpdates(googleApiClient, locationRequest, this);
-                    binding.textView.setText("현재 위치를 찾을 수 없습니다.");
-                }
-                catch (IllegalStateException e) {
-                    e.printStackTrace();
-                    Log.i(TAG, "GoogleApiClient is NOT Connected yet");
-                }
-            }
-        }
-        else {
-            showToastMessage("권한 허가가 필요합니다.");
-        }
-
-
-    }
-
-
-    private void handleNewLocation(Location location) {
-        Log.i(TAG, location.toString());
-        if(isAdded())
-        {
-            Geocoder gcd = new Geocoder(getActivity().getBaseContext(), Locale.KOREA);
-
-            GpsData CoordData = new GpsData();
-            CoordData.setWgs_x(String.valueOf(lastLocation.getLongitude()));
-            CoordData.setWgs_y(String.valueOf(lastLocation.getLatitude()));
-
-            Log.i(TAG, " # Check Wgs Coord : " + CoordData.getWgs_x() + " , " + CoordData.getWgs_y());
-
-            try {
-                List<Address> addresses = gcd.getFromLocation(lastLocation.getLatitude(), lastLocation.getLongitude(), 1);
-                String msg = addresses.get(0).getLocality() + " " + addresses.get(0).getSubLocality() + " " + addresses.get(0).getThoroughfare();
-                showToastMessage(msg);
-            }
-            catch (IOException e) {
-                e.printStackTrace();
-            }
-
-            // 좌표변환
-        }
     }
 
     @Override
-    public void onConnectionSuspended(int i) {
-        Log.i(TAG, "Location services suspended. Please reconnect.");
-    }
-
-    @Override
-    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-        if(connectionResult.hasResolution()) {
-            try {
-                connectionResult.startResolutionForResult(getActivity(), CONNECTION_FAILURE_RESOLUTION_REQUEST);
-            }
-            catch (IntentSender.SendIntentException e) {
-                e.printStackTrace();
-            }
-        }
-        else {
-            Log.i(TAG, "Location services connection failed with code -> " + connectionResult.getErrorCode());
-        }
-
-    }
-
-    @Override
-    public void onLocationChanged(Location location) {
-        handleNewLocation(location);
-    }
-
-    private boolean checkPermission() {
+    public boolean checkPermission() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (getContext().checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                 if (shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_FINE_LOCATION)) {
@@ -253,15 +164,13 @@ public class AirConditionFragment extends Fragment implements Views.AirCondition
                 }
                 requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION,}, MY_PERMISSION_REQUEST_LOCATION);
             }
-            else{
+            else {
                 //항상 허용 체크한 경우
                 return true;
             }
         }
         // ANDROID M 이하 버전
         else {
-            //mDialog = new PermissionDialog(this);
-            //mDialog.PermissionCheckAll();
             return true;
         }
         return false;

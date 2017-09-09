@@ -1,6 +1,10 @@
 package com.finedust.presenter;
 
 import android.content.Context;
+import android.location.Location;
+import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.finedust.model.Address;
@@ -9,6 +13,8 @@ import com.finedust.retrofit.api.ApiService;
 import com.finedust.retrofit.api.RetrofitClient;
 import com.finedust.utils.CheckConnectivity;
 import com.finedust.view.Views;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -27,12 +33,12 @@ public class SearchAddressActivityPresenter implements Presenter.SearchAddressAc
     }
 
     @Override
-    public void getAddressData(Context context, String addr) {
+    public void getAddressData(Context context, String UmdName) {
 
         if(CheckConnectivity.checkNetworkConnection(context)) {
             ApiService  apiService = RetrofitClient.getApiService();
 
-            Map<String, String> queryParams = RetrofitClient.setQueryParamsForAddress(addr);
+            Map<String, String> queryParams = RetrofitClient.setQueryParamsForAddress(UmdName);
 
             Log.v(TAG, "Check URL : " + apiService.getAddressData(queryParams).request().url().toString());
             final Call<AddressList> requestForAddressData = apiService.getAddressData(queryParams);
@@ -42,22 +48,10 @@ public class SearchAddressActivityPresenter implements Presenter.SearchAddressAc
                 public void onResponse(Call<AddressList> call, Response<AddressList> response) {
                     if(response.isSuccessful()) {
                         ArrayList<Address> addressList = response.body().getList();
-
                         if(addressList.size() > 0) {
-                            for(int i = 0; i < addressList.size(); i++){
-                                /*
-                                Log.v(TAG, "Check Response Data : "
-                                        + "\n SidoName : " + addressList.get(i).getSidoName()
-                                        + "\n Ssg : " + addressList.get(i).getSggName()
-                                        + "\n Umd : " + addressList.get(i).getUmdName()
-                                        + "\n TmX : " + addressList.get(i).getTmX()
-                                        + "\n TmY : " + addressList.get(i).getTmY()
-                                );
-                                 */
-                            }
+                            Log.i(TAG, "ORDER to view : updateAddressData");
+                            view.updateAddressData(addressList);
                         }
-                        Log.i(TAG, "ORDER to view : updateAddressData");
-                        view.updateAddressData(addressList);
                     }
                 }
 
@@ -71,6 +65,5 @@ public class SearchAddressActivityPresenter implements Presenter.SearchAddressAc
         else {
             view.enableNetworkOptions();
         }
-
     }
 }
