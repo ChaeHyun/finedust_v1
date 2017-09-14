@@ -168,8 +168,7 @@ public class AirConditionFragmentPresenter
 
             try {
                 List<Address> addresses = gcd.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
-                String msg = addresses.get(0).getLocality() + " " + addresses.get(0).getSubLocality() + " " + addresses.get(0).getThoroughfare();
-                view.showSnackBarMessage(msg);
+                view.showSnackBarMessage(makeAddressName(addresses));
             }
             catch (IOException e) {
                 e.printStackTrace();
@@ -177,6 +176,12 @@ public class AirConditionFragmentPresenter
 
             // 좌표변환
         }
+    }
+
+    private String makeAddressName(List<Address> addr) {
+        if(addr.get(0).getAdminArea() == null)
+            return addr.get(0).getLocality() + " " + addr.get(0).getSubLocality() + " " + addr.get(0).getThoroughfare();
+        return addr.get(0).getAdminArea() + " " + addr.get(0).getLocality() + " " + addr.get(0).getThoroughfare();
     }
 
     @Override
