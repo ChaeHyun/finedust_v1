@@ -14,8 +14,6 @@ public interface Presenter {
 
     interface AirConditionFragmentPresenter {
         void onPause();
-
-        void onSampleButtonClicked();
         void getAirConditionData(Context context, String stationName);
         void getGPSCoordinates();
     }

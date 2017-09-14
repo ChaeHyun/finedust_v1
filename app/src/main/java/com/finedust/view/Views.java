@@ -8,10 +8,6 @@ import com.finedust.model.AirCondition;
 
 import java.util.ArrayList;
 
-/**
- * Created by CH on 2017-09-03.
- */
-
 public interface Views {
 
     interface MainActivityView {
@@ -36,7 +32,6 @@ public interface Views {
 
     interface SearchAddressActivityView {
         void showToastMessage(String msg);
-        void showSnackBarMessage(String msg);
         void enableNetworkOptions();
         void updateAddressData(ArrayList<Address> data);
     }

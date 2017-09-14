@@ -1,11 +1,18 @@
 package com.finedust.model;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
 /**
  * Created by CH on 2017-09-08.
  */
 
 public class GpsData {
+    @SerializedName("x")
+    @Expose
     private String tm_x;
+    @SerializedName("y")
+    @Expose
     private String tm_y;
 
     private String wgs_x;

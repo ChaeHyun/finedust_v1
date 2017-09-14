@@ -102,16 +102,11 @@ public class AirConditionFragment extends Fragment implements Views.AirCondition
 
     @Override
     public void onSampleButtonClick(View view) {
-        String temporaryStationName = "호림동";
         Log.i(TAG, "onSamplelButtonoClick()");
         binding.button.setText("Changed");
 
         //Presenter를 이용해서 airConditionPresenter의 onSampleButtonClicked() 메소드를 호출.
         //프리젠터에 호출을 요청하고 난 뒤에 역할 끝.
-
-        // .onSampleButtonClicked() 내부에서 Business Logic을 처리한 후 View에게 업데이트를 요청. (view.showTestToastMessage)
-        airConditionFragmentPresenter.getAirConditionData(getContext(), temporaryStationName);
-        //airConditionFragmentPresenter.onSampleButtonClicked();
 
         airConditionFragmentPresenter.getGPSCoordinates();
 

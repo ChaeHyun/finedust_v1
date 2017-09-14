@@ -13,7 +13,10 @@ import android.util.Log;
 
 import com.finedust.model.AirCondition;
 import com.finedust.model.AirConditionList;
+import com.finedust.model.Const;
 import com.finedust.model.GpsData;
+import com.finedust.model.Station;
+import com.finedust.model.StationList;
 import com.finedust.retrofit.api.ApiService;
 import com.finedust.retrofit.api.RetrofitClient;
 import com.finedust.utils.CheckConnectivity;
@@ -32,6 +35,7 @@ import java.util.Map;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import retrofit2.Retrofit;
 
 public class AirConditionFragmentPresenter
         implements Presenter.AirConditionFragmentPresenter,
@@ -41,11 +45,10 @@ public class AirConditionFragmentPresenter
     private static final String TAG = AirConditionFragmentPresenter.class.getSimpleName();
 
     private Views.AirConditionFragmentView view;
-    Context context;
+    private Context context;
 
-    GoogleApiClient googleApiClient;
+    private GoogleApiClient googleApiClient;
     private final static int CONNECTION_FAILURE_RESOLUTION_REQUEST = 9000;
-    boolean isPermissionEnabled = false;
 
     public AirConditionFragmentPresenter(Views.AirConditionFragmentView view, Context context) {
         this.view = view;
@@ -58,12 +61,49 @@ public class AirConditionFragmentPresenter
         disconnectLocationService();
     }
 
+    public void getNearStationList(String x, String y) {
+        if(CheckConnectivity.checkNetworkConnection(context)) {
+            ApiService apiService = RetrofitClient.getApiService();
+
+            final Call<StationList> requestForNearStationList = apiService.getNearStationList(x, y, Const.RETURNTYPE_JSON);
+            Log.v(TAG, "Check URL(Near Station Lists : " + apiService.getNearStationList(x, y, Const.RETURNTYPE_JSON).request().url().toString());
+
+            requestForNearStationList.enqueue(new Callback<StationList>() {
+                @Override
+                public void onResponse(Call<StationList> call, Response<StationList> response) {
+                    if(response.isSuccessful()) {
+                        ArrayList<Station> stationList = response.body().getList();
+                        if (stationList.size() > 0) {
+                            for(Station stn : stationList) {
+                                Log.i(TAG, "측정소명 : " + stn.getStationName()+ ", 주소 : " + stn.getAddr() + ", 거리 : " + stn.getTm());
+
+                            }
+                            Log.i(TAG,"  totalCount : " + response.body().getTotalCount());
+
+                            getAirConditionData(context, stationList.get(0).getStationName());
+                        }
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<StationList> call, Throwable t) {
+                    Log.v(TAG, "Fail to get data from server");
+                    view.showToastMessage("Fail to get data from server(getNearStationiList)");
+                }
+            });
+        }
+        else {
+            view.showSnackBarMessage("Internet Connection is not available now.");
+        }
+    }
+
     /**
      * 측정소명을 파라미터로 해당 측정소의 대기정보를 요청하는 메소드.
      * */
 
     @Override
     public void getAirConditionData(Context context, String stationName) {
+        view.showToastMessage("[" + stationName + "] 측정소의 정보를 검색합니다.");
 
         // Checking InternetConnection
         if(CheckConnectivity.checkNetworkConnection(context)) {
@@ -100,17 +140,6 @@ public class AirConditionFragmentPresenter
     }
 
     @Override
-    public void onSampleButtonClicked() {
-        // ... Business Logic works
-        Log.i(TAG, "Working on some Business Logic when the button is clicked.");
-
-        // update UI with the results.
-        String msg = "수행결과값 : 버튼이 클릭 되었습니다.";
-
-        view.showToastMessage(msg);
-    }
-
-    @Override
     public void getGPSCoordinates() {
         googleApiClient = new GoogleApiClient.Builder(context)
                 .addConnectionCallbacks(this)
@@ -125,7 +154,7 @@ public class AirConditionFragmentPresenter
     public void onConnected(@Nullable Bundle bundle) {
         Log.i(TAG, "Location Services Connected ");
 
-        isPermissionEnabled = view.checkPermission();
+        final boolean isPermissionEnabled = view.checkPermission();
         view.checkGpsEnabled();
 
         if(isPermissionEnabled)
@@ -156,17 +185,11 @@ public class AirConditionFragmentPresenter
     }
 
     private void handleNewLocation(Context context, Location location) {
+        // x -> Longitude, y -> Latitude
         Log.i(TAG, location.toString());
         {
-            Geocoder gcd = new Geocoder(context, Locale.KOREA);
-
-            GpsData CoordData = new GpsData();
-            CoordData.setWgs_x(String.valueOf(location.getLongitude()));
-            CoordData.setWgs_y(String.valueOf(location.getLatitude()));
-
-            Log.i(TAG, " # Check Wgs Coord : " + CoordData.getWgs_x() + " , " + CoordData.getWgs_y());
-
             try {
+                Geocoder gcd = new Geocoder(context, Locale.KOREA);
                 List<Address> addresses = gcd.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
                 view.showSnackBarMessage(makeAddressName(addresses));
             }
@@ -175,6 +198,38 @@ public class AirConditionFragmentPresenter
             }
 
             // 좌표변환
+            convertCoordinates(location.getLatitude(), location.getLongitude());
+        }
+    }
+
+    private void convertCoordinates(Double y, Double x) {
+        if (CheckConnectivity.checkNetworkConnection(context)) {
+            ApiService apiService = RetrofitClient.getApiService();
+
+            String url = RetrofitClient.getGpsConvertUrl(String.valueOf(y) , String.valueOf(x));
+            Log.v(TAG, "Check URL : " + apiService.convertGpsData(url).request().url().toString());
+            final Call<GpsData> requestForConvertingGpsData = apiService.convertGpsData(url);
+
+            requestForConvertingGpsData.enqueue(new Callback<GpsData>() {
+                @Override
+                public void onResponse(Call<GpsData> call, Response<GpsData> response) {
+                    if(response.isSuccessful()) {
+                        // 얻은 좌표값을 사용해서 근접 측정소 목록 정보 요청하기.
+                        getNearStationList(response.body().getTm_x(), response.body().getTm_y());
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<GpsData> call, Throwable t) {
+                    Log.v(TAG, "Fail to get data from server");
+                    view.showToastMessage("Fail to get data from server(convertCoordinates)");
+                }
+            });
+
+
+        }
+        else {
+            view.showSnackBarMessage("Internet Connection is not available now.");
         }
     }
 
@@ -215,4 +270,7 @@ public class AirConditionFragmentPresenter
             googleApiClient.disconnect();
         }
     }
+
+
+
 }

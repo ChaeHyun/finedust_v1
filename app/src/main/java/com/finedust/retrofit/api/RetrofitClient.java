@@ -1,5 +1,7 @@
 package com.finedust.retrofit.api;
 
+import com.finedust.model.Const;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -48,6 +50,13 @@ public class RetrofitClient {
         queryParmas.put("umdName",umdName);
 
         return queryParmas;
+    }
+
+    public static String getGpsConvertUrl(String y, String x) {
+        return "https://apis.daum.net/local/geo/transcoord"
+                + "?fromCoord=wgs84" + "&toCoord=TM" + "&output=json"
+                + "&x=" + x  + "&y=" + y
+                + "&apikey=" + Const.DAUM_API_KEY ;
     }
 
 }
