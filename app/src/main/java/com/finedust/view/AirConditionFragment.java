@@ -1,18 +1,12 @@
 package com.finedust.view;
 
 import android.Manifest;
-import android.app.Activity;
 import android.content.DialogInterface;
-import android.content.IntentSender;
 import android.content.pm.PackageManager;
 import android.databinding.DataBindingUtil;
-import android.location.Address;
-import android.location.Geocoder;
-import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
@@ -26,23 +20,14 @@ import android.widget.Toast;
 import com.finedust.R;
 import com.finedust.databinding.FragmentAirConditionBinding;
 import com.finedust.model.AirCondition;
-import com.finedust.model.GpsData;
+
 import com.finedust.model.adapter.MyAdapter;
 import com.finedust.presenter.AirConditionFragmentPresenter;
 import com.finedust.utils.CheckConnectivity;
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.location.LocationRequest;
-import com.google.android.gms.location.LocationServices;
 
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
 
-/**
- * A simple {@link Fragment} subclass.
- */
+
 public class AirConditionFragment extends Fragment implements Views.AirConditionFragmentView {
     private static final String TAG = AirConditionFragment.class.getSimpleName();
 
@@ -107,7 +92,6 @@ public class AirConditionFragment extends Fragment implements Views.AirCondition
 
         //Presenter를 이용해서 airConditionPresenter의 onSampleButtonClicked() 메소드를 호출.
         //프리젠터에 호출을 요청하고 난 뒤에 역할 끝.
-
         airConditionFragmentPresenter.getGPSCoordinates();
 
     }

@@ -18,26 +18,22 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.AdapterView;
 import android.widget.Toast;
 
 import com.finedust.R;
 import com.finedust.databinding.ActivityMainBinding;
 
-import com.finedust.model.AirCondition;
-import com.finedust.model.adapter.MyAdapter;
+import com.finedust.model.Const;
+import com.finedust.model.pref.MemorizedAddress;
 import com.finedust.presenter.MainActivityPresenter;
-import com.finedust.presenter.Presenter;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
+import com.finedust.utils.SharedPreferences;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, Views.MainActivityView{
 
     private static final String TAG = MainActivity.class.getSimpleName();
 
+    SharedPreferences pref;
     ActivityMainBinding mainBinding;
     MainActivityPresenter mainActivityPresenter = new MainActivityPresenter(this);
 
@@ -50,6 +46,8 @@ public class MainActivity extends AppCompatActivity
         mainBinding = DataBindingUtil.setContentView(this, R.layout.activity_main);
         mainBinding.setActivity(this);
 
+        pref = new SharedPreferences(this);
+
         // ActionBar, DrawerLayout, Nav View
         setSupportActionBar(mainBinding.appBarMain.toolbar);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -57,9 +55,17 @@ public class MainActivity extends AppCompatActivity
         mainBinding.drawerLayout.setDrawerListener(toggle);
         toggle.syncState();
 
-        mainBinding.navView.setNavigationItemSelectedListener(this);
         mainActivityPresenter.onCreate();
     }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Log.v(TAG, "onStart()");
+
+        checkMemorizedAddresses();
+    }
+
 
     @Override
     protected void attachBaseContext(Context newBase) {
@@ -80,6 +86,8 @@ public class MainActivity extends AppCompatActivity
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
+        mainBinding.navView.setNavigationItemSelectedListener(this);
+
         return true;
     }
 
@@ -98,58 +106,53 @@ public class MainActivity extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public void searchLocationIntent(int requestCode) {
+        Intent intent = new Intent(this, SearchAddressActivity.class);
+        startActivityForResult(intent, requestCode);
+    }
+
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
         Toast t = new Toast(getApplicationContext());
-        Fragment airConditionFragment;
 
         switch(id) {
             case R.id.nav_current:
                 // Save the settings in SharedPreferences.
-                airConditionFragment = new AirConditionFragment();
-                fragmentReplace(airConditionFragment);
+                fragmentReplace(new AirConditionFragment());
                 break;
 
             case R.id.nav_loc_one:
+                Log.i(TAG, "Location One Selected");
                 if(mainBinding.navView.getMenu().findItem(R.id.nav_loc_one).getTitle().equals("")) {
-                    // Save New Address
-                    Intent intent = new Intent(this, SearchAddressActivity.class);
-                    startActivityForResult(intent, 0);
+                    searchLocationIntent(0);
                 }
                 else {
-                    airConditionFragment = new AirConditionFragment();
-                    fragmentReplace(airConditionFragment);
+                    fragmentReplace(new AirConditionFragment());
                 }
-                Log.i(TAG, "Location One Selected");
                 break;
 
             case R.id.nav_loc_two:
+                Log.i(TAG, "Location Two Selected");
                 if(mainBinding.navView.getMenu().findItem(R.id.nav_loc_two).getTitle().equals("")) {
-                    // Save New Address
-                    Intent intent = new Intent(this, SearchAddressActivity.class);
-                    startActivityForResult(intent, 1);
+                    searchLocationIntent(1);
                 }
                 else {
-                    airConditionFragment = new AirConditionFragment();
-                    fragmentReplace(airConditionFragment);
+                    fragmentReplace(new AirConditionFragment());
                 }
-                Log.i(TAG, "Location Two Selected");
                 break;
 
             case R.id.nav_loc_three:
+                Log.i(TAG, "Location Three Selected");
                 if(mainBinding.navView.getMenu().findItem(R.id.nav_loc_three).getTitle().equals("")) {
-                    // Save New Address
-                    Intent intent = new Intent(this, SearchAddressActivity.class);
-                    startActivityForResult(intent, 2);
+                    searchLocationIntent(2);
                 }
                 else {
-                    airConditionFragment = new AirConditionFragment();
-                    fragmentReplace(airConditionFragment);
+                    fragmentReplace(new AirConditionFragment());
                 }
-                Log.i(TAG, "Location Three Selected");
                 break;
 
             case R.id.nav_forecast:
@@ -163,31 +166,10 @@ public class MainActivity extends AppCompatActivity
             case R.id.nav_kaq:
                 break;
             case R.id.nav_setting:
+                Fragment settingFragment = new SettingFragment();
+                fragmentReplace(settingFragment);
+                t.makeText(getApplicationContext(), "설정화면 선택", Toast.LENGTH_SHORT).show();
                 break;
-        }
-
-        if (id == R.id.nav_current) {
-
-
-
-        } else if (id == R.id.nav_loc_one) {
-
-
-        } else if (id == R.id.nav_loc_two) {
-
-        } else if (id == R.id.nav_loc_three) {
-
-        } else if (id == R.id.nav_forecast) {
-
-
-        } else if (id == R.id.nav_airkorea) {
-
-        } else if (id == R.id.nav_kaq) {
-
-        } else if (id == R.id.nav_nullschool) {
-
-        } else if (id == R.id.nav_setting) {
-
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -198,44 +180,40 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        Map<String, String> saveLocation;
+        MemorizedAddress saveLocation;
 
         if (resultCode == Activity.RESULT_OK && requestCode == 0) {
-            saveLocation = saveActivityResult(requestCode, data);
-            Log.i(TAG, "Addr : " + saveLocation.get("Addr"));
+            saveLocation = saveAddrInPreferences(requestCode, data, Const.MEMORIZED_LOCATIONS[requestCode]);
+            Log.i(TAG, "Addr_One : " + saveLocation.getMemorizedAddress());
 
             Fragment airCondition = new AirConditionFragment();
             fragmentReplace(airCondition);
         }
         else if (resultCode == Activity.RESULT_OK && requestCode == 1) {
-            saveLocation = saveActivityResult(requestCode, data);
-            Log.i(TAG, "Addr : " + saveLocation.get("Addr"));
+            saveLocation = saveAddrInPreferences(requestCode, data, Const.MEMORIZED_LOCATIONS[requestCode]);
+            Log.i(TAG, "Addr_Two : " + saveLocation.getMemorizedAddress());
 
             Fragment airCondition = new AirConditionFragment();
             fragmentReplace(airCondition);
         }
         else if (resultCode == Activity.RESULT_OK && requestCode == 2) {
-            saveLocation = saveActivityResult(requestCode, data);
-            Log.i(TAG, "Addr : " + saveLocation.get("Addr"));
+            saveLocation = saveAddrInPreferences(requestCode, data, Const.MEMORIZED_LOCATIONS[requestCode]);
+            Log.i(TAG, "Addr_Three : " + saveLocation.getMemorizedAddress());
 
-            Fragment airCondition = new AirConditionFragment();
-            fragmentReplace(airCondition);
+
+            fragmentReplace(new AirConditionFragment());
         }
 
     }
 
-    private Map<String, String> saveActivityResult(int requestCode, Intent data) {
-        Map<String, String> saveLocation = new HashMap<>();
-        // 나중에 SharedPrefence에 값 저장하는걸로 변경.
-        saveLocation.put("UmdName" , data.getStringExtra("Umd"));
-        saveLocation.put("TmX" , data.getStringExtra("TmX"));
-        saveLocation.put("TmY" , data.getStringExtra("TmY"));
-        saveLocation.put("Addr" , data.getStringExtra("Addr"));
-
-        setNavigationTitle(data.getStringExtra("Addr"), requestCode);
+    public MemorizedAddress saveAddrInPreferences(int requestCode, Intent data, String key) {
+        MemorizedAddress saveLocation = new MemorizedAddress(data.getStringExtra("Addr"), data.getStringExtra("Umd"), data.getStringExtra("TmX"), data.getStringExtra("TmY"));
+        pref.putObject(key, saveLocation);
+        setNavigationTitle(saveLocation.getMemorizedAddress(), requestCode, Const.NAVI_ICON_LOCATION_SAVED);
 
         return saveLocation;
     }
+
 
     // ------------ MainActivityView Interface --------------------
 
@@ -245,7 +223,6 @@ public class MainActivity extends AppCompatActivity
         Log.v(TAG, "onFloaotingButtonClick()");
         Snackbar.make(view, "저장된 주소를 초기화 합니다.", Snackbar.LENGTH_LONG)
                 .setAction("Action", null).show();
-
     }
 
     @Override
@@ -257,26 +234,36 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    public void setNavigationTitle(String title, int position) {
+    public void setNavigationTitle(String title, int position, int img) {
         switch(position) {
             case 0:
                 mainBinding.navView.getMenu()
                         .findItem(R.id.nav_loc_one)
                         .setTitle(title)
-                        .setIcon(R.drawable.pin_128);
+                        .setIcon(img);
                 break;
             case 1:
                 mainBinding.navView.getMenu()
                         .findItem(R.id.nav_loc_two)
                         .setTitle(title)
-                        .setIcon(R.drawable.pin_128);
+                        .setIcon(img);
                 break;
             case 2:
                 mainBinding.navView.getMenu()
                         .findItem(R.id.nav_loc_three)
                         .setTitle(title)
-                        .setIcon(R.drawable.pin_128);
+                        .setIcon(img);
                 break;
         }
     }
+
+    void checkMemorizedAddresses() {
+        for(int i = 0; i < 3; i++) {
+            MemorizedAddress save = (MemorizedAddress) pref.getObject(Const.MEMORIZED_LOCATIONS[i], "", new MemorizedAddress());
+            if (save != null) {
+                setNavigationTitle(save.getMemorizedAddress() ,i, Const.NAVI_ICON_LOCATION_SAVED);
+            }
+        }
+    }
+
 }

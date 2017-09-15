@@ -2,7 +2,7 @@ package com.finedust.presenter;
 
 import android.content.Context;
 
-public interface Presenter {
+interface Presenter {
 
     interface MainActivityPresenter {
         void onCreate();
@@ -24,6 +24,10 @@ public interface Presenter {
 
     interface ForecastFragmentPresenter {
 
+    }
+
+    interface SettingFragmentPresenter {
+        void abc();
     }
 
 

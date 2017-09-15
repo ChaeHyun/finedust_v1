@@ -1,10 +1,6 @@
 package com.finedust.presenter;
 
 import android.content.Context;
-import android.location.Location;
-import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.finedust.model.Address;
@@ -13,8 +9,6 @@ import com.finedust.retrofit.api.ApiService;
 import com.finedust.retrofit.api.RetrofitClient;
 import com.finedust.utils.CheckConnectivity;
 import com.finedust.view.Views;
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.api.GoogleApiClient;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -47,8 +41,10 @@ public class SearchAddressActivityPresenter implements Presenter.SearchAddressAc
                 @Override
                 public void onResponse(Call<AddressList> call, Response<AddressList> response) {
                     if(response.isSuccessful()) {
-                        ArrayList<Address> addressList = response.body().getList();
-                        if(addressList.size() > 0) {
+                        if (response.body().getTotalCount().equals(0))
+                            view.showSnackBarMessage("검색결과가 없습니다.");
+                        else {
+                            ArrayList<Address> addressList = response.body().getList();
                             Log.i(TAG, "ORDER to view : updateAddressData");
                             view.updateAddressData(addressList);
                         }

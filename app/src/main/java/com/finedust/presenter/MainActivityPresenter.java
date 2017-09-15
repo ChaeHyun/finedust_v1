@@ -4,9 +4,6 @@ import android.util.Log;
 
 import com.finedust.view.Views;
 
-/**
- * Created by CH on 2017-09-02.
- */
 
 public class MainActivityPresenter implements Presenter.MainActivityPresenter {
     private static final String TAG = MainActivityPresenter.class.getSimpleName();
@@ -36,5 +33,4 @@ public class MainActivityPresenter implements Presenter.MainActivityPresenter {
     public void onDestroy() {
 
     }
-
 }

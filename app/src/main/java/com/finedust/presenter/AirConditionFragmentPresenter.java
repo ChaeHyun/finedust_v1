@@ -35,7 +35,7 @@ import java.util.Map;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
+
 
 public class AirConditionFragmentPresenter
         implements Presenter.AirConditionFragmentPresenter,
@@ -61,7 +61,7 @@ public class AirConditionFragmentPresenter
         disconnectLocationService();
     }
 
-    public void getNearStationList(String x, String y) {
+    private void getNearStationList(String x, String y) {
         if(CheckConnectivity.checkNetworkConnection(context)) {
             ApiService apiService = RetrofitClient.getApiService();
 
@@ -72,13 +72,15 @@ public class AirConditionFragmentPresenter
                 @Override
                 public void onResponse(Call<StationList> call, Response<StationList> response) {
                     if(response.isSuccessful()) {
-                        ArrayList<Station> stationList = response.body().getList();
-                        if (stationList.size() > 0) {
+                        if (response.body().getTotalCount().equals(0)) {
+                            view.showSnackBarMessage("주변의 측정소를 찾지 못하였습니다.");
+                        }
+                        else {
+                            ArrayList<Station> stationList = response.body().getList();
                             for(Station stn : stationList) {
-                                Log.i(TAG, "측정소명 : " + stn.getStationName()+ ", 주소 : " + stn.getAddr() + ", 거리 : " + stn.getTm());
+                                Log.i(TAG, "   측정소명 : " + stn.getStationName()+ "\n   주소 : " + stn.getAddr() + "\n   거리 : " + stn.getTm());
 
                             }
-                            Log.i(TAG,"  totalCount : " + response.body().getTotalCount());
 
                             getAirConditionData(context, stationList.get(0).getStationName());
                         }
@@ -118,8 +120,11 @@ public class AirConditionFragmentPresenter
                 @Override
                 public void onResponse(Call<AirConditionList> call, Response<AirConditionList> response) {
                     if(response.isSuccessful()) {
-                        ArrayList<AirCondition> airConditionList = response.body().getList();
-                        if (airConditionList.size() > 0) {
+                        if (response.body().getTotalCount().equals(0)) {
+                            view.showSnackBarMessage("대기오염 정보를 찾지 못하였습니다.");
+                        }
+                        else {
+                            ArrayList<AirCondition> airConditionList = response.body().getList();
                             Log.i(TAG, "ORDER to view : updateAirConditionData");
                             view.updateAirConditionData(airConditionList);
                         }

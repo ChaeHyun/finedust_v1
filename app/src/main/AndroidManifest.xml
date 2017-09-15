@@ -26,7 +26,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".view.SearchAddressActivity"/>
+        <activity android:name=".view.SearchAddressActivity" />
+        <activity android:name=".view.SettingFragment"></activity>
     </application>
 
 </manifest>
