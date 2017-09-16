@@ -15,11 +15,14 @@ import com.finedust.model.AirCondition;
 import com.finedust.model.AirConditionList;
 import com.finedust.model.Const;
 import com.finedust.model.GpsData;
+import com.finedust.model.RecentData;
 import com.finedust.model.Station;
 import com.finedust.model.StationList;
+import com.finedust.model.pref.MemorizedAddress;
 import com.finedust.retrofit.api.ApiService;
 import com.finedust.retrofit.api.RetrofitClient;
 import com.finedust.utils.CheckConnectivity;
+import com.finedust.utils.SharedPreferences;
 import com.finedust.view.Views;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -47,21 +50,43 @@ public class AirConditionFragmentPresenter
     private Views.AirConditionFragmentView view;
     private Context context;
 
+    SharedPreferences pref;
+
     private GoogleApiClient googleApiClient;
     private final static int CONNECTION_FAILURE_RESOLUTION_REQUEST = 9000;
 
     public AirConditionFragmentPresenter(Views.AirConditionFragmentView view, Context context) {
         this.view = view;
         this.context = context;
+        pref = new SharedPreferences(context);
     }
 
     @Override
     public void onPause() {
         Log.i(TAG, "onPause()\ndisconnectLocationService");
         disconnectLocationService();
+        try {
+            StationList list = (StationList) pref.getObject(Const.RECENT_STATION_LIST, Const.EMPTY_STRING, new StationList());
+            Log.i(TAG + " pref에 저장된 측정소 정보", list.getList().get(0).getAddr()
+                    + "\n" + list.getList().get(1).getAddr()
+                    + "\n" + list.getList().get(2).getAddr());
+
+            RecentData data = (RecentData) pref.getObject(Const.RECENT_DATA, Const.EMPTY_STRING, new RecentData());
+            Log.i(TAG , "pref에 저장된 최근 정보"
+                    + "\nMode : " +  data.getMode()
+                    + "\n저장된 주소 : " + data.getAddr().getMemorizedAddress()
+                    + "\nPM10 : " + data.getAirCondition().getPm10Value() + "\nPM2.5 : " + data.getAirCondition().getPm25Value()
+            );
+        }
+        catch (NullPointerException e) {
+            e.printStackTrace();
+        }
+
+
     }
 
-    private void getNearStationList(String x, String y) {
+    @Override
+    public void getNearStationList(String x, String y) {
         if(CheckConnectivity.checkNetworkConnection(context)) {
             ApiService apiService = RetrofitClient.getApiService();
 
@@ -81,6 +106,7 @@ public class AirConditionFragmentPresenter
                                 Log.i(TAG, "   측정소명 : " + stn.getStationName()+ "\n   주소 : " + stn.getAddr() + "\n   거리 : " + stn.getTm());
 
                             }
+                            pref.putObject(Const.RECENT_STATION_LIST, response.body());
 
                             getAirConditionData(context, stationList.get(0).getStationName());
                         }
@@ -105,7 +131,7 @@ public class AirConditionFragmentPresenter
 
     @Override
     public void getAirConditionData(Context context, String stationName) {
-        view.showToastMessage("[" + stationName + "] 측정소의 정보를 검색합니다.");
+        view.showToastMessage("[ " + stationName + " ] 측정소의 정보를 검색합니다.");
 
         // Checking InternetConnection
         if(CheckConnectivity.checkNetworkConnection(context)) {
@@ -126,6 +152,14 @@ public class AirConditionFragmentPresenter
                         else {
                             ArrayList<AirCondition> airConditionList = response.body().getList();
                             Log.i(TAG, "ORDER to view : updateAirConditionData");
+
+                            String MODE = pref.getValue(Const.CURRENT_MODE, Const.MODE[0]);
+                            StationList list = (StationList) pref.getObject(Const.RECENT_STATION_LIST, Const.EMPTY_STRING, new StationList());
+                            MemorizedAddress addr = (MemorizedAddress) pref.getObject(Const.MEMORIZED_LOCATIONS[0], Const.EMPTY_STRING, new MemorizedAddress()); //*
+                            AirCondition air = airConditionList.get(0);
+                            RecentData recentData = new RecentData(MODE, addr, list.getList(), air);
+                            pref.putObject(Const.RECENT_DATA, recentData);
+
                             view.updateAirConditionData(airConditionList);
                         }
                     }

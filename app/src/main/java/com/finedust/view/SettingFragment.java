@@ -172,17 +172,17 @@ public class SettingFragment extends Fragment implements Views.SettingFragmentVi
             case R.id.img_button_minus1:
                 pref.removeValue(Const.MEMORIZED_LOCATIONS[0]);
                 setDeleteButtonVisibility(false, 0, Const.EMPTY_STRING);
-                mainView.setNavigationTitle("", 0, Const.NAVI_ICON_LOCATION_NOT_SAVED);
+                mainView.setNavigationTitle(Const.EMPTY_STRING, 0, Const.NAVI_ICON_LOCATION_NOT_SAVED);
                 break;
             case R.id.img_button_minus2:
                 pref.removeValue(Const.MEMORIZED_LOCATIONS[1]);
                 setDeleteButtonVisibility(false, 1, Const.EMPTY_STRING);
-                mainView.setNavigationTitle("", 1, Const.NAVI_ICON_LOCATION_NOT_SAVED);
+                mainView.setNavigationTitle(Const.EMPTY_STRING, 1, Const.NAVI_ICON_LOCATION_NOT_SAVED);
                 break;
             case R.id.img_button_minus3:
                 pref.removeValue(Const.MEMORIZED_LOCATIONS[2]);
                 setDeleteButtonVisibility(false, 2, Const.EMPTY_STRING);
-                mainView.setNavigationTitle("", 2, Const.NAVI_ICON_LOCATION_NOT_SAVED);
+                mainView.setNavigationTitle(Const.EMPTY_STRING, 2, Const.NAVI_ICON_LOCATION_NOT_SAVED);
                 break;
         }
     }

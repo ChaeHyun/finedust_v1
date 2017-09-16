@@ -21,9 +21,12 @@ import com.finedust.R;
 import com.finedust.databinding.FragmentAirConditionBinding;
 import com.finedust.model.AirCondition;
 
+import com.finedust.model.Const;
 import com.finedust.model.adapter.MyAdapter;
+import com.finedust.model.pref.MemorizedAddress;
 import com.finedust.presenter.AirConditionFragmentPresenter;
 import com.finedust.utils.CheckConnectivity;
+import com.finedust.utils.SharedPreferences;
 
 import java.util.ArrayList;
 
@@ -33,14 +36,16 @@ public class AirConditionFragment extends Fragment implements Views.AirCondition
 
     FragmentAirConditionBinding  binding;
     AirConditionFragmentPresenter airConditionFragmentPresenter = new AirConditionFragmentPresenter(this, getContext());
+    SharedPreferences pref;
     private MyAdapter adapter;
 
     final int MY_PERMISSION_REQUEST_LOCATION = 1000;
     boolean isPermissionEnabled = false;
 
+    String MODE;
+
     public AirConditionFragment() {
         // Required empty public constructor
-
     }
 
     @Override
@@ -49,17 +54,53 @@ public class AirConditionFragment extends Fragment implements Views.AirCondition
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_air_condition, container, false);
         binding.setAircondition(this);
 
+        pref = new SharedPreferences(getActivity());
+
         binding.button.setText("버튼");
         binding.listView.setOnItemClickListener(onClickListViewItem);
 
         airConditionFragmentPresenter = new AirConditionFragmentPresenter(this, getContext());
 
+        // launch at start, but not resume;
+        MODE = pref.getValue(Const.CURRENT_MODE, Const.MODE[0]);
+        checkCurrentMode(MODE);
+
         return binding.getRoot();
     }
 
     @Override
-    public void onResume()
-    {
+    public void onStart() {
+        super.onStart();
+        Log.i(TAG, "onStart()");
+
+    }
+
+    private void checkCurrentMode(String mode) {
+        Log.i(TAG+ "+ checkCurrentMode ","   MODE >> " + MODE);
+        if (mode.equals(Const.MODE[1])) {
+            MemorizedAddress data = (MemorizedAddress) pref.getObject(Const.MEMORIZED_LOCATIONS[0], Const.EMPTY_STRING, new MemorizedAddress());
+            Log.i(TAG,"   Loc_One >> " + data.getUmdName() + " , " + data.getTmX() + " , " + data.getTmY());
+            airConditionFragmentPresenter.getNearStationList(data.getTmX(), data.getTmY());
+        }
+        else if (mode.equals(Const.MODE[2])) {
+            MemorizedAddress data = (MemorizedAddress) pref.getObject(Const.MEMORIZED_LOCATIONS[1], Const.EMPTY_STRING, new MemorizedAddress());
+            Log.i(TAG,"   Loc_Two >> " + data.getUmdName() + " , " + data.getTmX() + " , " + data.getTmY());
+            airConditionFragmentPresenter.getNearStationList(data.getTmX(), data.getTmY());
+        }
+        else if (mode.equals(Const.MODE[3])) {
+            MemorizedAddress data = (MemorizedAddress) pref.getObject(Const.MEMORIZED_LOCATIONS[2], Const.EMPTY_STRING, new MemorizedAddress());
+            Log.i(TAG,"   Loc_Three >> " + data.getUmdName() + " , " + data.getTmX() + " , " + data.getTmY());
+            airConditionFragmentPresenter.getNearStationList(data.getTmX(), data.getTmY());
+        }
+        else  {
+            Log.i(TAG,"   GPS 이용해서 좌표구하기 실행" );
+            airConditionFragmentPresenter.getGPSCoordinates();
+        }
+    }
+
+
+    @Override
+    public void onResume() {
         super.onResume();
         Log.i(TAG, "onResume()");
 
@@ -89,11 +130,6 @@ public class AirConditionFragment extends Fragment implements Views.AirCondition
     public void onSampleButtonClick(View view) {
         Log.i(TAG, "onSamplelButtonoClick()");
         binding.button.setText("Changed");
-
-        //Presenter를 이용해서 airConditionPresenter의 onSampleButtonClicked() 메소드를 호출.
-        //프리젠터에 호출을 요청하고 난 뒤에 역할 끝.
-        airConditionFragmentPresenter.getGPSCoordinates();
-
     }
 
     @Override

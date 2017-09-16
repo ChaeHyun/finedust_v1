@@ -16,6 +16,8 @@ public class Const {
     public static final String[] MEMORIZED_LOCATIONS = {"MemorizedAddress_One", "MemorizedAddress_Two", "MemorizedAddress_Three"};
 
     public static final String RECENT_DATA = "RecentData";
+    public static final String RECENT_STATION_LIST = "RecentStationiList";
+    public static final String CURRENT_MODE = "CurrentMode";
     public static final String[] MODE = {"CURRENT" , "LOC_ONE" , "LOC_TWO" , "LOC_THREE"};
 
 

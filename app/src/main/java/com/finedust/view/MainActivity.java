@@ -122,6 +122,7 @@ public class MainActivity extends AppCompatActivity
         switch(id) {
             case R.id.nav_current:
                 // Save the settings in SharedPreferences.
+                pref.put(Const.CURRENT_MODE, Const.MODE[0]);
                 fragmentReplace(new AirConditionFragment());
                 break;
 
@@ -131,6 +132,7 @@ public class MainActivity extends AppCompatActivity
                     searchLocationIntent(0);
                 }
                 else {
+                    pref.put(Const.CURRENT_MODE, Const.MODE[1]);
                     fragmentReplace(new AirConditionFragment());
                 }
                 break;
@@ -141,6 +143,7 @@ public class MainActivity extends AppCompatActivity
                     searchLocationIntent(1);
                 }
                 else {
+                    pref.put(Const.CURRENT_MODE, Const.MODE[2]);
                     fragmentReplace(new AirConditionFragment());
                 }
                 break;
@@ -151,6 +154,7 @@ public class MainActivity extends AppCompatActivity
                     searchLocationIntent(2);
                 }
                 else {
+                    pref.put(Const.CURRENT_MODE, Const.MODE[3]);
                     fragmentReplace(new AirConditionFragment());
                 }
                 break;
