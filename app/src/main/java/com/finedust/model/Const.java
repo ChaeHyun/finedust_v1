@@ -10,6 +10,7 @@ public class Const {
     public static final String DAUM_API_KEY = "f9946de16d015bc728f1d55ceafe0c2e&libraries=services";
 
     public static final String RETURNTYPE_JSON = "json";
+    public static final String EMPTY_STRING = "";
 
 
     public static final String[] MEMORIZED_LOCATIONS = {"MemorizedAddress_One", "MemorizedAddress_Two", "MemorizedAddress_Three"};
