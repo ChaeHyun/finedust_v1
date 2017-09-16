@@ -91,7 +91,6 @@ public class SettingFragment extends Fragment implements Views.SettingFragmentVi
                     binding.layoutMemorizedAddress.imgButtonMinus3.setVisibility(View.VISIBLE);
 
                     binding.layoutMemorizedAddress.editText3.setText(address);
-                    binding.layoutMemorizedAddress.editText1.setText(address);
                     break;
             }
         }
@@ -172,17 +171,17 @@ public class SettingFragment extends Fragment implements Views.SettingFragmentVi
         switch (view.getId()) {
             case R.id.img_button_minus1:
                 pref.removeValue(Const.MEMORIZED_LOCATIONS[0]);
-                setDeleteButtonVisibility(false, 0, "");
+                setDeleteButtonVisibility(false, 0, Const.EMPTY_STRING);
                 mainView.setNavigationTitle("", 0, Const.NAVI_ICON_LOCATION_NOT_SAVED);
                 break;
             case R.id.img_button_minus2:
                 pref.removeValue(Const.MEMORIZED_LOCATIONS[1]);
-                setDeleteButtonVisibility(false, 1, "");
+                setDeleteButtonVisibility(false, 1, Const.EMPTY_STRING);
                 mainView.setNavigationTitle("", 1, Const.NAVI_ICON_LOCATION_NOT_SAVED);
                 break;
             case R.id.img_button_minus3:
                 pref.removeValue(Const.MEMORIZED_LOCATIONS[2]);
-                setDeleteButtonVisibility(false, 2, "");
+                setDeleteButtonVisibility(false, 2, Const.EMPTY_STRING);
                 mainView.setNavigationTitle("", 2, Const.NAVI_ICON_LOCATION_NOT_SAVED);
                 break;
         }
