@@ -23,7 +23,7 @@ import com.finedust.model.AirCondition;
 
 import com.finedust.model.Const;
 import com.finedust.model.adapter.MyAdapter;
-import com.finedust.model.pref.MemorizedAddress;
+
 import com.finedust.presenter.AirConditionFragmentPresenter;
 import com.finedust.utils.CheckConnectivity;
 import com.finedust.utils.SharedPreferences;
@@ -63,7 +63,8 @@ public class AirConditionFragment extends Fragment implements Views.AirCondition
 
         // launch at start, but not resume;
         MODE = pref.getValue(Const.CURRENT_MODE, Const.MODE[0]);
-        checkCurrentMode(MODE);
+        Log.i(TAG+ "+ checkCurrentMode ","   MODE >> " + MODE);
+        airConditionFragmentPresenter.checkCurrentMode(MODE);
 
         return binding.getRoot();
     }
@@ -74,30 +75,6 @@ public class AirConditionFragment extends Fragment implements Views.AirCondition
         Log.i(TAG, "onStart()");
 
     }
-
-    private void checkCurrentMode(String mode) {
-        Log.i(TAG+ "+ checkCurrentMode ","   MODE >> " + MODE);
-        if (mode.equals(Const.MODE[1])) {
-            MemorizedAddress data = (MemorizedAddress) pref.getObject(Const.MEMORIZED_LOCATIONS[0], Const.EMPTY_STRING, new MemorizedAddress());
-            Log.i(TAG,"   Loc_One >> " + data.getUmdName() + " , " + data.getTmX() + " , " + data.getTmY());
-            airConditionFragmentPresenter.getNearStationList(data.getTmX(), data.getTmY());
-        }
-        else if (mode.equals(Const.MODE[2])) {
-            MemorizedAddress data = (MemorizedAddress) pref.getObject(Const.MEMORIZED_LOCATIONS[1], Const.EMPTY_STRING, new MemorizedAddress());
-            Log.i(TAG,"   Loc_Two >> " + data.getUmdName() + " , " + data.getTmX() + " , " + data.getTmY());
-            airConditionFragmentPresenter.getNearStationList(data.getTmX(), data.getTmY());
-        }
-        else if (mode.equals(Const.MODE[3])) {
-            MemorizedAddress data = (MemorizedAddress) pref.getObject(Const.MEMORIZED_LOCATIONS[2], Const.EMPTY_STRING, new MemorizedAddress());
-            Log.i(TAG,"   Loc_Three >> " + data.getUmdName() + " , " + data.getTmX() + " , " + data.getTmY());
-            airConditionFragmentPresenter.getNearStationList(data.getTmX(), data.getTmY());
-        }
-        else  {
-            Log.i(TAG,"   GPS 이용해서 좌표구하기 실행" );
-            airConditionFragmentPresenter.getGPSCoordinates();
-        }
-    }
-
 
     @Override
     public void onResume() {
@@ -117,11 +94,18 @@ public class AirConditionFragment extends Fragment implements Views.AirCondition
         @Override
         public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
             if(adapter != null) {
-                Toast.makeText(getContext(),
-                        "PM10 Value : " + adapter.getItem(position).getPm10Value()
-                                + "\nCO Value : " + adapter.getItem(position).getCoValue()
-                                + "\nSO2 Value : " + adapter.getItem(position).getSo2Value()
-                        , Toast.LENGTH_LONG).show();
+                try {
+                    Toast.makeText(getContext(),
+                            "PM10 Value : " + adapter.getItem(position).getPm10Value()
+                                    + "\nCO Value : " + adapter.getItem(position).getCoValue()
+                                    + "\nSO2 Value : " + adapter.getItem(position).getSo2Value()
+                                    + "\nKhai Value : " + adapter.getItem(position).getKhaiValue()
+                                    + "\nTime : " + adapter.getItem(position).getDataTime()
+                            , Toast.LENGTH_LONG).show();
+                }
+                catch (NullPointerException e) {
+                    e.printStackTrace();
+                }
             }
         }
     };
@@ -137,6 +121,7 @@ public class AirConditionFragment extends Fragment implements Views.AirCondition
         Log.i(TAG, "updating Air Condition Data to List Adapter");
         adapter = new MyAdapter(getContext(), 0, data);
         binding.listView.setAdapter(adapter);
+        airConditionFragmentPresenter.saveRecentData();
     }
 
     @Override

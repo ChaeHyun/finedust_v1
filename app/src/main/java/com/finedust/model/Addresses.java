@@ -4,7 +4,7 @@ package com.finedust.model;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Address {
+public class Addresses {
 
     @SerializedName("_returnType")
     @Expose
@@ -87,6 +87,17 @@ public class Address {
     @SerializedName("year")
     @Expose
     private String year;
+
+    public Addresses() {
+
+    }
+
+    public Addresses(String addr, String umdName, String tmX, String tmY) {
+        this.addr = addr;
+        this.tmX = tmX;
+        this.tmY = tmY;
+        this.umdName = umdName;
+    }
 
     public String getReturnType() {
         return returnType;
@@ -255,6 +266,8 @@ public class Address {
     public void setTm(Integer tm) {
         this.tm = tm;
     }
+
+    public void setTmXTmY(String tmX, String tmY) {this.tmX = tmX; this.tmY = tmY;}
 
     public String getTmX() {
         return tmX;

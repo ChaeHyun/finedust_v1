@@ -1,40 +1,40 @@
 package com.finedust.model;
 
-import com.finedust.model.pref.MemorizedAddress;
+
 
 import java.util.ArrayList;
 
 public class RecentData {
-    private String Mode;
+    private String currentMode;
 
-    private MemorizedAddress addr;
-    private ArrayList<Station> savedStations;
-    private AirCondition airCondition;
+    private Addresses addr;     //
+    private ArrayList<Station> savedStations;   // 0~3, Const.RECENT_STATION_LIST
+    private AirCondition airCondition;      //Aircondition Data
 
     public RecentData() {
 
     }
 
-    public RecentData(String mode, MemorizedAddress addr, ArrayList<Station> saveStations, AirCondition airCondition) {
-        this.Mode = mode;
+    public RecentData(String currentMode, Addresses addr, ArrayList<Station> saveStations, AirCondition airCondition) {
+        this.currentMode = currentMode;
         this.addr = addr;
         this.savedStations = saveStations;
         this. airCondition = airCondition;
     }
 
-    public String getMode() {
-        return Mode;
+    public String getCurrentMode() {
+        return currentMode;
     }
 
-    public void setMode(String mode) {
-        Mode = mode;
+    public void setCurrentMode(String currentMode) {
+        this.currentMode = currentMode;
     }
 
-    public MemorizedAddress getAddr() {
+    public Addresses getAddr() {
         return addr;
     }
 
-    public void setAddr(MemorizedAddress addr) {
+    public void setAddr(Addresses addr) {
         this.addr = addr;
     }
 

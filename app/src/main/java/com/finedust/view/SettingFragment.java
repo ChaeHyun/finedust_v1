@@ -6,7 +6,6 @@ import android.databinding.DataBindingUtil;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,7 +14,8 @@ import android.widget.Toast;
 import com.finedust.R;
 import com.finedust.databinding.FragmentSettingBinding;
 import com.finedust.model.Const;
-import com.finedust.model.pref.MemorizedAddress;
+
+import com.finedust.model.Addresses;
 import com.finedust.presenter.MainActivityPresenter;
 import com.finedust.utils.SharedPreferences;
 
@@ -47,10 +47,10 @@ public class SettingFragment extends Fragment implements Views.SettingFragmentVi
     }
 
     private void checkMemorizedAddresses() {
-        for(int i = 0; i < 3; i++) {
-            MemorizedAddress save = (MemorizedAddress) pref.getObject(Const.MEMORIZED_LOCATIONS[i], "", new MemorizedAddress());
+        for(int i = 1; i < 4; i++) {
+            Addresses save = (Addresses) pref.getObject(Const.MEMORIZED_LOCATIONS[i], "", new Addresses());
             if (save != null) {
-                setDeleteButtonVisibility(true, i, save.getMemorizedAddress());
+                setDeleteButtonVisibility(true, i, save.getAddr());
             }
         }
     }
@@ -74,19 +74,19 @@ public class SettingFragment extends Fragment implements Views.SettingFragmentVi
     private void  setDeleteButtonVisibility(boolean on, int pos, String address) {
         if (on) {
             switch (pos) {
-                case 0:
+                case 1:
                     binding.layoutMemorizedAddress.imgButtonMinus1.setEnabled(true);
                     binding.layoutMemorizedAddress.imgButtonMinus1.setVisibility(View.VISIBLE);
 
                     binding.layoutMemorizedAddress.editText1.setText(address);
                     break;
-                case 1:
+                case 2:
                     binding.layoutMemorizedAddress.imgButtonMinus2.setEnabled(true);
                     binding.layoutMemorizedAddress.imgButtonMinus2.setVisibility(View.VISIBLE);
 
                     binding.layoutMemorizedAddress.editText2.setText(address);
                     break;
-                case 2:
+                case 3:
                     binding.layoutMemorizedAddress.imgButtonMinus3.setEnabled(true);
                     binding.layoutMemorizedAddress.imgButtonMinus3.setVisibility(View.VISIBLE);
 
@@ -96,18 +96,18 @@ public class SettingFragment extends Fragment implements Views.SettingFragmentVi
         }
         else {
             switch (pos) {
-                case 0:
-                    binding.layoutMemorizedAddress.editText1.setText("");
+                case 1:
+                    binding.layoutMemorizedAddress.editText1.setText(Const.EMPTY_STRING);
                     binding.layoutMemorizedAddress.imgButtonMinus1.setEnabled(false);
                     binding.layoutMemorizedAddress.imgButtonMinus1.setVisibility(View.INVISIBLE);
                     break;
-                case 1:
-                    binding.layoutMemorizedAddress.editText2.setText("");
+                case 2:
+                    binding.layoutMemorizedAddress.editText2.setText(Const.EMPTY_STRING);
                     binding.layoutMemorizedAddress.imgButtonMinus2.setEnabled(false);
                     binding.layoutMemorizedAddress.imgButtonMinus2.setVisibility(View.INVISIBLE);
                     break;
-                case 2:
-                    binding.layoutMemorizedAddress.editText3.setText("");
+                case 3:
+                    binding.layoutMemorizedAddress.editText3.setText(Const.EMPTY_STRING);
                     binding.layoutMemorizedAddress.imgButtonMinus3.setEnabled(false);
                     binding.layoutMemorizedAddress.imgButtonMinus3.setVisibility(View.INVISIBLE);
                     break;
@@ -119,33 +119,17 @@ public class SettingFragment extends Fragment implements Views.SettingFragmentVi
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (resultCode == Activity.RESULT_OK && requestCode == 0) {
+        if (resultCode == Activity.RESULT_OK && requestCode == 1) {
             mainView.saveAddrInPreferences(requestCode, data, Const.MEMORIZED_LOCATIONS[requestCode]);
             setDeleteButtonVisibility(true, requestCode, data.getStringExtra("Addr"));
-
-            //Preferences 확인
-            MemorizedAddress addr = (MemorizedAddress) pref.getObject(Const.MEMORIZED_LOCATIONS[requestCode], "", new MemorizedAddress());
-            Log.i(TAG, " > Pref 확인 : " + ((MemorizedAddress)pref.getObject("MemorizedAddress_One", "", new MemorizedAddress())).getMemorizedAddress());
-
-        }
-        else if (resultCode == Activity.RESULT_OK && requestCode == 1) {
-            mainView.saveAddrInPreferences(requestCode, data, Const.MEMORIZED_LOCATIONS[requestCode]);
-            setDeleteButtonVisibility(true, requestCode, data.getStringExtra("Addr"));
-
-            //Preferences 확인
-            MemorizedAddress addr = (MemorizedAddress) pref.getObject(Const.MEMORIZED_LOCATIONS[requestCode], "", new MemorizedAddress());
-            Log.i(TAG, " > Pref 확인 : " + ((MemorizedAddress)pref.getObject("MemorizedAddress_One", "", new MemorizedAddress())).getMemorizedAddress());
-
-
         }
         else if (resultCode == Activity.RESULT_OK && requestCode == 2) {
             mainView.saveAddrInPreferences(requestCode, data, Const.MEMORIZED_LOCATIONS[requestCode]);
             setDeleteButtonVisibility(true, requestCode, data.getStringExtra("Addr"));
-
-            //Preferences 확인
-            MemorizedAddress addr = (MemorizedAddress) pref.getObject(Const.MEMORIZED_LOCATIONS[requestCode], "", new MemorizedAddress());
-            Log.i(TAG, " > Pref 확인 : " + addr.getMemorizedAddress());
-
+        }
+        else if (resultCode == Activity.RESULT_OK && requestCode == 3) {
+            mainView.saveAddrInPreferences(requestCode, data, Const.MEMORIZED_LOCATIONS[requestCode]);
+            setDeleteButtonVisibility(true, requestCode, data.getStringExtra("Addr"));
         }
     }
 
@@ -154,13 +138,13 @@ public class SettingFragment extends Fragment implements Views.SettingFragmentVi
         Intent intent = new Intent(getContext(), SearchAddressActivity.class);
 
         if (binding.layoutMemorizedAddress.editText1.getText().toString().equals("")) {
-            startActivityForResult(intent, 0);
-        }
-        else if (binding.layoutMemorizedAddress.editText2.getText().toString().equals("")) {
             startActivityForResult(intent, 1);
         }
-        else if (binding.layoutMemorizedAddress.editText3.getText().toString().equals("")) {
+        else if (binding.layoutMemorizedAddress.editText2.getText().toString().equals("")) {
             startActivityForResult(intent, 2);
+        }
+        else if (binding.layoutMemorizedAddress.editText3.getText().toString().equals("")) {
+            startActivityForResult(intent, 3);
         }
         else
             Toast.makeText(getContext(), "더 이상 저장할 수 없습니다.", Toast.LENGTH_LONG).show();
@@ -170,19 +154,19 @@ public class SettingFragment extends Fragment implements Views.SettingFragmentVi
     public void onMinusButtonClick(View view) {
         switch (view.getId()) {
             case R.id.img_button_minus1:
-                pref.removeValue(Const.MEMORIZED_LOCATIONS[0]);
-                setDeleteButtonVisibility(false, 0, Const.EMPTY_STRING);
-                mainView.setNavigationTitle(Const.EMPTY_STRING, 0, Const.NAVI_ICON_LOCATION_NOT_SAVED);
-                break;
-            case R.id.img_button_minus2:
                 pref.removeValue(Const.MEMORIZED_LOCATIONS[1]);
                 setDeleteButtonVisibility(false, 1, Const.EMPTY_STRING);
                 mainView.setNavigationTitle(Const.EMPTY_STRING, 1, Const.NAVI_ICON_LOCATION_NOT_SAVED);
                 break;
-            case R.id.img_button_minus3:
+            case R.id.img_button_minus2:
                 pref.removeValue(Const.MEMORIZED_LOCATIONS[2]);
                 setDeleteButtonVisibility(false, 2, Const.EMPTY_STRING);
                 mainView.setNavigationTitle(Const.EMPTY_STRING, 2, Const.NAVI_ICON_LOCATION_NOT_SAVED);
+                break;
+            case R.id.img_button_minus3:
+                pref.removeValue(Const.MEMORIZED_LOCATIONS[3]);
+                setDeleteButtonVisibility(false, 3, Const.EMPTY_STRING);
+                mainView.setNavigationTitle(Const.EMPTY_STRING, 3, Const.NAVI_ICON_LOCATION_NOT_SAVED);
                 break;
         }
     }

@@ -11,14 +11,12 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
-import com.finedust.model.AirCondition;
 import com.finedust.model.AirConditionList;
 import com.finedust.model.Const;
 import com.finedust.model.GpsData;
+import com.finedust.model.Addresses;
 import com.finedust.model.RecentData;
-import com.finedust.model.Station;
 import com.finedust.model.StationList;
-import com.finedust.model.pref.MemorizedAddress;
 import com.finedust.retrofit.api.ApiService;
 import com.finedust.retrofit.api.RetrofitClient;
 import com.finedust.utils.CheckConnectivity;
@@ -30,7 +28,6 @@ import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -50,40 +47,82 @@ public class AirConditionFragmentPresenter
     private Views.AirConditionFragmentView view;
     private Context context;
 
-    SharedPreferences pref;
+    private SharedPreferences pref;
 
     private GoogleApiClient googleApiClient;
     private final static int CONNECTION_FAILURE_RESOLUTION_REQUEST = 9000;
+    private RecentData mRecent;
 
     public AirConditionFragmentPresenter(Views.AirConditionFragmentView view, Context context) {
         this.view = view;
         this.context = context;
+        mRecent = new RecentData();
+        mRecent.setAddr(new Addresses());
         pref = new SharedPreferences(context);
     }
 
     @Override
     public void onPause() {
-        Log.i(TAG, "onPause()\ndisconnectLocationService");
+        Log.i(TAG, "onPause()\nService_disconnec tLocation");
         disconnectLocationService();
-        try {
-            StationList list = (StationList) pref.getObject(Const.RECENT_STATION_LIST, Const.EMPTY_STRING, new StationList());
-            Log.i(TAG + " pref에 저장된 측정소 정보", list.getList().get(0).getAddr()
-                    + "\n" + list.getList().get(1).getAddr()
-                    + "\n" + list.getList().get(2).getAddr());
 
+        try {
             RecentData data = (RecentData) pref.getObject(Const.RECENT_DATA, Const.EMPTY_STRING, new RecentData());
-            Log.i(TAG , "pref에 저장된 최근 정보"
-                    + "\nMode : " +  data.getMode()
-                    + "\n저장된 주소 : " + data.getAddr().getMemorizedAddress()
-                    + "\nPM10 : " + data.getAirCondition().getPm10Value() + "\nPM2.5 : " + data.getAirCondition().getPm25Value()
+            Log.v(TAG , "[ RCENT_DATA from SharedPreferences ]"
+                    + "\n현재모드: " +  data.getCurrentMode()
+                    + "\n저장된 주소 : " + data.getAddr().getAddr()
+                    + "\n동이름 : " + data.getAddr().getUmdName() + "  , 좌표 : " + data.getAddr().getTmX() + " ," + data.getAddr().getTmY()
+                    + "\n측정소[1] : " + data.getSavedStations().get(0).getAddr() + " , " + data.getSavedStations().get(0).getStationName() + " , " + data.getSavedStations().get(0).getTm()
+                    + "\n측정소[2] : " + data.getSavedStations().get(1).getAddr() + " , " + data.getSavedStations().get(1).getStationName() + " , " + data.getSavedStations().get(1).getTm()
+                    + "\n측정소[3] : " + data.getSavedStations().get(2).getAddr() + " , " + data.getSavedStations().get(2).getStationName() + " , " + data.getSavedStations().get(2).getTm()
+                    + "\n시간 : " + data.getAirCondition().getDataTime()
+                    + "\nKhai : " + data.getAirCondition().getKhaiValue()
+                    + "  //  PM10 : " + data.getAirCondition().getPm10Value()
+                    + "  //  PM2.5 : " + data.getAirCondition().getPm25Value()
+                    + "  //  vNO2 : " + data.getAirCondition().getNo2Value()
+                    + "  //  CO : " + data.getAirCondition().getCoValue()
+                    + "  //  O3 : " + data.getAirCondition().getO3Value()
+                    + "  //  SO2 : " + data.getAirCondition().getSo2Value()
             );
         }
         catch (NullPointerException e) {
             e.printStackTrace();
         }
-
-
     }
+
+    private int convertModeToInteger(String mode) {
+        if (mode.equals(Const.MODE[1]))
+            return 1;
+        if (mode.equals(Const.MODE[2]))
+            return 2;
+        if (mode.equals(Const.MODE[3]))
+            return 3;
+        return 0;
+    }
+
+    @Override
+    public void checkCurrentMode(String mode) {
+        mRecent.setCurrentMode(mode);
+        int num = convertModeToInteger(mode);
+
+        if (num == 1) {
+            Addresses data = (Addresses) pref.getObject(Const.MEMORIZED_LOCATIONS[num], Const.EMPTY_STRING, new Addresses());
+            getNearStationList(data.getTmX(), data.getTmY());
+        }
+        else if (num == 2) {
+            Addresses data = (Addresses) pref.getObject(Const.MEMORIZED_LOCATIONS[num], Const.EMPTY_STRING, new Addresses());
+            getNearStationList(data.getTmX(), data.getTmY());
+        }
+        else if (num == 3) {
+            Addresses data = (Addresses) pref.getObject(Const.MEMORIZED_LOCATIONS[num], Const.EMPTY_STRING, new Addresses());
+            getNearStationList(data.getTmX(), data.getTmY());
+        }
+        else  {
+            Log.i(TAG,"   GPS 이용해서 좌표구하기 실행" );
+            getGPSCoordinates();
+        }
+    }
+
 
     @Override
     public void getNearStationList(String x, String y) {
@@ -101,14 +140,9 @@ public class AirConditionFragmentPresenter
                             view.showSnackBarMessage("주변의 측정소를 찾지 못하였습니다.");
                         }
                         else {
-                            ArrayList<Station> stationList = response.body().getList();
-                            for(Station stn : stationList) {
-                                Log.i(TAG, "   측정소명 : " + stn.getStationName()+ "\n   주소 : " + stn.getAddr() + "\n   거리 : " + stn.getTm());
+                            mRecent.setSavedStations(response.body().getList());
 
-                            }
-                            pref.putObject(Const.RECENT_STATION_LIST, response.body());
-
-                            getAirConditionData(context, stationList.get(0).getStationName());
+                            getAirConditionData(response.body().getList().get(0).getStationName());
                         }
                     }
                 }
@@ -125,12 +159,13 @@ public class AirConditionFragmentPresenter
         }
     }
 
+
     /**
      * 측정소명을 파라미터로 해당 측정소의 대기정보를 요청하는 메소드.
      * */
 
     @Override
-    public void getAirConditionData(Context context, String stationName) {
+    public void getAirConditionData(String stationName) {
         view.showToastMessage("[ " + stationName + " ] 측정소의 정보를 검색합니다.");
 
         // Checking InternetConnection
@@ -150,17 +185,10 @@ public class AirConditionFragmentPresenter
                             view.showSnackBarMessage("대기오염 정보를 찾지 못하였습니다.");
                         }
                         else {
-                            ArrayList<AirCondition> airConditionList = response.body().getList();
+                            mRecent.setAirCondition(response.body().getList().get(0));
+
                             Log.i(TAG, "ORDER to view : updateAirConditionData");
-
-                            String MODE = pref.getValue(Const.CURRENT_MODE, Const.MODE[0]);
-                            StationList list = (StationList) pref.getObject(Const.RECENT_STATION_LIST, Const.EMPTY_STRING, new StationList());
-                            MemorizedAddress addr = (MemorizedAddress) pref.getObject(Const.MEMORIZED_LOCATIONS[0], Const.EMPTY_STRING, new MemorizedAddress()); //*
-                            AirCondition air = airConditionList.get(0);
-                            RecentData recentData = new RecentData(MODE, addr, list.getList(), air);
-                            pref.putObject(Const.RECENT_DATA, recentData);
-
-                            view.updateAirConditionData(airConditionList);
+                            view.updateAirConditionData(response.body().getList());
                         }
                     }
                 }
@@ -230,6 +258,8 @@ public class AirConditionFragmentPresenter
             try {
                 Geocoder gcd = new Geocoder(context, Locale.KOREA);
                 List<Address> addresses = gcd.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
+                mRecent.getAddr().setAddr(makeAddressName(addresses));
+
                 view.showSnackBarMessage(makeAddressName(addresses));
             }
             catch (IOException e) {
@@ -253,6 +283,7 @@ public class AirConditionFragmentPresenter
                 @Override
                 public void onResponse(Call<GpsData> call, Response<GpsData> response) {
                     if(response.isSuccessful()) {
+                        mRecent.getAddr().setTmXTmY(response.body().getTm_x(), response.body().getTm_y());
                         // 얻은 좌표값을 사용해서 근접 측정소 목록 정보 요청하기.
                         getNearStationList(response.body().getTm_x(), response.body().getTm_y());
                     }
@@ -273,6 +304,7 @@ public class AirConditionFragmentPresenter
     }
 
     private String makeAddressName(List<Address> addr) {
+        mRecent.getAddr().setUmdName(addr.get(0).getThoroughfare());
         if(addr.get(0).getAdminArea() == null)
             return addr.get(0).getLocality() + " " + addr.get(0).getSubLocality() + " " + addr.get(0).getThoroughfare();
         return addr.get(0).getAdminArea() + " " + addr.get(0).getLocality() + " " + addr.get(0).getThoroughfare();
@@ -308,6 +340,15 @@ public class AirConditionFragmentPresenter
             LocationServices.FusedLocationApi.removeLocationUpdates(googleApiClient, this);
             googleApiClient.disconnect();
         }
+    }
+
+    @Override
+    public void saveRecentData() {
+        if(convertModeToInteger(mRecent.getCurrentMode()) != 0) {
+            Addresses addr = (Addresses) pref.getObject(Const.MEMORIZED_LOCATIONS[convertModeToInteger(mRecent.getCurrentMode())], Const.EMPTY_STRING, new Addresses());
+            mRecent.setAddr(addr);
+        }
+        pref.putObject(Const.RECENT_DATA, mRecent);
     }
 
 

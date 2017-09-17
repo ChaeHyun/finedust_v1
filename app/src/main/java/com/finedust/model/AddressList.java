@@ -10,17 +10,17 @@ public class AddressList {
 
     @SerializedName("list")
     @Expose
-    private ArrayList<Address> list = null;
+    private ArrayList<Addresses> list = null;
 
     @SerializedName("totalCount")
     @Expose
     private Integer totalCount;
 
-    public ArrayList<Address> getList() {
+    public ArrayList<Addresses> getList() {
         return list;
     }
 
-    public void setList(ArrayList<Address> list) {
+    public void setList(ArrayList<Addresses> list) {
         this.list = list;
     }
 

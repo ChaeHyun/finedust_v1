@@ -3,7 +3,7 @@ package com.finedust.presenter;
 import android.content.Context;
 import android.util.Log;
 
-import com.finedust.model.Address;
+import com.finedust.model.Addresses;
 import com.finedust.model.AddressList;
 import com.finedust.retrofit.api.ApiService;
 import com.finedust.retrofit.api.RetrofitClient;
@@ -44,8 +44,9 @@ public class SearchAddressActivityPresenter implements Presenter.SearchAddressAc
                         if (response.body().getTotalCount().equals(0))
                             view.showSnackBarMessage("검색결과가 없습니다.");
                         else {
-                            ArrayList<Address> addressList = response.body().getList();
+                            ArrayList<Addresses> addressList = response.body().getList();
                             Log.i(TAG, "ORDER to view : updateAddressData");
+
                             view.updateAddressData(addressList);
                         }
                     }

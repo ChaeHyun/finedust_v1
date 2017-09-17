@@ -6,7 +6,6 @@ import android.databinding.DataBindingUtil;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,22 +13,20 @@ import android.widget.ArrayAdapter;
 
 import com.finedust.R;
 import com.finedust.databinding.ListviewAddressItemBinding;
-import com.finedust.model.Address;
-import com.finedust.model.AddressList;
+import com.finedust.model.Addresses;
 
-import java.util.ArrayList;
 import java.util.List;
 
 
 
-public class AddressListAdapter extends ArrayAdapter<Address> {
+public class AddressListAdapter extends ArrayAdapter<Addresses> {
     private static final String TAG = AddressListAdapter.class.getSimpleName();
 
-    List<Address> addressList;
+    List<Addresses> addressList;
     Context context;
     private LayoutInflater mInflater;
 
-    public AddressListAdapter(@NonNull Context context, @LayoutRes int resource, List<Address> addressList) {
+    public AddressListAdapter(@NonNull Context context, @LayoutRes int resource, List<Addresses> addressList) {
         super(context, resource);
         this.addressList = addressList;
         this.context = context;
@@ -38,7 +35,7 @@ public class AddressListAdapter extends ArrayAdapter<Address> {
 
     @Nullable
     @Override
-    public Address getItem(int position) {
+    public Addresses getItem(int position) {
         return super.getItem(position);
     }
 
@@ -61,7 +58,7 @@ public class AddressListAdapter extends ArrayAdapter<Address> {
             binding = (ListviewAddressItemBinding) convertView.getTag();
         }
 
-        Address addr = getItem(position);
+        Addresses addr = getItem(position);
         binding.item.setText(addr.getSidoName() + " " + addr.getSggName() + " " + addr.getUmdName());
 
         return binding.getRoot();

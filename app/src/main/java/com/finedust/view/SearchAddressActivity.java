@@ -18,7 +18,7 @@ import android.widget.Toast;
 
 import com.finedust.R;
 import com.finedust.databinding.ActivitySearchAddressBinding;
-import com.finedust.model.Address;
+import com.finedust.model.Addresses;
 import com.finedust.model.adapter.AddressListAdapter;
 import com.finedust.presenter.SearchAddressActivityPresenter;
 import com.finedust.utils.CheckConnectivity;
@@ -73,7 +73,7 @@ public class SearchAddressActivity extends AppCompatActivity implements Views.Se
     private AdapterView.OnItemClickListener onClickListViewItem = new AdapterView.OnItemClickListener() {
         @Override
         public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-            Address data = (Address) adapterView.getAdapter().getItem(i);
+            Addresses data = (Addresses) adapterView.getAdapter().getItem(i);
 
             String msg = data.getSggName() + " , " + data.getSidoName() + " , " + data.getUmdName()
                     + "\n(" + data.getTmX() + ", " + data.getTmY() + ")";
@@ -85,7 +85,7 @@ public class SearchAddressActivity extends AppCompatActivity implements Views.Se
         }
     };
 
-    private Intent putIntentExtraString(Address addr) {
+    private Intent putIntentExtraString(Addresses addr) {
         Intent intent = new Intent();
         intent.putExtra("Sido", addr.getSidoName())
                 .putExtra("Sgg", addr.getSggName())
@@ -146,7 +146,7 @@ public class SearchAddressActivity extends AppCompatActivity implements Views.Se
     }
 
     @Override
-    public void updateAddressData(ArrayList<Address> data) {
+    public void updateAddressData(ArrayList<Addresses> data) {
         binding.textVisible.setVisibility(View.INVISIBLE);
         binding.listViewAddress.setVisibility(View.VISIBLE);
 

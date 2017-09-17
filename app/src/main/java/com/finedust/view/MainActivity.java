@@ -23,8 +23,8 @@ import android.widget.Toast;
 import com.finedust.R;
 import com.finedust.databinding.ActivityMainBinding;
 
+import com.finedust.model.Addresses;
 import com.finedust.model.Const;
-import com.finedust.model.pref.MemorizedAddress;
 import com.finedust.presenter.MainActivityPresenter;
 import com.finedust.utils.SharedPreferences;
 
@@ -63,7 +63,7 @@ public class MainActivity extends AppCompatActivity
         super.onStart();
         Log.v(TAG, "onStart()");
 
-        checkMemorizedAddresses();
+        checkNavigationForLocation();
     }
 
 
@@ -129,7 +129,7 @@ public class MainActivity extends AppCompatActivity
             case R.id.nav_loc_one:
                 Log.i(TAG, "Location One Selected");
                 if(mainBinding.navView.getMenu().findItem(R.id.nav_loc_one).getTitle().equals("")) {
-                    searchLocationIntent(0);
+                    searchLocationIntent(1);
                 }
                 else {
                     pref.put(Const.CURRENT_MODE, Const.MODE[1]);
@@ -140,7 +140,7 @@ public class MainActivity extends AppCompatActivity
             case R.id.nav_loc_two:
                 Log.i(TAG, "Location Two Selected");
                 if(mainBinding.navView.getMenu().findItem(R.id.nav_loc_two).getTitle().equals("")) {
-                    searchLocationIntent(1);
+                    searchLocationIntent(2);
                 }
                 else {
                     pref.put(Const.CURRENT_MODE, Const.MODE[2]);
@@ -151,7 +151,7 @@ public class MainActivity extends AppCompatActivity
             case R.id.nav_loc_three:
                 Log.i(TAG, "Location Three Selected");
                 if(mainBinding.navView.getMenu().findItem(R.id.nav_loc_three).getTitle().equals("")) {
-                    searchLocationIntent(2);
+                    searchLocationIntent(3);
                 }
                 else {
                     pref.put(Const.CURRENT_MODE, Const.MODE[3]);
@@ -184,36 +184,33 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        MemorizedAddress saveLocation;
+        Addresses saveLocation;
 
-        if (resultCode == Activity.RESULT_OK && requestCode == 0) {
+        if (resultCode == Activity.RESULT_OK && requestCode == 1) {
             saveLocation = saveAddrInPreferences(requestCode, data, Const.MEMORIZED_LOCATIONS[requestCode]);
-            Log.i(TAG, "Addr_One : " + saveLocation.getMemorizedAddress());
-
-            Fragment airCondition = new AirConditionFragment();
-            fragmentReplace(airCondition);
-        }
-        else if (resultCode == Activity.RESULT_OK && requestCode == 1) {
-            saveLocation = saveAddrInPreferences(requestCode, data, Const.MEMORIZED_LOCATIONS[requestCode]);
-            Log.i(TAG, "Addr_Two : " + saveLocation.getMemorizedAddress());
-
-            Fragment airCondition = new AirConditionFragment();
-            fragmentReplace(airCondition);
+            Log.i(TAG, "Addr_One : " + saveLocation.getAddr());
         }
         else if (resultCode == Activity.RESULT_OK && requestCode == 2) {
             saveLocation = saveAddrInPreferences(requestCode, data, Const.MEMORIZED_LOCATIONS[requestCode]);
-            Log.i(TAG, "Addr_Three : " + saveLocation.getMemorizedAddress());
+            Log.i(TAG, "Addr_Two : " + saveLocation.getAddr());
+        }
+        else if (resultCode == Activity.RESULT_OK && requestCode == 3) {
+            saveLocation = saveAddrInPreferences(requestCode, data, Const.MEMORIZED_LOCATIONS[requestCode]);
+            Log.i(TAG, "Addr_Three : " + saveLocation.getAddr());
+        }
 
-
+        if ( requestCode ==1 || requestCode == 2 || requestCode ==3 ) {
+            pref.put(Const.CURRENT_MODE, Const.MODE[requestCode]);
             fragmentReplace(new AirConditionFragment());
         }
 
+
     }
 
-    public MemorizedAddress saveAddrInPreferences(int requestCode, Intent data, String key) {
-        MemorizedAddress saveLocation = new MemorizedAddress(data.getStringExtra("Addr"), data.getStringExtra("Umd"), data.getStringExtra("TmX"), data.getStringExtra("TmY"));
+    public Addresses saveAddrInPreferences(int requestCode, Intent data, String key) {
+        Addresses saveLocation  = new Addresses(data.getStringExtra("Addr"), data.getStringExtra("Umd"), data.getStringExtra("TmX"), data.getStringExtra("TmY"));
         pref.putObject(key, saveLocation);
-        setNavigationTitle(saveLocation.getMemorizedAddress(), requestCode, Const.NAVI_ICON_LOCATION_SAVED);
+        setNavigationTitle(saveLocation.getAddr(), requestCode, Const.NAVI_ICON_LOCATION_SAVED);
 
         return saveLocation;
     }
@@ -240,19 +237,19 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void setNavigationTitle(String title, int position, int img) {
         switch(position) {
-            case 0:
+            case 1:
                 mainBinding.navView.getMenu()
                         .findItem(R.id.nav_loc_one)
                         .setTitle(title)
                         .setIcon(img);
                 break;
-            case 1:
+            case 2:
                 mainBinding.navView.getMenu()
                         .findItem(R.id.nav_loc_two)
                         .setTitle(title)
                         .setIcon(img);
                 break;
-            case 2:
+            case 3:
                 mainBinding.navView.getMenu()
                         .findItem(R.id.nav_loc_three)
                         .setTitle(title)
@@ -261,11 +258,11 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    void checkMemorizedAddresses() {
-        for(int i = 0; i < 3; i++) {
-            MemorizedAddress save = (MemorizedAddress) pref.getObject(Const.MEMORIZED_LOCATIONS[i], "", new MemorizedAddress());
+    void checkNavigationForLocation() {
+        for(int i = 1; i < 4; i++) {
+            Addresses save = (Addresses) pref.getObject(Const.MEMORIZED_LOCATIONS[i], "", new Addresses());
             if (save != null) {
-                setNavigationTitle(save.getMemorizedAddress() ,i, Const.NAVI_ICON_LOCATION_SAVED);
+                setNavigationTitle(save.getAddr() ,i, Const.NAVI_ICON_LOCATION_SAVED);
             }
         }
     }

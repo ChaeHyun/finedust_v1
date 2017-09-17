@@ -3,9 +3,6 @@ package com.finedust.model;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-/**
- * Created by CH on 2017-09-08.
- */
 
 public class GpsData {
     @SerializedName("x")
