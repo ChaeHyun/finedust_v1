@@ -28,6 +28,8 @@ import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -122,6 +124,39 @@ public class AirConditionFragmentPresenter
             getGPSCoordinates();
         }
     }
+
+
+    public boolean compareSavedDataTime() {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:00");
+        String currentTime = dateFormat.format(Calendar.getInstance().getTime());
+
+        try {
+            RecentData recentData = (RecentData) pref.getObject(Const.RECENT_DATA, Const.EMPTY_STRING, new RecentData());
+            Log.i(TAG, "compareDatatime -> 최근 저장 시간 : " + recentData.getAirCondition().getDataTime()
+            + "\n현재시간 : " + currentTime);
+
+            if (currentTime.equals(recentData.getAirCondition().getDataTime())) {
+                Log.i(TAG, "현재시간과 최근 저장된 데이터 시간이 동일 -> return true");
+                return true;
+            }
+        }
+        catch (NullPointerException e) {
+            e.printStackTrace();
+        }
+
+        return false;
+    }
+
+    public void updateWithRecentData(String mode) {
+        if (compareSavedDataTime()) {
+            RecentData recentData = (RecentData) pref.getObject(Const.RECENT_DATA, Const.EMPTY_STRING, new RecentData());
+        }
+        else {
+            // 그냥 리퀘스트해서 데이터 받아와야함.
+        }
+
+    }
+
 
 
     @Override
