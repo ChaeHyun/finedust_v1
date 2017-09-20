@@ -119,9 +119,9 @@ public class AirConditionFragment extends Fragment implements Views.AirCondition
     @Override
     public void updateAirConditionData(ArrayList<AirCondition> data) {
         Log.i(TAG, "updating Air Condition Data to List Adapter");
+        //airConditionFragmentPresenter.saveRecentData();
         adapter = new MyAdapter(getContext(), 0, data);
         binding.listView.setAdapter(adapter);
-        airConditionFragmentPresenter.saveRecentData();
     }
 
     @Override

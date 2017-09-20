@@ -19,7 +19,6 @@ interface Presenter {
         void getGPSCoordinates();
 
         void checkCurrentMode(String mode);
-        void saveRecentData();
     }
 
     interface SearchAddressActivityPresenter {

@@ -199,7 +199,7 @@ public class MainActivity extends AppCompatActivity
             Log.i(TAG, "Addr_Three : " + saveLocation.getAddr());
         }
 
-        if ( requestCode ==1 || requestCode == 2 || requestCode ==3 ) {
+        if ( (requestCode ==1 || requestCode == 2 || requestCode ==3) && resultCode == Activity.RESULT_OK ) {
             pref.put(Const.CURRENT_MODE, Const.MODE[requestCode]);
             fragmentReplace(new AirConditionFragment());
         }
