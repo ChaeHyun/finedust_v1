@@ -22,6 +22,11 @@ public class GpsData {
         this.wgs_y = "0";
     }
 
+    public GpsData(String tm_x, String tm_y) {
+        this.tm_x = tm_x;
+        this.tm_y = tm_y;
+    }
+
     public String getTm_x() {
         return tm_x;
     }

@@ -22,6 +22,7 @@ import com.finedust.databinding.FragmentAirConditionBinding;
 import com.finedust.model.AirCondition;
 
 import com.finedust.model.Const;
+import com.finedust.model.RecentData;
 import com.finedust.model.adapter.MyAdapter;
 
 import com.finedust.presenter.AirConditionFragmentPresenter;
@@ -36,13 +37,13 @@ public class AirConditionFragment extends Fragment implements Views.AirCondition
 
     FragmentAirConditionBinding  binding;
     AirConditionFragmentPresenter airConditionFragmentPresenter = new AirConditionFragmentPresenter(this, getContext());
+    Views.MainActivityView mainView;
     SharedPreferences pref;
     private MyAdapter adapter;
 
     final int MY_PERMISSION_REQUEST_LOCATION = 1000;
     boolean isPermissionEnabled = false;
 
-    String MODE;
 
     public AirConditionFragment() {
         // Required empty public constructor
@@ -60,10 +61,12 @@ public class AirConditionFragment extends Fragment implements Views.AirCondition
         binding.listView.setOnItemClickListener(onClickListViewItem);
 
         airConditionFragmentPresenter = new AirConditionFragmentPresenter(this, getContext());
+        mainView = (MainActivity) getActivity();
 
         // launch at start, but not resume;
-        MODE = pref.getValue(Const.CURRENT_MODE, Const.MODE[0]);
-        Log.i(TAG+ "+ checkCurrentMode ","   MODE >> " + MODE);
+        String MODE = pref.getValue(SharedPreferences.CURRENT_MODE, Const.MODE[0]);
+        Log.i(TAG+ " _checkCurrentMode ","   >> MODE : " + MODE);
+        mainView.setNavigationChecked(airConditionFragmentPresenter.convertModeToInteger(MODE), true);
         airConditionFragmentPresenter.checkCurrentMode(MODE);
 
         return binding.getRoot();
@@ -117,12 +120,15 @@ public class AirConditionFragment extends Fragment implements Views.AirCondition
     }
 
     @Override
-    public void updateAirConditionData(ArrayList<AirCondition> data) {
-        Log.i(TAG, "updating Air Condition Data to List Adapter");
-        //airConditionFragmentPresenter.saveRecentData();
+    public void updateDataToViews(RecentData recentData) {
+        ArrayList<AirCondition> data = recentData.getAirCondition();
+        showToastMessage("최근 업데이트 시간 : " + recentData.getAirCondition().get(0).getDataTime()
+        + "\n주소 : " + recentData.getAddr().getAddr());
         adapter = new MyAdapter(getContext(), 0, data);
         binding.listView.setAdapter(adapter);
     }
+
+
 
     @Override
     public void showToastMessage(String msg) {

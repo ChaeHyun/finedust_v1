@@ -2,6 +2,9 @@ package com.finedust.presenter;
 
 import android.content.Context;
 
+import com.finedust.model.GpsData;
+import com.finedust.model.StationList;
+
 interface Presenter {
 
     interface MainActivityPresenter {
@@ -14,11 +17,12 @@ interface Presenter {
 
     interface AirConditionFragmentPresenter {
         void onPause();
-        void getNearStationList(String x, String y);
-        void getAirConditionData(String stationName);
+        void getNearStationList(final String x, final String y);
+        void getAirConditionData(final StationList stationList, final int index, final GpsData gps);
         void getGPSCoordinates();
 
         void checkCurrentMode(String mode);
+        int convertModeToInteger(final String mode);
     }
 
     interface SearchAddressActivityPresenter {

@@ -5,6 +5,7 @@ import android.util.Log;
 
 import com.finedust.model.Addresses;
 import com.finedust.model.AddressList;
+import com.finedust.model.Const;
 import com.finedust.retrofit.api.ApiService;
 import com.finedust.retrofit.api.RetrofitClient;
 import com.finedust.utils.CheckConnectivity;
@@ -54,8 +55,8 @@ public class SearchAddressActivityPresenter implements Presenter.SearchAddressAc
 
                 @Override
                 public void onFailure(Call<AddressList> call, Throwable t) {
-                    Log.v(TAG, "Fail to get data from server");
-                    view.showToastMessage("Fail to get data from server");
+                    Log.v(TAG, Const.STR_FAIL_GET_DATA_FROM_SERVER);
+                    view.showToastMessage(Const.STR_FAIL_GET_DATA_FROM_SERVER);
                 }
             });
         }

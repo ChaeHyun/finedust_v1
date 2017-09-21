@@ -56,6 +56,11 @@ public class MainActivity extends AppCompatActivity
         toggle.syncState();
 
         mainActivityPresenter.onCreate();
+
+        // MODE Check & Instant run as AirConditionFragment
+        String MODE = pref.getValue(SharedPreferences.CURRENT_MODE, Const.EMPTY_STRING);
+        Log.i(TAG+ "+ checkCurrentMode ","   MODE >> " + MODE);
+        fragmentReplace(new AirConditionFragment());
     }
 
     @Override
@@ -122,7 +127,7 @@ public class MainActivity extends AppCompatActivity
         switch(id) {
             case R.id.nav_current:
                 // Save the settings in SharedPreferences.
-                pref.put(Const.CURRENT_MODE, Const.MODE[0]);
+                pref.put(SharedPreferences.CURRENT_MODE, Const.MODE[0]);
                 fragmentReplace(new AirConditionFragment());
                 break;
 
@@ -132,7 +137,7 @@ public class MainActivity extends AppCompatActivity
                     searchLocationIntent(1);
                 }
                 else {
-                    pref.put(Const.CURRENT_MODE, Const.MODE[1]);
+                    pref.put(SharedPreferences.CURRENT_MODE, Const.MODE[1]);
                     fragmentReplace(new AirConditionFragment());
                 }
                 break;
@@ -143,7 +148,7 @@ public class MainActivity extends AppCompatActivity
                     searchLocationIntent(2);
                 }
                 else {
-                    pref.put(Const.CURRENT_MODE, Const.MODE[2]);
+                    pref.put(SharedPreferences.CURRENT_MODE, Const.MODE[2]);
                     fragmentReplace(new AirConditionFragment());
                 }
                 break;
@@ -154,7 +159,7 @@ public class MainActivity extends AppCompatActivity
                     searchLocationIntent(3);
                 }
                 else {
-                    pref.put(Const.CURRENT_MODE, Const.MODE[3]);
+                    pref.put(SharedPreferences.CURRENT_MODE, Const.MODE[3]);
                     fragmentReplace(new AirConditionFragment());
                 }
                 break;
@@ -187,20 +192,20 @@ public class MainActivity extends AppCompatActivity
         Addresses saveLocation;
 
         if (resultCode == Activity.RESULT_OK && requestCode == 1) {
-            saveLocation = saveAddrInPreferences(requestCode, data, Const.MEMORIZED_LOCATIONS[requestCode]);
+            saveLocation = saveAddrInPreferences(requestCode, data, SharedPreferences.MEMORIZED_LOCATIONS[requestCode]);
             Log.i(TAG, "Addr_One : " + saveLocation.getAddr());
         }
         else if (resultCode == Activity.RESULT_OK && requestCode == 2) {
-            saveLocation = saveAddrInPreferences(requestCode, data, Const.MEMORIZED_LOCATIONS[requestCode]);
+            saveLocation = saveAddrInPreferences(requestCode, data, SharedPreferences.MEMORIZED_LOCATIONS[requestCode]);
             Log.i(TAG, "Addr_Two : " + saveLocation.getAddr());
         }
         else if (resultCode == Activity.RESULT_OK && requestCode == 3) {
-            saveLocation = saveAddrInPreferences(requestCode, data, Const.MEMORIZED_LOCATIONS[requestCode]);
+            saveLocation = saveAddrInPreferences(requestCode, data, SharedPreferences.MEMORIZED_LOCATIONS[requestCode]);
             Log.i(TAG, "Addr_Three : " + saveLocation.getAddr());
         }
 
         if ( (requestCode ==1 || requestCode == 2 || requestCode ==3) && resultCode == Activity.RESULT_OK ) {
-            pref.put(Const.CURRENT_MODE, Const.MODE[requestCode]);
+            pref.put(SharedPreferences.CURRENT_MODE, Const.MODE[requestCode]);
             fragmentReplace(new AirConditionFragment());
         }
 
@@ -222,7 +227,12 @@ public class MainActivity extends AppCompatActivity
     public void onFloatingButtonClick(View view) {
 
         Log.v(TAG, "onFloaotingButtonClick()");
-        Snackbar.make(view, "저장된 주소를 초기화 합니다.", Snackbar.LENGTH_LONG)
+        for(int i = 0;  i < 4; i++) {
+            pref.removeValue(SharedPreferences.CURRENT_MODE);
+            pref.removeValue(SharedPreferences.RECENT_DATA[i]);
+            pref.removeValue(SharedPreferences.MEMORIZED_LOCATIONS[i]);
+        }
+        Snackbar.make(view, "Pref All deleted", Snackbar.LENGTH_LONG)
                 .setAction("Action", null).show();
     }
 
@@ -236,7 +246,7 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void setNavigationTitle(String title, int position, int img) {
-        switch(position) {
+        switch (position) {
             case 1:
                 mainBinding.navView.getMenu()
                         .findItem(R.id.nav_loc_one)
@@ -258,11 +268,37 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
+    @Override
+    public void setNavigationChecked(int position, boolean check) {
+        switch (position) {
+            case 0:
+                mainBinding.navView.getMenu()
+                        .findItem(R.id.nav_current)
+                        .setChecked(check);
+                break;
+            case 1:
+                mainBinding.navView.getMenu()
+                        .findItem(R.id.nav_loc_one)
+                        .setChecked(check);
+                break;
+            case 2:
+                mainBinding.navView.getMenu()
+                        .findItem(R.id.nav_loc_two)
+                        .setChecked(check);
+                break;
+            case 3:
+                mainBinding.navView.getMenu()
+                        .findItem(R.id.nav_loc_three)
+                        .setChecked(check);
+                break;
+        }
+    }
+
     void checkNavigationForLocation() {
         for(int i = 1; i < 4; i++) {
-            Addresses save = (Addresses) pref.getObject(Const.MEMORIZED_LOCATIONS[i], "", new Addresses());
-            if (save != null) {
-                setNavigationTitle(save.getAddr() ,i, Const.NAVI_ICON_LOCATION_SAVED);
+            Addresses saved = (Addresses) pref.getObject(SharedPreferences.MEMORIZED_LOCATIONS[i], "", new Addresses());
+            if (saved != null) {
+                setNavigationTitle(saved.getAddr() ,i, Const.NAVI_ICON_LOCATION_SAVED);
             }
         }
     }

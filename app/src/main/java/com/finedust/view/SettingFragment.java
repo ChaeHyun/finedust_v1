@@ -48,7 +48,7 @@ public class SettingFragment extends Fragment implements Views.SettingFragmentVi
 
     private void checkMemorizedAddresses() {
         for(int i = 1; i < 4; i++) {
-            Addresses save = (Addresses) pref.getObject(Const.MEMORIZED_LOCATIONS[i], "", new Addresses());
+            Addresses save = (Addresses) pref.getObject(SharedPreferences.MEMORIZED_LOCATIONS[i], Const.EMPTY_STRING, new Addresses());
             if (save != null) {
                 setDeleteButtonVisibility(true, i, save.getAddr());
             }
@@ -120,15 +120,15 @@ public class SettingFragment extends Fragment implements Views.SettingFragmentVi
         super.onActivityResult(requestCode, resultCode, data);
 
         if (resultCode == Activity.RESULT_OK && requestCode == 1) {
-            mainView.saveAddrInPreferences(requestCode, data, Const.MEMORIZED_LOCATIONS[requestCode]);
+            mainView.saveAddrInPreferences(requestCode, data, SharedPreferences.MEMORIZED_LOCATIONS[requestCode]);
             setDeleteButtonVisibility(true, requestCode, data.getStringExtra("Addr"));
         }
         else if (resultCode == Activity.RESULT_OK && requestCode == 2) {
-            mainView.saveAddrInPreferences(requestCode, data, Const.MEMORIZED_LOCATIONS[requestCode]);
+            mainView.saveAddrInPreferences(requestCode, data, SharedPreferences.MEMORIZED_LOCATIONS[requestCode]);
             setDeleteButtonVisibility(true, requestCode, data.getStringExtra("Addr"));
         }
         else if (resultCode == Activity.RESULT_OK && requestCode == 3) {
-            mainView.saveAddrInPreferences(requestCode, data, Const.MEMORIZED_LOCATIONS[requestCode]);
+            mainView.saveAddrInPreferences(requestCode, data, SharedPreferences.MEMORIZED_LOCATIONS[requestCode]);
             setDeleteButtonVisibility(true, requestCode, data.getStringExtra("Addr"));
         }
     }
@@ -154,17 +154,20 @@ public class SettingFragment extends Fragment implements Views.SettingFragmentVi
     public void onMinusButtonClick(View view) {
         switch (view.getId()) {
             case R.id.img_button_minus1:
-                pref.removeValue(Const.MEMORIZED_LOCATIONS[1]);
+                pref.removeValue(SharedPreferences.MEMORIZED_LOCATIONS[1]);
+                pref.removeValue(SharedPreferences.RECENT_DATA[1]);
                 setDeleteButtonVisibility(false, 1, Const.EMPTY_STRING);
                 mainView.setNavigationTitle(Const.EMPTY_STRING, 1, Const.NAVI_ICON_LOCATION_NOT_SAVED);
                 break;
             case R.id.img_button_minus2:
-                pref.removeValue(Const.MEMORIZED_LOCATIONS[2]);
+                pref.removeValue(SharedPreferences.MEMORIZED_LOCATIONS[2]);
+                pref.removeValue(SharedPreferences.RECENT_DATA[2]);
                 setDeleteButtonVisibility(false, 2, Const.EMPTY_STRING);
                 mainView.setNavigationTitle(Const.EMPTY_STRING, 2, Const.NAVI_ICON_LOCATION_NOT_SAVED);
                 break;
             case R.id.img_button_minus3:
-                pref.removeValue(Const.MEMORIZED_LOCATIONS[3]);
+                pref.removeValue(SharedPreferences.MEMORIZED_LOCATIONS[3]);
+                pref.removeValue(SharedPreferences.RECENT_DATA[3]);
                 setDeleteButtonVisibility(false, 3, Const.EMPTY_STRING);
                 mainView.setNavigationTitle(Const.EMPTY_STRING, 3, Const.NAVI_ICON_LOCATION_NOT_SAVED);
                 break;

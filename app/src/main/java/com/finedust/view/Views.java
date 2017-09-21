@@ -6,6 +6,7 @@ import android.view.View;
 
 import com.finedust.model.Addresses;
 import com.finedust.model.AirCondition;
+import com.finedust.model.RecentData;
 
 
 import java.util.ArrayList;
@@ -17,6 +18,7 @@ public interface Views {
         void fragmentReplace(Fragment newFragment);
         Addresses saveAddrInPreferences(int requestCode, Intent data, String key);
         void setNavigationTitle(String title, int position, int img);
+        void setNavigationChecked(int position, boolean check);
         void searchLocationIntent(int requestCode);
     }
 
@@ -24,7 +26,7 @@ public interface Views {
         void showToastMessage(String msg);
         void showSnackBarMessage(String msg);
         void onSampleButtonClick(View view);
-        void updateAirConditionData(ArrayList<AirCondition> data);
+        void updateDataToViews(RecentData recnetData);
         boolean checkPermission();
         void checkGpsEnabled();
 
