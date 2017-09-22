@@ -1,6 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF4081</color>
+    <color name="colorPrimary">#009688</color>
+    <color name="colorPrimaryDark">#00695C</color>
+    <color name="colorAccent">#FFAB00</color>
+
+
+    <color name="black">#020202</color>
+    <color name="gray">#757575</color>
+    <color name="yellow">#F9A825</color>
+
+    <color name="BEST">#0096fa</color>
+    <color name="GOOD">#78be50</color>
+    <color name="BAD">#ffdc50</color>
+    <color name="VERYBAD">#FBC02D</color>
+
+
+    <color name="colorBackground">#cfd8dc</color>
+
+    <color name="toolBar_DEFAULT">#009688</color>
+    <color name="toolBar_DEFAULT_Dark">#00695C</color>
+
+    <color name="toolBar_BLUE">#2196f3</color>
+    <color name="toolBar_BLUE_Dark">#1565c0</color>
+
+    <color name="toolBar_GREEN">#4CAF50</color>
+    <color name="toolBar_GREEN_Dark">#2E7D32</color>
+
+    <color name="toolBar_YELLOW">#FFC107</color>
+    <color name="toolBar_YELLOW_Dark">#FF8F00</color>
+
+    <color name="toolBar_RED">#F44336</color>
+    <color name="toolBar_RED_Dark">#D32F2F</color>
+
+
 </resources>
