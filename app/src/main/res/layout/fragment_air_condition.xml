@@ -32,9 +32,9 @@
                 android:id="@+id/layout_general"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                layout="@layout/aircondition_general"
+                android:layout_centerHorizontal="true"
                 android:layout_below="@+id/layout_location_info"
-                android:layout_alignParentStart="true" />
+                layout="@layout/aircondition_general" />
 
             <include
                 android:id="@+id/layout_pm_info"

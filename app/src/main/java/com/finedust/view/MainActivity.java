@@ -303,4 +303,8 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
+    @Override
+    public void setToolbarBackgroundColor(int color) {
+        mainBinding.appBarMain.toolbar.setBackgroundColor(color);
+    }
 }

@@ -4,17 +4,20 @@ import android.Manifest;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.databinding.DataBindingUtil;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.finedust.R;
@@ -23,13 +26,12 @@ import com.finedust.model.AirCondition;
 
 import com.finedust.model.Const;
 import com.finedust.model.RecentData;
-import com.finedust.model.adapter.MyAdapter;
 
+
+import com.finedust.model.Station;
 import com.finedust.presenter.AirConditionFragmentPresenter;
 import com.finedust.utils.CheckConnectivity;
 import com.finedust.utils.SharedPreferences;
-
-import java.util.ArrayList;
 
 
 public class AirConditionFragment extends Fragment implements Views.AirConditionFragmentView {
@@ -39,7 +41,6 @@ public class AirConditionFragment extends Fragment implements Views.AirCondition
     AirConditionFragmentPresenter airConditionFragmentPresenter = new AirConditionFragmentPresenter(this, getContext());
     Views.MainActivityView mainView;
     SharedPreferences pref;
-    private MyAdapter adapter;
 
     final int MY_PERMISSION_REQUEST_LOCATION = 1000;
     boolean isPermissionEnabled = false;
@@ -56,9 +57,6 @@ public class AirConditionFragment extends Fragment implements Views.AirCondition
         binding.setAircondition(this);
 
         pref = new SharedPreferences(getActivity());
-
-        //binding.button.setText("버튼");
-        //binding.listView.setOnItemClickListener(onClickListViewItem);
 
         airConditionFragmentPresenter = new AirConditionFragmentPresenter(this, getContext());
         mainView = (MainActivity) getActivity();
@@ -93,41 +91,74 @@ public class AirConditionFragment extends Fragment implements Views.AirCondition
         airConditionFragmentPresenter.onPause();
     }
 
-    private AdapterView.OnItemClickListener onClickListViewItem = new AdapterView.OnItemClickListener() {
-        @Override
-        public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-            if(adapter != null) {
-                try {
-                    Toast.makeText(getContext(),
-                            "PM10 Value : " + adapter.getItem(position).getPm10Value()
-                                    + "\nCO Value : " + adapter.getItem(position).getCoValue()
-                                    + "\nSO2 Value : " + adapter.getItem(position).getSo2Value()
-                                    + "\nKhai Value : " + adapter.getItem(position).getKhaiValue()
-                                    + "\nTime : " + adapter.getItem(position).getDataTime()
-                            , Toast.LENGTH_LONG).show();
-                }
-                catch (NullPointerException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-    };
-
-    @Override
-    public void onSampleButtonClick(View view) {
-        Log.i(TAG, "onSamplelButtonoClick()");
-        //binding.button.setText("Changed");
-    }
 
     @Override
     public void updateDataToViews(RecentData recentData) {
-        ArrayList<AirCondition> data = recentData.getAirCondition();
-        showToastMessage("최근 업데이트 시간 : " + recentData.getAirCondition().get(0).getDataTime()
-        + "\n주소 : " + recentData.getAddr().getAddr());
-        adapter = new MyAdapter(getContext(), 0, data);
-        //binding.listView.setAdapter(adapter);
+
+        try {
+            AirCondition air = recentData.getAirCondition().get(0);
+            Station weatherStation = recentData.getSavedStations().get(0);
+
+            showToastMessage("최근 업데이트 시간 : " + recentData.getAirCondition().get(0).getDataTime()
+                    + "\n주소 : " + recentData.getAddr().getAddr());
+
+            binding.layoutLocationInfo.textContentLocation.setText(recentData.getAddr().getAddr());
+            setAllAirConditionData(air);
+            binding.layoutStations.textContentWeathercenter.setText(weatherStation.toString());
+        }
+        catch (NullPointerException e) {
+            showSnackBarMessage(Const.STR_FAIL_UPDATE_DATA_TO_UI);
+        }
     }
 
+    private void setAllAirConditionData(AirCondition air) {
+        binding.layoutLocationInfo.textDate.setText(air.getDataTimeTrim());
+        setValuesAndImages(air.getKhaiGrade(), air.getKhaiValue(), Const.DRAWABLE_STATES_FACE, binding.layoutGeneral.imgKhai, binding.layoutGeneral.textValueGeneral, binding.layoutGeneral.textGramGeneral);
+
+        setValuesAndImages(air.getPm10Grade1h(), air.getPm10Value(), Const.DRAWABLE_STATES, binding.layoutPmInfo.imgPm10, binding.layoutPmInfo.textValuePm10, binding.layoutPmInfo.textGramPm10);
+        setValuesAndImages(air.getPm25Grade1h(), air.getPm25Value(), Const.DRAWABLE_STATES, binding.layoutPmInfo.imgPm25, binding.layoutPmInfo.textValuePm25, binding.layoutPmInfo.textGramPm25);
+
+        setValuesAndImages(air.getO3Grade(), air.getO3Value(), Const.DRAWABLE_STATES, binding.layoutOthers.imgO3, binding.layoutOthers.textValueO3, null);
+        setValuesAndImages(air.getNo2Grade(), air.getNo2Value(), Const.DRAWABLE_STATES, binding.layoutOthers.imgNo2, binding.layoutOthers.textValueNo2, null);
+
+        setValuesAndImages(air.getCoGrade(), air.getCoValue(), Const.DRAWABLE_STATES, binding.layoutOthers.imgCo, binding.layoutOthers.textValueCo, null);
+        setValuesAndImages(air.getSo2Grade(), air.getSo2Value(), Const.DRAWABLE_STATES, binding.layoutOthers.imgSo2, binding.layoutOthers.textValueSo2, null);
+    }
+
+    private void setValuesAndImages(String grade, String value, int[] imageType, ImageView img, TextView text, TextView gram) {
+        Drawable resource;
+
+        if (grade == null || grade.equals("")) {
+            return;
+        }
+        if ( grade.equals("-")) {
+            if (Build.VERSION.SDK_INT >= 21 && imageType == Const.DRAWABLE_STATES_FACE) {
+                getActivity().getWindow().setStatusBarColor(Const.TOOLBAR_COLORS_DARK[0]);
+                mainView.setToolbarBackgroundColor(Const.TOOLBAR_COLORS[0]);
+            }
+
+            resource = ResourcesCompat.getDrawable(getResources(), imageType[0], null);
+            text.setTextColor(Const.COLORS[0]);
+            if(gram != null)
+                gram.setTextColor(Const.COLORS[0]);
+        }
+        else {
+            int GRADE = Integer.parseInt(grade);
+
+            if (Build.VERSION.SDK_INT >= 21 && imageType == Const.DRAWABLE_STATES_FACE) {
+                getActivity().getWindow().setStatusBarColor(Const.TOOLBAR_COLORS_DARK[GRADE]);
+                mainView.setToolbarBackgroundColor(Const.TOOLBAR_COLORS[GRADE]);
+            }
+
+            resource = ResourcesCompat.getDrawable(getResources(), imageType[GRADE], null);
+            text.setTextColor(Const.COLORS[GRADE]);
+            if(gram != null)
+                gram.setTextColor(Const.COLORS[GRADE]);
+        }
+
+        text.setText(value);
+        img.setImageDrawable(resource);
+    }
 
 
     @Override

@@ -87,6 +87,15 @@ public class Station {
     @Expose
     private String year;
 
+    @Override
+    public String toString() {
+        String stationName = getStationName();
+        String addr = getAddr();
+        String tm = String.valueOf(getTm());
+
+        return stationName + " 측정소까지 " + tm + "km\n" + addr;
+    }
+
     public String getReturnType() {
         return returnType;
     }

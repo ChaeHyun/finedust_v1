@@ -201,6 +201,7 @@ public class AirConditionFragmentPresenter
                             if ( isAllAirDataFilled( mRecent.getAirCondition().get(0) ) || index >= (stationList.getTotalCount()-1) ) {
                                 saveRecentData(mRecent);
                                 Log.i(TAG, "ORDER to view : updateDataToViews");
+
                                 view.updateDataToViews(mRecent);
                             }
                             else {
@@ -247,7 +248,7 @@ public class AirConditionFragmentPresenter
         {
             Location lastLocation = LocationServices.FusedLocationApi.getLastLocation(googleApiClient);
             LocationRequest locationRequest = LocationRequest.create()
-                    .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
+                    .setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY)
                     .setInterval(15 * 1000)
                     .setFastestInterval(1 * 1000);
 
@@ -370,18 +371,17 @@ public class AirConditionFragmentPresenter
 
 
     private ArrayList<AirCondition> updateAirConditionDataFromNextStation(final AirCondition nextStationData, ArrayList<AirCondition> previousData) {
-        Log.i(TAG, "  updateAirConditionDataFromNextStation , 누락된 정보 업데이트");
 
         if( previousData.get(0).getKhaiValue().equals("-") ) {
             previousData.get(0).setKhaiGrade(nextStationData.getKhaiGrade());
             previousData.get(0).setKhaiValue(nextStationData.getKhaiValue());
         }
         if( previousData.get(0).getPm10Value().equals("-") ) {
-            previousData.get(0).setPm10Grade(nextStationData.getPm10Grade1h());
+            previousData.get(0).setPm10Grade1h(nextStationData.getPm10Grade1h());
             previousData.get(0).setPm10Value(nextStationData.getPm10Value());
         }
         if( previousData.get(0).getPm25Value().equals("-") ) {
-            previousData.get(0).setPm25Grade(nextStationData.getPm25Grade1h());
+            previousData.get(0).setPm25Grade1h(nextStationData.getPm25Grade1h());
             previousData.get(0).setPm25Value(nextStationData.getPm25Value());
         }
         if( previousData.get(0).getO3Value().equals("-") ) {

@@ -20,12 +20,12 @@ public interface Views {
         void setNavigationTitle(String title, int position, int img);
         void setNavigationChecked(int position, boolean check);
         void searchLocationIntent(int requestCode);
+        void setToolbarBackgroundColor(int color);
     }
 
     interface AirConditionFragmentView {
         void showToastMessage(String msg);
         void showSnackBarMessage(String msg);
-        void onSampleButtonClick(View view);
         void updateDataToViews(RecentData recnetData);
         boolean checkPermission();
         void checkGpsEnabled();
