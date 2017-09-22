@@ -429,8 +429,8 @@ public class AirConditionFragmentPresenter
             currentTime = dateFormat.format(mCalendar.getTime());
         }
 
-        Log.v(TAG, "현재시간 : " + currentTime + "\n최근저장시간 : " + recentData.getAirCondition().get(0).getDataTime() );
         try {
+            Log.v(TAG, "현재시간 : " + currentTime + "\n최근저장시간 : " + recentData.getAirCondition().get(0).getDataTime() );
             if (currentTime.equals(recentData.getAirCondition().get(0).getDataTime()))
                 return true;
         }

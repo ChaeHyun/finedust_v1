@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="@dimen/aircondition_layout_padding"
+    android:id="@+id/layout_etc">
+
+    <ImageView
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:contentDescription="@string/missing_img"
+        android:src="@drawable/icon_mask"
+        android:layout_marginTop="5dp"
+        android:id="@+id/icon_four"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="@string/air_data_title_extra_data"
+        android:id="@+id/text_title_four"
+        android:layout_alignParentTop="true"
+        android:layout_toEndOf="@+id/icon_four"
+        android:textStyle="bold"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="5dp" />
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/text_title_four"
+        android:layout_marginTop="5dp"
+        android:padding="10dp"
+        android:background="@drawable/border">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center_horizontal"
+            android:padding="5dp"
+            android:id="@+id/layout_o3"
+            android:layout_weight="0.25">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/air_data_o3_eng"
+                android:id="@+id/textView2"
+                android:layout_marginBottom="5dp"
+                android:textColor="#b9000000" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:text="@string/air_data_o3"
+                android:id="@+id/textView3"
+                android:layout_marginBottom="5dp"
+                android:textColor="#000000"
+                android:textSize="12sp" />
+
+            <ImageView
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:contentDescription="@string/missing_img"
+                android:id="@+id/img_o3"
+                android:src="@drawable/state_fail" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:id="@+id/text_value_o3"
+                android:layout_marginTop="5dp" />
+        </LinearLayout>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:contentDescription="@string/missing_img"
+            android:id="@+id/img_divider1"
+            android:src="@drawable/line_black_long"
+            android:layout_gravity="center"
+            android:layout_margin="5dp" />
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center_horizontal"
+            android:id="@+id/layout_no2"
+            android:padding="5dp"
+            android:layout_weight="0.25">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/air_data_no2_eng"
+                android:id="@+id/textView5"
+                android:layout_marginBottom="5dp"
+                android:textColor="#b9000000" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:text="@string/air_data_no2"
+                android:id="@+id/textView6"
+                android:layout_marginBottom="5dp"
+                android:textColor="#000000"
+                android:textSize="12sp" />
+
+            <ImageView
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:contentDescription="@string/missing_img"
+                android:id="@+id/img_no2"
+                android:src="@drawable/state_fail" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:id="@+id/text_value_no2"
+                android:layout_marginTop="5dp" />
+        </LinearLayout>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:contentDescription="@string/missing_img"
+            android:id="@+id/img_divider2"
+            android:src="@drawable/line_black_long"
+            android:layout_gravity="center"
+            android:layout_margin="5dp" />
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center_horizontal"
+            android:id="@+id/layout_co"
+            android:padding="5dp"
+            android:layout_weight="0.25">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/air_data_co_eng"
+                android:id="@+id/textView8"
+                android:layout_marginBottom="5dp"
+                android:textColor="#b9000000" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:text="@string/air_data_co"
+                android:id="@+id/textView9"
+                android:layout_marginBottom="5dp"
+                android:textColor="#000000"
+                android:textSize="12sp" />
+
+            <ImageView
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:contentDescription="@string/missing_img"
+                android:id="@+id/img_co"
+                android:src="@drawable/state_fail" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:id="@+id/text_value_co"
+                android:layout_marginTop="5dp" />
+        </LinearLayout>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:contentDescription="@string/missing_img"
+            android:id="@+id/img_divider3"
+            android:src="@drawable/line_black_long"
+            android:layout_gravity="center"
+            android:layout_margin="5dp" />
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center_horizontal"
+            android:padding="5dp"
+            android:id="@+id/layout_so2"
+            android:layout_weight="0.25">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/air_data_so2_eng"
+                android:id="@+id/textView11"
+                android:layout_marginBottom="5dp"
+                android:textColor="#b9000000" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:text="@string/air_data_so2"
+                android:id="@+id/textView12"
+                android:layout_marginBottom="5dp"
+                android:textColor="#000000"
+                android:textSize="12sp" />
+
+            <ImageView
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:contentDescription="@string/missing_img"
+                android:id="@+id/img_so2"
+                android:src="@drawable/state_fail" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:id="@+id/text_value_so2"
+                android:layout_marginTop="5dp" />
+        </LinearLayout>
+    </LinearLayout>
+
+</RelativeLayout>
+</layout>

@@ -57,8 +57,8 @@ public class AirConditionFragment extends Fragment implements Views.AirCondition
 
         pref = new SharedPreferences(getActivity());
 
-        binding.button.setText("버튼");
-        binding.listView.setOnItemClickListener(onClickListViewItem);
+        //binding.button.setText("버튼");
+        //binding.listView.setOnItemClickListener(onClickListViewItem);
 
         airConditionFragmentPresenter = new AirConditionFragmentPresenter(this, getContext());
         mainView = (MainActivity) getActivity();
@@ -116,7 +116,7 @@ public class AirConditionFragment extends Fragment implements Views.AirCondition
     @Override
     public void onSampleButtonClick(View view) {
         Log.i(TAG, "onSamplelButtonoClick()");
-        binding.button.setText("Changed");
+        //binding.button.setText("Changed");
     }
 
     @Override
@@ -125,7 +125,7 @@ public class AirConditionFragment extends Fragment implements Views.AirCondition
         showToastMessage("최근 업데이트 시간 : " + recentData.getAirCondition().get(0).getDataTime()
         + "\n주소 : " + recentData.getAddr().getAddr());
         adapter = new MyAdapter(getContext(), 0, data);
-        binding.listView.setAdapter(adapter);
+        //binding.listView.setAdapter(adapter);
     }
 
 

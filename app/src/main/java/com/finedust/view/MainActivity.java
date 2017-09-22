@@ -228,11 +228,11 @@ public class MainActivity extends AppCompatActivity
 
         Log.v(TAG, "onFloaotingButtonClick()");
         for(int i = 0;  i < 4; i++) {
-            pref.removeValue(SharedPreferences.CURRENT_MODE);
+            pref.put(SharedPreferences.CURRENT_MODE, Const.MODE[0]);
             pref.removeValue(SharedPreferences.RECENT_DATA[i]);
             pref.removeValue(SharedPreferences.MEMORIZED_LOCATIONS[i]);
         }
-        Snackbar.make(view, "Pref All deleted", Snackbar.LENGTH_LONG)
+        Snackbar.make(view, "All of preference data deleted.", Snackbar.LENGTH_LONG)
                 .setAction("Action", null).show();
     }
 
