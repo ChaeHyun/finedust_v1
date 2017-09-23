@@ -8,8 +8,7 @@ import com.finedust.model.Addresses;
 import com.finedust.model.AirCondition;
 import com.finedust.model.RecentData;
 
-
-import java.util.ArrayList;
+import java.util.List;
 
 public interface Views {
 
@@ -40,7 +39,7 @@ public interface Views {
         void showToastMessage(String msg);
         void showSnackBarMessage(String msg);
         void enableNetworkOptions();
-        void updateAddressData(ArrayList<Addresses> data);
+        void updateAddressData(List<Addresses> data);
     }
 
     interface SettingFragmentView {
