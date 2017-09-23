@@ -9,6 +9,7 @@ import com.finedust.model.StationList;
 
 import java.util.Map;
 
+import io.reactivex.Observable;
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Query;
@@ -31,8 +32,8 @@ public interface ApiService {
             @Query("_returnType") String returnType
     );
 
-    @GET("MsrstnInfoInqireSvc/getTMStdrCrdnt?ServiceKey="+ Const.SERVICEKEY)
-    Call<AddressList> getAddressData(
+    @GET("MsrstnInfoInqireSvc/getTMStdrCrdnt?ServiceKey=" + Const.SERVICEKEY)
+    Observable<AddressList> getAddressData(
             @QueryMap Map<String, String> params
     );
 

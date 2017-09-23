@@ -5,7 +5,14 @@ import android.content.Context;
 import com.finedust.model.GpsData;
 import com.finedust.model.StationList;
 
+import io.reactivex.disposables.Disposable;
+
 interface Presenter {
+
+    interface BasePresenter {
+        void addDisposable(Disposable disposable);
+        void clearDisposable(); // must be called before the activity is destroyed.
+    }
 
     interface MainActivityPresenter {
         void onCreate();
@@ -25,7 +32,7 @@ interface Presenter {
         int convertModeToInteger(final String mode);
     }
 
-    interface SearchAddressActivityPresenter {
+    interface SearchAddressActivityPresenter extends BasePresenter {
         void getAddressData(Context context, String str);
     }
 

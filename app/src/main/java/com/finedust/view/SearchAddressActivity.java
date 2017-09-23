@@ -157,4 +157,10 @@ public class SearchAddressActivity extends AppCompatActivity implements Views.Se
         binding.listViewAddress.setAdapter(addressAdapter);
         //addressAdapter.notifyDataSetChanged();
     }
+
+    @Override
+    protected void onDestroy() {
+        searchAddressActivityPresenter.clearDisposable();
+        super.onDestroy();
+    }
 }
