@@ -23,7 +23,7 @@ import com.finedust.model.adapter.AddressListAdapter;
 import com.finedust.presenter.SearchAddressActivityPresenter;
 import com.finedust.utils.CheckConnectivity;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class SearchAddressActivity extends AppCompatActivity implements Views.SearchAddressActivityView {
     private static final String TAG = SearchAddressActivity.class.getSimpleName();
@@ -146,7 +146,7 @@ public class SearchAddressActivity extends AppCompatActivity implements Views.Se
     }
 
     @Override
-    public void updateAddressData(ArrayList<Addresses> data) {
+    public void updateAddressData(List<Addresses> data) {
         binding.textVisible.setVisibility(View.INVISIBLE);
         binding.listViewAddress.setVisibility(View.VISIBLE);
 
@@ -156,5 +156,11 @@ public class SearchAddressActivity extends AppCompatActivity implements Views.Se
         addressAdapter.addAll(data);
         binding.listViewAddress.setAdapter(addressAdapter);
         //addressAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    protected void onDestroy() {
+        searchAddressActivityPresenter.clearDisposable();
+        super.onDestroy();
     }
 }
