@@ -17,12 +17,12 @@ import com.finedust.model.AirConditionList;
 import com.finedust.model.Const;
 import com.finedust.model.GpsData;
 import com.finedust.model.RecentData;
+import com.finedust.model.Station;
 import com.finedust.model.StationList;
 import com.finedust.retrofit.api.ApiService;
 import com.finedust.retrofit.api.RetrofitClient;
 import com.finedust.utils.CheckConnectivity;
 import com.finedust.utils.SharedPreferences;
-import com.finedust.view.MainActivity;
 import com.finedust.view.Views;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -33,14 +33,17 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
+import io.reactivex.functions.Function;
+import io.reactivex.schedulers.Schedulers;
 
 
 public class AirConditionFragmentPresenter
@@ -58,12 +61,17 @@ public class AirConditionFragmentPresenter
     private final static int CONNECTION_FAILURE_RESOLUTION_REQUEST = 9000;
     private RecentData mRecent;
 
+    private ApiService apiService;
+    private CompositeDisposable compositeDisposable;
+
     public AirConditionFragmentPresenter(Views.AirConditionFragmentView view, Context context) {
         this.view = view;
         this.context = context;
         mRecent = new RecentData();
         mRecent.setAddr(new Addresses());
         pref = new SharedPreferences(context);
+        apiService = RetrofitClient.getApiService();
+        compositeDisposable = new CompositeDisposable();
     }
 
     @Override
@@ -102,129 +110,129 @@ public class AirConditionFragmentPresenter
         if ( !updateWithRecentData(mode) ) {
             if ( num == 1 ) {
                 Addresses data = (Addresses) pref.getObject(SharedPreferences.MEMORIZED_LOCATIONS[num], Const.EMPTY_STRING, new Addresses());
-                getNearStationList(data.getTmX(), data.getTmY());
+                getAirConditionData(data.getTmX(), data.getTmY());
             }
             else if ( num == 2 ) {
                 Addresses data = (Addresses) pref.getObject(SharedPreferences.MEMORIZED_LOCATIONS[num], Const.EMPTY_STRING, new Addresses());
-                getNearStationList(data.getTmX(), data.getTmY());
+                getAirConditionData(data.getTmX(), data.getTmY());
             }
             else if ( num == 3 ) {
                 Addresses data = (Addresses) pref.getObject(SharedPreferences.MEMORIZED_LOCATIONS[num], Const.EMPTY_STRING, new Addresses());
-                getNearStationList(data.getTmX(), data.getTmY());
+                getAirConditionData(data.getTmX(), data.getTmY());
             }
             else  {
                 Log.v(TAG,"   GPS 이용해서 좌표구하기 실행" );
                 getGPSCoordinates();
             }
         }
-
-
     }
 
     /**
-     * 좌표를 파라미터로 해당 근접한 측정소 목록을 요청하는 메소드.
+     * 좌표 -> 측정소명 -> 대기정보 요청하는 메소드
      * */
+
     @Override
-    public void getNearStationList(final String x, final String y) {
-        if(CheckConnectivity.checkNetworkConnection(context)) {
-            ApiService apiService = RetrofitClient.getApiService();
-
-            final Call<StationList> requestForNearStationList = apiService.getNearStationList(x, y, Const.RETURNTYPE_JSON);
-            Log.v(TAG, "Check URL(Near Station Lists) : " + apiService.getNearStationList(x, y, Const.RETURNTYPE_JSON).request().url().toString());
-
-            requestForNearStationList.enqueue(new Callback<StationList>() {
-                @Override
-                public void onResponse(Call<StationList> call, Response<StationList> response) {
-                    if(response.isSuccessful()) {
-                        if (response.body().getTotalCount().equals(0)) {
-                            view.showSnackBarMessage("주변의 측정소를 찾지 못하였습니다.");
-                        }
-                        else {
-                            GpsData gps = new GpsData(x, y);
-                            getAirConditionData(response.body(), 0, gps);
-                        }
-                    }
-                }
-
-                @Override
-                public void onFailure(Call<StationList> call, Throwable t) {
-                    Log.v(TAG, "Fail to get data from server");
-                    view.showToastMessage(Const.STR_FAIL_GET_DATA_FROM_SERVER);
-                }
-            });
-        }
-        else {
-            view.showSnackBarMessage(Const.STR_NETWORK_NOT_AVAILABLE);
-        }
-    }
-
-
-    /**
-     * 측정소명을 파라미터로 해당 측정소의 대기정보를 요청하는 메소드.
-     * */
-    @Override
-    public void getAirConditionData(final StationList stationList, final int index, final GpsData gps) {
-        view.showToastMessage("[ " + stationList.getList().get(index).getStationName() + " ] 측정소의 정보를 검색합니다.");
-        Log.i(TAG, "검색 측정소명("+ index +") : " + stationList.getList().get(index).getStationName());
-
+    public void getAirConditionData(final String x, final String y) {
+        Log.i(TAG, "#getAirConditionData( " + x + " , " + y + " )");
         // Checking InternetConnection
-        if(CheckConnectivity.checkNetworkConnection(context)) {
-            ApiService apiService = RetrofitClient.getApiService();
-
-            String stationName = stationList.getList().get(index).getStationName();
-            Map<String, String> queryParams = RetrofitClient.setQueryParamsForStationName(stationName);
-
-            Log.v(TAG, "Check URL(getAirconditionData) : " + apiService.getAirConditionData(queryParams).request().url().toString());
-            final Call<AirConditionList> requestForAirConditionData = apiService.getAirConditionData(queryParams);
-
-            requestForAirConditionData.enqueue(new Callback<AirConditionList>() {
-                @Override
-                public void onResponse(Call<AirConditionList> call, Response<AirConditionList> response) {
-                    if(response.isSuccessful()) {
-                        if (response.body().getTotalCount().equals(0)) {
-                            view.showSnackBarMessage("대기오염 정보를 찾지 못하였습니다.");
-                        }
-                        else {
-                            ArrayList<AirCondition> nextStationData = response.body().getList();
-
-                            if (index == 0) {
-                                mRecent.getAddr().setTmXTmY(gps.getTm_x(), gps.getTm_y());
-                                mRecent.setSavedStations(stationList.getList());
-                                mRecent.setAirCondition(nextStationData);
-                            }
-                            else if (index < stationList.getTotalCount()){
-                                ArrayList<AirCondition> updated = updateAirConditionDataFromNextStation( nextStationData.get(0), mRecent.getAirCondition() );
-                                mRecent.setAirCondition( updated );
-                            }
-
-                            // 누락된 데이터가 있으면 다음 측정소 정보 재탐색
-                            if ( isAllAirDataFilled( mRecent.getAirCondition().get(0) ) || index >= (stationList.getTotalCount()-1) ) {
-                                saveRecentData(mRecent);
-                                Log.i(TAG, "ORDER to view : updateDataToViews");
-
-                                view.updateDataToViews(mRecent);
-                            }
-                            else {
-                                getAirConditionData(stationList, index + 1, gps);
-                            }
-                        }
-                    }
-                }
-
-                @Override
-                public void onFailure(Call<AirConditionList> call, Throwable t) {
-                    Log.v(TAG, "Fail to get data from server");
-                    view.showToastMessage(Const.STR_FAIL_GET_DATA_FROM_SERVER);
-                }
-            });
-        }
-        else {
+        if (!CheckConnectivity.checkNetworkConnection(context))
             view.showSnackBarMessage(Const.STR_NETWORK_NOT_AVAILABLE);
-        }
 
+        else {
+            Observable<StationList> stationListObservable = apiService.getNearStationList(x, y, Const.RETURNTYPE_JSON);
+            addDisposable(
+                stationListObservable
+                .flatMap(new Function<StationList, Observable<AirConditionList>>() {
+                     @Override
+                     public Observable<AirConditionList> apply(@io.reactivex.annotations.NonNull StationList stationList) throws Exception {
+                         List<Station> list = stationList.getList();
+
+                         if(list.isEmpty())
+                             view.showSnackBarMessage("주변의 측정소를 찾지 못하였습니다.");
+                         else {
+                             mRecent.getAddr().setTmXTmY(x, y);
+                             mRecent.setSavedStations(stationList.getList());
+
+                             Log.i(TAG, "#측정소명 : " + list.get(0).getStationName());
+
+                             Map<String, String> queryParams = RetrofitClient.setQueryParamsForStationName(list.get(0).getStationName());
+
+                             return apiService.getAirConditionData(queryParams);
+                         }
+                         return null;
+                     }})
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Consumer<AirConditionList>() {
+                    @Override
+                    public void accept(@io.reactivex.annotations.NonNull AirConditionList airConditionList) throws Exception {
+                        List<AirCondition> air = airConditionList.getList();
+                        if(air.isEmpty())
+                            view.showSnackBarMessage("대기오염 정보를 찾지 못하였습니다.");
+                        else {
+                            mRecent.setAirCondition(airConditionList.getList());
+                            checkAllDataFilled(mRecent, 0);
+                        }
+
+                    }
+                }, new Consumer<Throwable>() {
+                    @Override
+                    public void accept(@io.reactivex.annotations.NonNull Throwable throwable) throws Exception {
+                        Log.v(TAG, "Fail to get data from server[getAirConditionData()]");
+                        view.showToastMessage(Const.STR_FAIL_GET_DATA_FROM_SERVER);
+                    }
+                })
+            );
+        }
+    }
+
+    private void getAirConditionDataAgain(final String stationName , final int index) {
+        Log.i(TAG, "#재검색 측정소명 : " + stationName);
+
+        Map<String, String> queryParams = RetrofitClient.setQueryParamsForStationName(stationName);
+        Observable<AirConditionList> airConditionListObservable = apiService.getAirConditionData(queryParams);
+        addDisposable( airConditionListObservable
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Consumer<AirConditionList>() {
+                    @Override
+                    public void accept(@io.reactivex.annotations.NonNull AirConditionList airConditionList) throws Exception {
+                        List<AirCondition> nextStationData = airConditionList.getList();
+
+                        if(nextStationData.isEmpty())
+                            view.showSnackBarMessage("대기오염 정보를 찾지 못하였습니다.");
+                        else {
+                            ArrayList<AirCondition> update = updateAirConditionDataFromNextStation(nextStationData.get(0), mRecent.getAirCondition());
+                            mRecent.setAirCondition( update );
+                            checkAllDataFilled(mRecent, index);
+                        }
+
+                    }
+                }, new Consumer<Throwable>() {
+                    @Override
+                    public void accept(@io.reactivex.annotations.NonNull Throwable throwable) throws Exception {
+                        Log.v(TAG, "Fail to get data from server");
+                        view.showToastMessage(Const.STR_FAIL_GET_DATA_FROM_SERVER);
+                    }
+                })
+        );
     }
 
 
+    /**
+     * 누락된 대기정보를 확인하고 누락된 정보를 재탐색하도록 요청하는 메소드.
+     * */
+
+    private void checkAllDataFilled(RecentData recentData, int index) {
+        if ( isAllAirDataFilled(recentData.getAirCondition().get(0)) || (index >= recentData.getSavedStations().size() - 1) ) {
+            Log.i(TAG, " #### SAVE RECENTDATA");
+            saveRecentData(recentData);
+            view.updateDataToViews(recentData);
+        }
+        else {
+            getAirConditionDataAgain(recentData.getSavedStations().get(index + 1).getStationName(), index + 1);
+        }
+    }
 
     @Override
     public void getGPSCoordinates() {
@@ -236,6 +244,7 @@ public class AirConditionFragmentPresenter
 
         googleApiClient.connect();
     }
+
 
     @Override
     public void onConnected(@Nullable Bundle bundle) {
@@ -271,6 +280,7 @@ public class AirConditionFragmentPresenter
         }
     }
 
+
     private void handleNewLocation(final Context context, final Location location) {
         // x -> Longitude, y -> Latitude
         Log.i(TAG, location.toString());
@@ -291,37 +301,41 @@ public class AirConditionFragmentPresenter
 
     }
 
+
     private void convertCoordinates(final Double y, final Double x) {
-        if (CheckConnectivity.checkNetworkConnection(context)) {
-            ApiService apiService = RetrofitClient.getApiService();
-
-            String url = RetrofitClient.getGpsConvertUrl(String.valueOf(y) , String.valueOf(x));
-            Log.v(TAG, "Check URL(convertCoordinates) : " + apiService.convertGpsData(url).request().url().toString());
-            final Call<GpsData> requestForConvertingGpsData = apiService.convertGpsData(url);
-
-            requestForConvertingGpsData.enqueue(new Callback<GpsData>() {
-                @Override
-                public void onResponse(Call<GpsData> call, Response<GpsData> response) {
-                    if(response.isSuccessful())
-                        getNearStationList(response.body().getTm_x(), response.body().getTm_y());
-                }
-
-                @Override
-                public void onFailure(Call<GpsData> call, Throwable t) {
-                    Log.v(TAG, Const.STR_FAIL_GET_DATA_FROM_SERVER);
-                    view.showToastMessage(Const.STR_FAIL_GET_DATA_FROM_SERVER);
-                }
-            });
-        }
-        else {
+        Log.i(TAG, "#convertCoordinates( " + y + " , " + x + " )");
+        if (!CheckConnectivity.checkNetworkConnection(context))
             view.showSnackBarMessage(Const.STR_NETWORK_NOT_AVAILABLE);
+
+        else {
+            Observable<GpsData> gpsDataObservable = apiService.convertGpsData(RetrofitClient.getGpsConvertUrl(String.valueOf(y) , String.valueOf(x)));
+            addDisposable(
+                gpsDataObservable
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new Consumer<GpsData>() {
+                        @Override
+                        public void accept(@io.reactivex.annotations.NonNull GpsData gpsData) throws Exception {
+                            if (gpsData != null) {
+                                getAirConditionData(gpsData.getTm_x(), gpsData.getTm_y());
+                            }
+                        }
+                    }, new Consumer<Throwable>() {
+                        @Override
+                        public void accept(@io.reactivex.annotations.NonNull Throwable throwable) throws Exception {
+                            Log.i(TAG, "Fail to convert WGS84 Coordinates to TM Coordinates.");
+                        }
+                    })
+            );
         }
     }
+
 
     @Override
     public void onConnectionSuspended(int i) {
         Log.i(TAG, "Location services suspended. Please reconnect.");
     }
+
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
@@ -350,14 +364,11 @@ public class AirConditionFragmentPresenter
         }
     }
 
-
     private String makeAddressName(final List<Address> address) {
         mRecent.getAddr().setUmdName(address.get(0).getThoroughfare());
         String name = address.get(0).getAddressLine(0);
         return name.substring(5, name.length());
     }
-
-
 
     private void saveRecentData(RecentData recent) {
         Log.i(TAG, "save Recent Data to Preferences.");
@@ -368,7 +379,6 @@ public class AirConditionFragmentPresenter
         }
         pref.putObject(SharedPreferences.RECENT_DATA[convertModeToInteger(recent.getCurrentMode())], recent);
     }
-
 
     private ArrayList<AirCondition> updateAirConditionDataFromNextStation(final AirCondition nextStationData, ArrayList<AirCondition> previousData) {
 
@@ -394,6 +404,7 @@ public class AirConditionFragmentPresenter
         return previousData;
     }
 
+
     private boolean isAllAirDataFilled(final AirCondition airData) {
         if ( airData.getKhaiValue().equals("-")
                 || airData.getPm10Value().equals("-")
@@ -403,6 +414,8 @@ public class AirConditionFragmentPresenter
         }
         return true;
     }
+
+
 
     @Override
     public int convertModeToInteger(final String mode) {
@@ -451,6 +464,81 @@ public class AirConditionFragmentPresenter
         return false;
     }
 
+    @Override
+    public void addDisposable(Disposable disposable) {
+        compositeDisposable.add(disposable);
+    }
 
+
+    @Override
+    public void clearDisposable() {
+        compositeDisposable.clear();
+    }
+
+    /*
+    private void convertCoordinates_a(final Double y, final Double x) {
+        if (!CheckConnectivity.checkNetworkConnection(context)) {
+            view.showSnackBarMessage(Const.STR_NETWORK_NOT_AVAILABLE);
+        }
+        else {
+            String url = RetrofitClient.getGpsConvertUrl(String.valueOf(y) , String.valueOf(x));
+            Observable<GpsData> gpsDataObservable = apiService.convertGpsData(url);
+
+            addDisposable(gpsDataObservable
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new Consumer<GpsData>() {
+                        @Override
+                        public void accept(@io.reactivex.annotations.NonNull GpsData gpsData) throws Exception {
+                            if (gpsData != null)
+                                getAirConditionData(gpsData.getTm_x(), gpsData.getTm_y());
+                        }
+                    }, new Consumer<Throwable>() {
+                        @Override
+                        public void accept(@io.reactivex.annotations.NonNull Throwable throwable) throws Exception {
+                            Log.v(TAG, Const.STR_FAIL_GET_DATA_FROM_SERVER);
+                            view.showToastMessage(Const.STR_FAIL_GET_DATA_FROM_SERVER);
+                        }
+                    })
+            );
+        }
+    }
+
+
+    @Override
+    public void getNearStationList(final String x, final String y) {
+        if (!CheckConnectivity.checkNetworkConnection(context)) {
+            view.showSnackBarMessage(Const.STR_NETWORK_NOT_AVAILABLE);
+        }
+        else {
+            Observable<StationList> stationListObservable = apiService.getNearStationList(x, y, Const.RETURNTYPE_JSON);
+
+            addDisposable(stationListObservable
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new Consumer<StationList>() {
+                        @Override
+                        public void accept(@io.reactivex.annotations.NonNull StationList stationList) throws Exception {
+                            List<Station> list = stationList.getList();
+
+                            if(list.isEmpty())
+                                view.showSnackBarMessage("주변의 측정소를 찾지 못하였습니다.");
+                            else {
+                                GpsData gps = new GpsData(x, y);
+                                //getAirConditionData(stationList, 0, gps);
+                            }
+                        }
+                    }, new Consumer<Throwable>() {
+                        @Override
+                        public void accept(@io.reactivex.annotations.NonNull Throwable throwable) throws Exception {
+                            Log.v(TAG, Const.STR_FAIL_GET_DATA_FROM_SERVER);
+                            view.showToastMessage(Const.STR_FAIL_GET_DATA_FROM_SERVER);
+                        }
+                    })
+            );
+        }
+
+    }
+*/
 
 }

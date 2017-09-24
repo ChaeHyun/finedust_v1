@@ -74,11 +74,6 @@ public class SearchAddressActivity extends AppCompatActivity implements Views.Se
         @Override
         public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
             Addresses data = (Addresses) adapterView.getAdapter().getItem(i);
-
-            String msg = data.getSggName() + " , " + data.getSidoName() + " , " + data.getUmdName()
-                    + "\n(" + data.getTmX() + ", " + data.getTmY() + ")";
-            showToastMessage(msg);
-
             setResult(RESULT_OK, putIntentExtraString(data));
 
             finish();

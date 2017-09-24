@@ -21,12 +21,12 @@ import static android.R.attr.value;
 public interface ApiService {
 
     @GET("ArpltnInforInqireSvc/getMsrstnAcctoRltmMesureDnsty?ServiceKey=" + Const.SERVICEKEY)
-    Call<AirConditionList> getAirConditionData(
+    Observable<AirConditionList> getAirConditionData(
             @QueryMap Map<String, String> params
     );
 
     @GET("MsrstnInfoInqireSvc/getNearbyMsrstnList?ServiceKey=" + Const.SERVICEKEY)
-    Call<StationList> getNearStationList(
+    Observable<StationList> getNearStationList(
             @Query("tmX") String x,
             @Query("tmY") String y,
             @Query("_returnType") String returnType
@@ -38,6 +38,6 @@ public interface ApiService {
     );
 
     @GET
-    Call<GpsData> convertGpsData(@Url String url);
+    Observable<GpsData> convertGpsData(@Url String url);
 
 }

@@ -2,9 +2,6 @@ package com.finedust.presenter;
 
 import android.content.Context;
 
-import com.finedust.model.GpsData;
-import com.finedust.model.StationList;
-
 import io.reactivex.disposables.Disposable;
 
 interface Presenter {
@@ -22,12 +19,10 @@ interface Presenter {
 
     }
 
-    interface AirConditionFragmentPresenter {
+    interface AirConditionFragmentPresenter extends BasePresenter{
         void onPause();
-        void getNearStationList(final String x, final String y);
-        void getAirConditionData(final StationList stationList, final int index, final GpsData gps);
+        void getAirConditionData(final String x, final String y);
         void getGPSCoordinates();
-
         void checkCurrentMode(String mode);
         int convertModeToInteger(final String mode);
     }

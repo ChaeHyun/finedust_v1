@@ -23,7 +23,7 @@ public class Const {
     public static final String STR_NETWORK_NOT_AVAILABLE = "네트워크가 연결되어 있지 않습니다.";
     public static final String STR_FAIL_GET_DATA_FROM_SERVER = "서버에서 정보를 가져오지 못했습니다.";
     public static final String STR_FAIL_UPDATE_DATA_TO_UI = "업데이트 할 정보를 찾지 못했습니다.";
-    public static final String STR_NEED_PERMISSION = "권한 허가가 필요합니다..";
+    public static final String STR_NEED_PERMISSION = "권한 허가가 필요합니다.";
 
     public static final int[] DRAWABLE_STATES =  {R.drawable.state_fail, R.drawable.state_best, R.drawable.state_good, R.drawable.state_bad, R.drawable.state_verybad};
     public static final int[] DRAWABLE_STATES_FACE =  {R.drawable.face_fail, R.drawable.face_best, R.drawable.face_good, R.drawable.face_bad, R.drawable.face_verybad};

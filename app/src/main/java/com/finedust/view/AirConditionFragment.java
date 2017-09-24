@@ -91,16 +91,21 @@ public class AirConditionFragment extends Fragment implements Views.AirCondition
         airConditionFragmentPresenter.onPause();
     }
 
+    @Override
+    public void onDestroy() {
+        airConditionFragmentPresenter.clearDisposable();
+        super.onDestroy();
+    }
 
     @Override
     public void updateDataToViews(RecentData recentData) {
-
         try {
             AirCondition air = recentData.getAirCondition().get(0);
             Station weatherStation = recentData.getSavedStations().get(0);
 
             showToastMessage("최근 업데이트 시간 : " + recentData.getAirCondition().get(0).getDataTime()
-                    + "\n주소 : " + recentData.getAddr().getAddr());
+                    + "\n주소 : " + recentData.getAddr().getAddr()
+            + "\n측정소 : " + recentData.getSavedStations().get(0).getStationName());
 
             binding.layoutLocationInfo.textContentLocation.setText(recentData.getAddr().getAddr());
             setAllAirConditionData(air);

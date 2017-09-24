@@ -11,9 +11,6 @@ import android.net.ConnectivityManager;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
 
-/**
- * Created by CH on 2017-09-02.
- */
 
 public class CheckConnectivity {
     private static final String SETTINGS_PACKAGE = "com.android.settings";
