@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
@@ -165,8 +166,8 @@ public class MainActivity extends AppCompatActivity
                 break;
 
             case R.id.nav_forecast:
-                Fragment forecastFragment = new ForecastFragment();
-                fragmentReplace(forecastFragment);
+                setToolbarBackgroundColor(0);
+                fragmentReplace(new ForecastFragment());
                 t.makeText(getApplicationContext(), "예보정보 선택", Toast.LENGTH_SHORT).show();
                 break;
 
@@ -175,8 +176,8 @@ public class MainActivity extends AppCompatActivity
             case R.id.nav_kaq:
                 break;
             case R.id.nav_setting:
-                Fragment settingFragment = new SettingFragment();
-                fragmentReplace(settingFragment);
+                setToolbarBackgroundColor(0);
+                fragmentReplace(new SettingFragment());
                 t.makeText(getApplicationContext(), "설정화면 선택", Toast.LENGTH_SHORT).show();
                 break;
         }
@@ -308,6 +309,11 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void setToolbarBackgroundColor(int color) {
-        mainBinding.appBarMain.toolbar.setBackgroundColor(color);
+        if (Build.VERSION.SDK_INT >= 21) {
+            getWindow().setStatusBarColor(Const.TOOLBAR_COLORS_DARK[color]);
+            mainBinding.appBarMain.toolbar.setBackgroundColor(Const.TOOLBAR_COLORS[color]);
+        }
     }
+
+
 }

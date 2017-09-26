@@ -28,8 +28,7 @@ public class Const {
     public static final int[] DRAWABLE_STATES =  {R.drawable.state_fail, R.drawable.state_best, R.drawable.state_good, R.drawable.state_bad, R.drawable.state_verybad};
     public static final int[] DRAWABLE_STATES_FACE =  {R.drawable.face_fail, R.drawable.face_best, R.drawable.face_good, R.drawable.face_bad, R.drawable.face_verybad};
     public static final int[] COLORS = {Color.rgb(0, 0, 0) , Color.rgb(0,150,250), Color.rgb(120, 190, 80) , Color.rgb(255, 220, 80) , Color.rgb(255, 80, 80)};     //FAIL , BEST, GOOD, BAD, VERYBAD
-    public static final int[] TOOLBAR_COLORS_DARK = {Color.rgb(0,105,92) , Color.rgb(21,101, 192) , Color.rgb(46,125,50) , Color.rgb(255, 143, 0) , Color.rgb(211,47,47) };
-    public static final int[] TOOLBAR_COLORS = { Color.rgb(0,121,107) , Color.rgb(25,118,210) , Color.rgb(56,142,60) , Color.rgb(255, 171, 0) , Color.rgb(229,57,53)};
-
+    public static final int[] TOOLBAR_COLORS_DARK = {Color.rgb(0, 105, 92) , Color.rgb(21, 101,192) , Color.rgb(46, 125, 50) , Color.rgb(255, 143, 0) , Color.rgb(211, 47, 47) };
+    public static final int[] TOOLBAR_COLORS = { Color.rgb(0, 150, 136) , Color.rgb(33, 150, 243) , Color.rgb(76, 175, 80) , Color.rgb(255, 193, 7) , Color.rgb(244, 67, 54)};
 
 }

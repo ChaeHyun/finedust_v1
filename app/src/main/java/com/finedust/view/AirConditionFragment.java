@@ -137,10 +137,8 @@ public class AirConditionFragment extends Fragment implements Views.AirCondition
             return;
         }
         if ( grade.equals("-")) {
-            if (Build.VERSION.SDK_INT >= 21 && imageType == Const.DRAWABLE_STATES_FACE) {
-                getActivity().getWindow().setStatusBarColor(Const.TOOLBAR_COLORS_DARK[0]);
-                mainView.setToolbarBackgroundColor(Const.TOOLBAR_COLORS[0]);
-            }
+            if (imageType == Const.DRAWABLE_STATES_FACE)
+                mainView.setToolbarBackgroundColor(0);
 
             resource = ResourcesCompat.getDrawable(getResources(), imageType[0], null);
             text.setTextColor(Const.COLORS[0]);
@@ -150,10 +148,8 @@ public class AirConditionFragment extends Fragment implements Views.AirCondition
         else {
             int GRADE = Integer.parseInt(grade);
 
-            if (Build.VERSION.SDK_INT >= 21 && imageType == Const.DRAWABLE_STATES_FACE) {
-                getActivity().getWindow().setStatusBarColor(Const.TOOLBAR_COLORS_DARK[GRADE]);
-                mainView.setToolbarBackgroundColor(Const.TOOLBAR_COLORS[GRADE]);
-            }
+            if (imageType == Const.DRAWABLE_STATES_FACE)
+                mainView.setToolbarBackgroundColor(GRADE);
 
             resource = ResourcesCompat.getDrawable(getResources(), imageType[GRADE], null);
             text.setTextColor(Const.COLORS[GRADE]);

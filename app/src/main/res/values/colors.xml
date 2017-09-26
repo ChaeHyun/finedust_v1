@@ -19,19 +19,19 @@
     <color name="colorBackground">#c8eeeeee</color>
 
     <color name="toolBar_DEFAULT">#009688</color>
-    <color name="toolBar_DEFAULT_Dark">#008373</color>
+    <color name="toolBar_DEFAULT_Dark">#00695c</color>
 
     <color name="toolBar_BLUE">#2196f3</color>
     <color name="toolBar_BLUE_Dark">#1565c0</color>
 
-    <color name="toolBar_GREEN">#4CAF50</color>
-    <color name="toolBar_GREEN_Dark">#2E7D32</color>
+    <color name="toolBar_GREEN">#4caf50</color>
+    <color name="toolBar_GREEN_Dark">#2e7d32</color>
 
-    <color name="toolBar_YELLOW">#FFC107</color>
-    <color name="toolBar_YELLOW_Dark">#FF8F00</color>
+    <color name="toolBar_YELLOW">#ffc107</color>
+    <color name="toolBar_YELLOW_Dark">#ff8f00</color>
 
-    <color name="toolBar_RED">#F44336</color>
-    <color name="toolBar_RED_Dark">#D32F2F</color>
+    <color name="toolBar_RED">#f44336</color>
+    <color name="toolBar_RED_Dark">#d32f2f</color>
 
 
 </resources>
