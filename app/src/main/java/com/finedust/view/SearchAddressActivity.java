@@ -42,19 +42,23 @@ public class SearchAddressActivity extends AppCompatActivity implements Views.Se
         binding.listViewAddress.setVisibility(View.INVISIBLE);
         binding.listViewAddress.setOnItemClickListener(onClickListViewItem);
 
-        try {
-            ActionBar actionBar = getSupportActionBar();
-            actionBar.setDisplayHomeAsUpEnabled(true);
-            actionBar.setTitle("주소검색");
-        }
-        catch (NullPointerException e) {
-            e.printStackTrace();
-        }
+        setActionBarTitle("주소검색");
         binding.editSearch.setOnKeyListener(onKeySearchEdit);
         binding.editSearch.setText("삼덕");
 
         binding.buttonSearch.setOnClickListener(onSearchButtonClick);
 
+    }
+
+    private void setActionBarTitle(String title) {
+        try {
+            ActionBar actionBar = getSupportActionBar();
+            actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setTitle(title);
+        }
+        catch (NullPointerException e) {
+            e.printStackTrace();
+        }
     }
 
     private ImageView.OnClickListener onSearchButtonClick = new ImageView.OnClickListener() {

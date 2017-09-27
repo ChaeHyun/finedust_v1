@@ -37,13 +37,8 @@ interface Presenter {
 
     interface SettingFragmentPresenter {
         void abc();
+        void deleteSavedData();
     }
-
-    interface ChangeGradeActivityPresenter {
-
-    }
-
-
 
 
 }

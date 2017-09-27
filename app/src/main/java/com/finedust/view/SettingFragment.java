@@ -19,6 +19,7 @@ import com.finedust.model.Const;
 
 import com.finedust.model.Addresses;
 import com.finedust.presenter.MainActivityPresenter;
+import com.finedust.presenter.SettingFragmentPresenter;
 import com.finedust.utils.SharedPreferences;
 
 
@@ -29,6 +30,8 @@ public class SettingFragment extends Fragment implements Views.SettingFragmentVi
 
     Views.MainActivityView mainView;
     MainActivityPresenter mainActivityPresenter;
+
+    SettingFragmentPresenter settingFragmentPresenter = new SettingFragmentPresenter(this, getContext());
 
     EditText[] pm10_grade = new EditText[3];
     EditText[] pm25_grade = new EditText[3];
@@ -143,8 +146,8 @@ public class SettingFragment extends Fragment implements Views.SettingFragmentVi
                 pm10_grade[i].setText(data.getStringExtra(Const.SELF_GRADE_PM10[i]));
                 pm25_grade[i].setText(data.getStringExtra(Const.SELF_GRADE_PM25[i]));
             }
-            binding.layoutChangeGrade.switchGrade.setChecked(true);
 
+            binding.layoutChangeGrade.switchGrade.setChecked(true);
         }
         else if(resultCode == Activity.RESULT_CANCELED && requestCode == 5) {
             pref.put(SharedPreferences.GRADE_MODE, Const.ON_OFF[1]);
@@ -168,7 +171,6 @@ public class SettingFragment extends Fragment implements Views.SettingFragmentVi
         else
             Toast.makeText(getContext(), "더 이상 저장할 수 없습니다.", Toast.LENGTH_LONG).show();
     }
-
 
     public void onMinusButtonClick(View view) {
         switch (view.getId()) {
@@ -205,6 +207,7 @@ public class SettingFragment extends Fragment implements Views.SettingFragmentVi
                 pm25_grade[i].setText(Const.EMPTY_STRING);
             }
         }
+        settingFragmentPresenter.deleteSavedData();
     }
 
     private void onClick(View view) {

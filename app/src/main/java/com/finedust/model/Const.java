@@ -39,4 +39,9 @@ public class Const {
     public static final String[] SELF_GRADE_PM10 = {"PM10_BEST", "PM10_GOOD", "PM10_BAD"};
     public static final String[] SELF_GRADE_PM25 = {"PM25_BEST", "PM25_GOOD", "PM25_BAD"};
 
+    public static final String GRADE_BEST    = "1";
+    public static final String GRADE_GOOD    = "2";
+    public static final String GRADE_BAD     = "3";
+    public static final String GRADE_VERYBAD = "4";
+
 }

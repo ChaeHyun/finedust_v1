@@ -372,12 +372,58 @@ public class AirConditionFragmentPresenter
 
     private void saveRecentData(RecentData recent) {
         Log.i(TAG, "save Recent Data to Preferences.");
-        if(convertModeToInteger(recent.getCurrentMode()) != 0) {
+        if (convertModeToInteger(recent.getCurrentMode()) != 0) {
             // Case : Loc_ONE, Loc_TWO, Loc_THREE
             Addresses addr = (Addresses) pref.getObject(SharedPreferences.MEMORIZED_LOCATIONS[convertModeToInteger(recent.getCurrentMode())], Const.EMPTY_STRING, new Addresses());
             recent.setAddr(addr);
         }
+        if (pref.getValue(SharedPreferences.GRADE_MODE, Const.ON_OFF[1]).equals(Const.ON_OFF[0])) {
+            Log.i(TAG, "SelfGrade : ON");
+            recent = judgeSelfGrade(recent);
+        }
         pref.putObject(SharedPreferences.RECENT_DATA[convertModeToInteger(recent.getCurrentMode())], recent);
+    }
+
+    private RecentData judgeSelfGrade(RecentData recent) {
+        if (!recent.getAirCondition().get(0).getPm10Grade1h().equals("-")) {
+            int value = Integer.parseInt(recent.getAirCondition().get(0).getPm10Value());
+
+            int[] pm10_grade = {
+                    Integer.parseInt(pref.getValue(Const.SELF_GRADE_PM10[0],"0")),
+                    Integer.parseInt(pref.getValue(Const.SELF_GRADE_PM10[1],"0")),
+                    Integer.parseInt(pref.getValue(Const.SELF_GRADE_PM10[2],"0"))
+            };
+
+            if (value <= pm10_grade[0])
+                recent.getAirCondition().get(0).setPm10Grade1h(Const.GRADE_BEST);
+            else if (value <= pm10_grade[1])
+                recent.getAirCondition().get(0).setPm10Grade1h(Const.GRADE_GOOD);
+            else if (value <= pm10_grade[2])
+                recent.getAirCondition().get(0).setPm10Grade1h(Const.GRADE_BAD);
+            else
+                recent.getAirCondition().get(0).setPm10Grade1h(Const.GRADE_VERYBAD);
+        }
+
+        if (!recent.getAirCondition().get(0).getPm25Grade1h().equals("-")) {
+            int value = Integer.parseInt(recent.getAirCondition().get(0).getPm25Value());
+
+            int[] pm25_grade = {
+                    Integer.parseInt( pref.getValue(Const.SELF_GRADE_PM25[0], "0") ),
+                    Integer.parseInt( pref.getValue(Const.SELF_GRADE_PM25[1], "0") ),
+                    Integer.parseInt( pref.getValue(Const.SELF_GRADE_PM25[2], "0") )
+            };
+
+            if (value <= pm25_grade[0])
+                recent.getAirCondition().get(0).setPm25Grade1h(Const.GRADE_BEST);
+            else if (value <= pm25_grade[1])
+                recent.getAirCondition().get(0).setPm25Grade1h(Const.GRADE_GOOD);
+            else if (value <= pm25_grade[2])
+                recent.getAirCondition().get(0).setPm25Grade1h(Const.GRADE_BAD);
+            else
+                recent.getAirCondition().get(0).setPm25Grade1h(Const.GRADE_VERYBAD);
+        }
+
+        return recent;
     }
 
     private ArrayList<AirCondition> updateAirConditionDataFromNextStation(final AirCondition nextStationData, ArrayList<AirCondition> previousData) {
@@ -475,70 +521,5 @@ public class AirConditionFragmentPresenter
         compositeDisposable.clear();
     }
 
-    /*
-    private void convertCoordinates_a(final Double y, final Double x) {
-        if (!CheckConnectivity.checkNetworkConnection(context)) {
-            view.showSnackBarMessage(Const.STR_NETWORK_NOT_AVAILABLE);
-        }
-        else {
-            String url = RetrofitClient.getGpsConvertUrl(String.valueOf(y) , String.valueOf(x));
-            Observable<GpsData> gpsDataObservable = apiService.convertGpsData(url);
-
-            addDisposable(gpsDataObservable
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(new Consumer<GpsData>() {
-                        @Override
-                        public void accept(@io.reactivex.annotations.NonNull GpsData gpsData) throws Exception {
-                            if (gpsData != null)
-                                getAirConditionData(gpsData.getTm_x(), gpsData.getTm_y());
-                        }
-                    }, new Consumer<Throwable>() {
-                        @Override
-                        public void accept(@io.reactivex.annotations.NonNull Throwable throwable) throws Exception {
-                            Log.v(TAG, Const.STR_FAIL_GET_DATA_FROM_SERVER);
-                            view.showToastMessage(Const.STR_FAIL_GET_DATA_FROM_SERVER);
-                        }
-                    })
-            );
-        }
-    }
-
-
-    @Override
-    public void getNearStationList(final String x, final String y) {
-        if (!CheckConnectivity.checkNetworkConnection(context)) {
-            view.showSnackBarMessage(Const.STR_NETWORK_NOT_AVAILABLE);
-        }
-        else {
-            Observable<StationList> stationListObservable = apiService.getNearStationList(x, y, Const.RETURNTYPE_JSON);
-
-            addDisposable(stationListObservable
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(new Consumer<StationList>() {
-                        @Override
-                        public void accept(@io.reactivex.annotations.NonNull StationList stationList) throws Exception {
-                            List<Station> list = stationList.getList();
-
-                            if(list.isEmpty())
-                                view.showSnackBarMessage("주변의 측정소를 찾지 못하였습니다.");
-                            else {
-                                GpsData gps = new GpsData(x, y);
-                                //getAirConditionData(stationList, 0, gps);
-                            }
-                        }
-                    }, new Consumer<Throwable>() {
-                        @Override
-                        public void accept(@io.reactivex.annotations.NonNull Throwable throwable) throws Exception {
-                            Log.v(TAG, Const.STR_FAIL_GET_DATA_FROM_SERVER);
-                            view.showToastMessage(Const.STR_FAIL_GET_DATA_FROM_SERVER);
-                        }
-                    })
-            );
-        }
-
-    }
-*/
 
 }

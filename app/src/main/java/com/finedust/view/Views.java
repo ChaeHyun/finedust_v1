@@ -28,7 +28,6 @@ public interface Views {
         void updateDataToViews(RecentData recnetData);
         boolean checkPermission();
         void checkGpsEnabled();
-
     }
 
     interface ForecastFragmentView {

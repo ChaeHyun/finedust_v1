@@ -33,6 +33,7 @@ public class ChangeGradeActivity extends AppCompatActivity implements Views.Chan
     TextView[] textViews_Pm25 = new TextView[3];
     SeekBar[] seekBars_Pm25 = new SeekBar[3];
 
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,15 +43,7 @@ public class ChangeGradeActivity extends AppCompatActivity implements Views.Chan
         binding.setButton(this);
 
         bindingViews();
-
-        try {
-            ActionBar actionBar = getSupportActionBar();
-            actionBar.setDisplayHomeAsUpEnabled(true);
-            actionBar.setTitle("구간설정");
-        }
-        catch (NullPointerException e) {
-            e.printStackTrace();
-        }
+        setActionBarTitle("구간설정");
 
     }
 
@@ -64,7 +57,18 @@ public class ChangeGradeActivity extends AppCompatActivity implements Views.Chan
 
         return super.onOptionsItemSelected(item);
     }
-    
+
+    private void setActionBarTitle(String title) {
+        try {
+            ActionBar actionBar = getSupportActionBar();
+            actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setTitle(title);
+        }
+        catch (NullPointerException e) {
+            e.printStackTrace();
+        }
+    }
+
     private void bindingViews() {
         seekBars_Pm10[0] = binding.layoutGradePm10.pm10SeekBarBest;
         seekBars_Pm10[1] = binding.layoutGradePm10.pm10SeekBarGood;
@@ -90,9 +94,9 @@ public class ChangeGradeActivity extends AppCompatActivity implements Views.Chan
         seekBars_Pm10[0].setOnSeekBarChangeListener(PM10_SeekBar_Listener_Best);
         seekBars_Pm10[1].setOnSeekBarChangeListener(PM10_SeekBar_Listener_Good);
         seekBars_Pm10[2].setOnSeekBarChangeListener(PM10_SeekBar_Listener_Bad);
-        binding.layoutGradePm25.pm25SeekBarBest.setOnSeekBarChangeListener(PM25_SeekBar_Listener_Best);
-        binding.layoutGradePm25.pm25SeekBarGood.setOnSeekBarChangeListener(PM25_SeekBar_Listener_Good);
-        binding.layoutGradePm25.pm25SeekBarBad.setOnSeekBarChangeListener(PM25_SeekBar_Listener_Bad);
+        seekBars_Pm25[0].setOnSeekBarChangeListener(PM25_SeekBar_Listener_Best);
+        seekBars_Pm25[1].setOnSeekBarChangeListener(PM25_SeekBar_Listener_Good);
+        seekBars_Pm25[2].setOnSeekBarChangeListener(PM25_SeekBar_Listener_Bad);
     } 
 
     @Override
@@ -117,11 +121,11 @@ public class ChangeGradeActivity extends AppCompatActivity implements Views.Chan
         for (int i = 0; i < value.length; i++) {
             if (i == 0) {
                 seekBar[i].setProgress(value[i]);
-                textView[i].setText(value[i]+"");
+                textView[i].setText(String.valueOf(value[i]));
             }
             else {
                 seekBar[i].setProgress(value[i] - value[i-1]);
-                textView[i].setText(value[i]+"");
+                textView[i].setText(String.valueOf(value[i]));
             }
         }
     }
@@ -130,7 +134,7 @@ public class ChangeGradeActivity extends AppCompatActivity implements Views.Chan
         Log.i(TAG, "onClickSaveButton()");
 
         if (textViews_Pm10[0].getText().toString().equals("") || textViews_Pm25[0].getText().toString().equals(""))
-            Snackbar.make(binding.getRoot(), "구간설정이 올바르지 않습니다.\n다시 시도하세요.", 3000).show();
+            Snackbar.make(binding.getRoot(), "구간설정이 올바르지 않습니다. 다시 시도하세요.", 3000).show();
 
         else {
             Intent result = new Intent();
@@ -140,7 +144,6 @@ public class ChangeGradeActivity extends AppCompatActivity implements Views.Chan
                 result.putExtra(Const.SELF_GRADE_PM25[i], textViews_Pm25[i].getText().toString());
             }
 
-            Toast.makeText(this, "구간설정완료\n미세먼지 - 좋음 : " + progressValuePm10[0] + ", 보통 : " + progressValuePm10[1] + ", 나쁨 : " + progressValuePm10[2], Toast.LENGTH_SHORT).show();
             setResult(RESULT_OK, result);
             finish();
         }
@@ -152,7 +155,7 @@ public class ChangeGradeActivity extends AppCompatActivity implements Views.Chan
         setResult(RESULT_CANCELED, intent);
         finish();
     }
-    
+
 
     SeekBar.OnSeekBarChangeListener PM10_SeekBar_Listener_Best = new SeekBar.OnSeekBarChangeListener() {
         @Override
@@ -161,7 +164,7 @@ public class ChangeGradeActivity extends AppCompatActivity implements Views.Chan
                 progress = 1;
             }
             seekBar.setProgress(progress);
-            
+
             binding.layoutGradePm10.pm10TextViewBest.setText(String.valueOf(progress));
             binding.layoutGradePm10.pm10TextViewGood.setText(String.valueOf(progress+1));
             binding.layoutGradePm10.pm10TextViewBad.setText(String.valueOf(progress+2));
