@@ -40,7 +40,7 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/edit_search"
                 android:hint=" 동 / 읍 / 면을 입력하세요."
-                android:textSize="15dp"
+                android:textSize="15sp"
                 android:maxLines="1"
                 android:lines = "1"
                 android:layout_weight="1"
@@ -49,6 +49,7 @@
             <ImageView
                 android:layout_width="35dp"
                 android:layout_height="35dp"
+                android:contentDescription="@string/missing_img"
                 android:src="@drawable/search_btn"
                 android:id="@+id/button_search"
                 android:layout_marginLeft="5dp"
@@ -76,7 +77,7 @@
         android:layout_marginTop="65dp"
         android:gravity="center_vertical|center_horizontal"
         android:padding="30dp"
-        android:textSize="15dp"
+        android:textSize="15sp"
         android:textColor="#343434" />
 
 </RelativeLayout>

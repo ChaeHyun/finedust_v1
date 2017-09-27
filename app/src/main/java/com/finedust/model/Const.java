@@ -14,7 +14,7 @@ public class Const {
 
 
     public static final String[] MODE = {"CURRENT" , "LOC_ONE" , "LOC_TWO" , "LOC_THREE"};
-
+    public static final String[] ON_OFF = {"ON" , "OFF"};
 
     public static  final int NAVI_ICON_LOCATION_SAVED = R.drawable.pin_128;
     public static  final int NAVI_ICON_LOCATION_NOT_SAVED = R.drawable.plus_circle_128;
@@ -30,5 +30,13 @@ public class Const {
     public static final int[] COLORS = {Color.rgb(0, 0, 0) , Color.rgb(0,150,250), Color.rgb(120, 190, 80) , Color.rgb(255, 220, 80) , Color.rgb(255, 80, 80)};     //FAIL , BEST, GOOD, BAD, VERYBAD
     public static final int[] TOOLBAR_COLORS_DARK = {Color.rgb(0, 105, 92) , Color.rgb(21, 101,192) , Color.rgb(46, 125, 50) , Color.rgb(255, 143, 0) , Color.rgb(211, 47, 47) };
     public static final int[] TOOLBAR_COLORS = { Color.rgb(0, 150, 136) , Color.rgb(33, 150, 243) , Color.rgb(76, 175, 80) , Color.rgb(255, 193, 7) , Color.rgb(244, 67, 54)};
+
+    public static final  int[] STANDARD_FOR_PM10_AIRKOREA   = {30, 80, 150};
+    public static final  int[] STANDARD_FOR_PM25_AIRKOREA   = {30, 50, 70};
+    public static final  int[] STANDARD_FOR_PM10_WHO        = {15, 50, 100};
+    public static final  int[] STANDARD_FOR_PM25_WHO        = {15, 25, 35};
+
+    public static final String[] SELF_GRADE_PM10 = {"PM10_BEST", "PM10_GOOD", "PM10_BAD"};
+    public static final String[] SELF_GRADE_PM25 = {"PM25_BEST", "PM25_GOOD", "PM25_BAD"};
 
 }

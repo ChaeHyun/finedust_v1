@@ -39,6 +39,10 @@ interface Presenter {
         void abc();
     }
 
+    interface ChangeGradeActivityPresenter {
+
+    }
+
 
 
 

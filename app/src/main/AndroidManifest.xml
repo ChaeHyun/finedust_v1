@@ -27,7 +27,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".view.SearchAddressActivity" />
-        <activity android:name=".view.SettingFragment"></activity>
+        <activity android:name=".view.ChangeGradeActivity"/>
     </application>
 
 </manifest>

@@ -7,6 +7,9 @@
         <variable
             name="plus"
             type="com.finedust.view.SettingFragment" />
+        <variable
+            name="grade"
+            type="com.finedust.view.SettingFragment"/>
     </data>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -30,7 +33,18 @@
                 app:plus="@{plus}"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="10dp"
-                layout="@layout/memorized_address" />
+                layout="@layout/setting_memorized_address" />
+
+            <include
+                android:id="@+id/layout_change_grade"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/layout_memorized_address"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="0dp"
+                android:layout_marginTop="10dp"
+                layout="@layout/setting_self_grade"
+                app:grade="@{grade}" />
 
 
         </RelativeLayout>

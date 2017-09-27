@@ -11,8 +11,9 @@ public class SharedPreferences {
 
     private Context context;
 
-    public static final String[] RECENT_DATA = {"RecentData_CURRENT", "RecentData_ONE", "RecentData_TWO", "RecentData_THREE"};
     public static final String CURRENT_MODE = "CurrentMode";
+    public static final String GRADE_MODE = "GradeMode";
+    public static final String[] RECENT_DATA = {"RecentData_CURRENT", "RecentData_ONE", "RecentData_TWO", "RecentData_THREE"};
     public static final String[] MEMORIZED_LOCATIONS = {"MemorizedAddress_Zero", "MemorizedAddress_One", "MemorizedAddress_Two", "MemorizedAddress_Three"};
 
 

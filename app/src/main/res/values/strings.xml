@@ -20,6 +20,14 @@
     <string name="air_data_title_station_info">측정소정보</string>
 
     <string name="settings_title_search_address">주소검색</string>
+    <string name="change_grade_airkorea_standard">에어코리아 기준</string>
+    <string name="change_grade_who_standard">WHO 권고기준</string>
+    <string name="change_grade_explain_msg">* 기준값은 좋음 &lt; 보통 &lt; 나쁨의 크기 순서로 설정해주세요.</string>
+    <string name="change_grade_explain_msg2">* 세계보건기구(WHO) 기준은 국내 기준과 다를 수 있습니다.</string>
+
+    <string name="notice_for_change_grade">*해당 등급변경은 미세먼지, 초미세먼지의 등급판정에만 적용됩니다.</string>
+    <string name="notice_for_change_grade1">*세계보건기구(WHO) 혹은 별도 기준을 통해 미세먼지의 등급을\n \ 지정할 수 있습니다.</string>
+    <string name="notice_for_change_grade2">*설정 시 위젯의 등급변경에도 동일하게 적용됩니다.</string>
 
     <string name="air_data_o3">오존</string>
     <string name="air_data_o3_eng">O3</string>

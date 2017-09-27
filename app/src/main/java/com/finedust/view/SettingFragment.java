@@ -9,6 +9,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.finedust.R;
@@ -19,6 +21,7 @@ import com.finedust.model.Addresses;
 import com.finedust.presenter.MainActivityPresenter;
 import com.finedust.utils.SharedPreferences;
 
+
 public class SettingFragment extends Fragment implements Views.SettingFragmentView {
     private final static String TAG = SettingFragment.class.getSimpleName();
     FragmentSettingBinding binding;
@@ -26,6 +29,11 @@ public class SettingFragment extends Fragment implements Views.SettingFragmentVi
 
     Views.MainActivityView mainView;
     MainActivityPresenter mainActivityPresenter;
+
+    EditText[] pm10_grade = new EditText[3];
+    EditText[] pm25_grade = new EditText[3];
+    EditText[] addresses_edit = new EditText[3];
+    ImageView[] minusButton = new ImageView[3];
 
     public SettingFragment() {
     }
@@ -35,15 +43,38 @@ public class SettingFragment extends Fragment implements Views.SettingFragmentVi
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_setting, container, false);
         binding.setMinus(this);
         binding.setPlus(this);
+        binding.setGrade(this);
 
         pref = new SharedPreferences(getActivity());
         mainView = (MainActivity) getActivity();
         mainActivityPresenter = new MainActivityPresenter(mainView);
+        setViewsForMemorizedAddresses();
+        setViewsForGrade();
 
         setDeleteButtonVisibility(false);
         checkMemorizedAddresses();
+        checkSelfGradeOn();
 
         return binding.getRoot();
+    }
+
+    private void setViewsForGrade() {
+        pm10_grade[0] = binding.layoutChangeGrade.pm10EditBest;
+        pm10_grade[1] = binding.layoutChangeGrade.pm10EditGood;
+        pm10_grade[2] = binding.layoutChangeGrade.pm10EditBad;
+        pm25_grade[0] = binding.layoutChangeGrade.pm25EditBest;
+        pm25_grade[1] = binding.layoutChangeGrade.pm25EditGood;
+        pm25_grade[2] = binding.layoutChangeGrade.pm25EditBad;
+    }
+
+    private void setViewsForMemorizedAddresses() {
+        addresses_edit[0] = binding.layoutMemorizedAddress.editText1;
+        addresses_edit[1] = binding.layoutMemorizedAddress.editText2;
+        addresses_edit[2] = binding.layoutMemorizedAddress.editText3;
+
+        minusButton[0] = binding.layoutMemorizedAddress.imgButtonMinus1;
+        minusButton[1] = binding.layoutMemorizedAddress.imgButtonMinus2;
+        minusButton[2] = binding.layoutMemorizedAddress.imgButtonMinus3;
     }
 
     private void checkMemorizedAddresses() {
@@ -55,63 +86,36 @@ public class SettingFragment extends Fragment implements Views.SettingFragmentVi
         }
     }
 
+    private void checkSelfGradeOn() {
+        if (pref.getValue(SharedPreferences.GRADE_MODE, Const.ON_OFF[1]).equals(Const.ON_OFF[0])) {
+            binding.layoutChangeGrade.switchGrade.setChecked(true);
+            for( int i=0; i < 3; i++) {
+                pm10_grade[i].setText(pref.getValue(Const.SELF_GRADE_PM10[i], ""));
+                pm25_grade[i].setText(pref.getValue(Const.SELF_GRADE_PM25[i], ""));
+            }
+        }
+    }
+
     private void setDeleteButtonVisibility(boolean on) {
         if (!on) {
-            binding.layoutMemorizedAddress.editText1.setText("");
-            binding.layoutMemorizedAddress.imgButtonMinus1.setEnabled(false);
-            binding.layoutMemorizedAddress.imgButtonMinus1.setVisibility(View.INVISIBLE);
-
-            binding.layoutMemorizedAddress.editText2.setText("");
-            binding.layoutMemorizedAddress.imgButtonMinus2.setEnabled(false);
-            binding.layoutMemorizedAddress.imgButtonMinus2.setVisibility(View.INVISIBLE);
-
-            binding.layoutMemorizedAddress.editText3.setText("");
-            binding.layoutMemorizedAddress.imgButtonMinus3.setEnabled(false);
-            binding.layoutMemorizedAddress.imgButtonMinus3.setVisibility(View.INVISIBLE);
+            for (int i = 0; i < 3; i++) {
+                addresses_edit[i].setText(Const.EMPTY_STRING);
+                minusButton[i].setEnabled(false);
+                minusButton[i].setVisibility(View.INVISIBLE);
             }
+        }
     }
 
     private void  setDeleteButtonVisibility(boolean on, int pos, String address) {
         if (on) {
-            switch (pos) {
-                case 1:
-                    binding.layoutMemorizedAddress.imgButtonMinus1.setEnabled(true);
-                    binding.layoutMemorizedAddress.imgButtonMinus1.setVisibility(View.VISIBLE);
-
-                    binding.layoutMemorizedAddress.editText1.setText(address);
-                    break;
-                case 2:
-                    binding.layoutMemorizedAddress.imgButtonMinus2.setEnabled(true);
-                    binding.layoutMemorizedAddress.imgButtonMinus2.setVisibility(View.VISIBLE);
-
-                    binding.layoutMemorizedAddress.editText2.setText(address);
-                    break;
-                case 3:
-                    binding.layoutMemorizedAddress.imgButtonMinus3.setEnabled(true);
-                    binding.layoutMemorizedAddress.imgButtonMinus3.setVisibility(View.VISIBLE);
-
-                    binding.layoutMemorizedAddress.editText3.setText(address);
-                    break;
-            }
+            minusButton[pos-1].setEnabled(true);
+            minusButton[pos-1].setVisibility(View.VISIBLE);
+            addresses_edit[pos-1].setText(address);
         }
         else {
-            switch (pos) {
-                case 1:
-                    binding.layoutMemorizedAddress.editText1.setText(Const.EMPTY_STRING);
-                    binding.layoutMemorizedAddress.imgButtonMinus1.setEnabled(false);
-                    binding.layoutMemorizedAddress.imgButtonMinus1.setVisibility(View.INVISIBLE);
-                    break;
-                case 2:
-                    binding.layoutMemorizedAddress.editText2.setText(Const.EMPTY_STRING);
-                    binding.layoutMemorizedAddress.imgButtonMinus2.setEnabled(false);
-                    binding.layoutMemorizedAddress.imgButtonMinus2.setVisibility(View.INVISIBLE);
-                    break;
-                case 3:
-                    binding.layoutMemorizedAddress.editText3.setText(Const.EMPTY_STRING);
-                    binding.layoutMemorizedAddress.imgButtonMinus3.setEnabled(false);
-                    binding.layoutMemorizedAddress.imgButtonMinus3.setVisibility(View.INVISIBLE);
-                    break;
-            }
+            minusButton[pos-1].setEnabled(false);
+            minusButton[pos-1].setVisibility(View.INVISIBLE);
+            addresses_edit[pos-1].setText(Const.EMPTY_STRING);
         }
     }
 
@@ -130,6 +134,21 @@ public class SettingFragment extends Fragment implements Views.SettingFragmentVi
         else if (resultCode == Activity.RESULT_OK && requestCode == 3) {
             mainView.saveAddrInPreferences(requestCode, data, SharedPreferences.MEMORIZED_LOCATIONS[requestCode]);
             setDeleteButtonVisibility(true, requestCode, data.getStringExtra("Addr"));
+        }
+        else if (resultCode == Activity.RESULT_OK && requestCode == 5) {
+            pref.put(SharedPreferences.GRADE_MODE, data.getStringExtra(SharedPreferences.GRADE_MODE));
+            for (int i = 0; i < 3; i++) {
+                pref.put(Const.SELF_GRADE_PM10[i], data.getStringExtra(Const.SELF_GRADE_PM10[i]));
+                pref.put(Const.SELF_GRADE_PM25[i], data.getStringExtra(Const.SELF_GRADE_PM25[i]));
+                pm10_grade[i].setText(data.getStringExtra(Const.SELF_GRADE_PM10[i]));
+                pm25_grade[i].setText(data.getStringExtra(Const.SELF_GRADE_PM25[i]));
+            }
+            binding.layoutChangeGrade.switchGrade.setChecked(true);
+
+        }
+        else if(resultCode == Activity.RESULT_CANCELED && requestCode == 5) {
+            pref.put(SharedPreferences.GRADE_MODE, Const.ON_OFF[1]);
+            binding.layoutChangeGrade.switchGrade.setChecked(false);
         }
     }
 
@@ -171,6 +190,20 @@ public class SettingFragment extends Fragment implements Views.SettingFragmentVi
                 setDeleteButtonVisibility(false, 3, Const.EMPTY_STRING);
                 mainView.setNavigationTitle(Const.EMPTY_STRING, 3, Const.NAVI_ICON_LOCATION_NOT_SAVED);
                 break;
+        }
+    }
+
+    public void onGradeSwitchClick(View view) {
+        if (binding.layoutChangeGrade.switchGrade.isChecked()) {
+            Intent intent = new Intent(getContext(), ChangeGradeActivity.class);
+            startActivityForResult(intent, 5);
+        }
+        else {
+            pref.put(SharedPreferences.GRADE_MODE, Const.ON_OFF[1]);
+            for (int i = 0; i < 3; i++) {
+                pm10_grade[i].setText(Const.EMPTY_STRING);
+                pm25_grade[i].setText(Const.EMPTY_STRING);
+            }
         }
     }
 

@@ -42,6 +42,10 @@ public interface Views {
         void updateAddressData(List<Addresses> data);
     }
 
+    interface ChangeGradeActivityView {
+
+    }
+
     interface SettingFragmentView {
 
     }
