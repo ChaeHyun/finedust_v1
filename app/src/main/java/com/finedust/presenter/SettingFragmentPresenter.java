@@ -27,7 +27,6 @@ public class SettingFragmentPresenter implements Presenter.SettingFragmentPresen
 
     @Override
     public void deleteSavedData() {
-        pref.put(SharedPreferences.CURRENT_MODE, Const.MODE[0]);
         for (int i=0; i < SharedPreferences.RECENT_DATA.length; i++)
             pref.removeValue(SharedPreferences.RECENT_DATA[i]);
     }

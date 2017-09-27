@@ -31,7 +31,7 @@ public class SettingFragment extends Fragment implements Views.SettingFragmentVi
     Views.MainActivityView mainView;
     MainActivityPresenter mainActivityPresenter;
 
-    SettingFragmentPresenter settingFragmentPresenter = new SettingFragmentPresenter(this, getContext());
+    SettingFragmentPresenter settingFragmentPresenter;
 
     EditText[] pm10_grade = new EditText[3];
     EditText[] pm25_grade = new EditText[3];
@@ -48,7 +48,9 @@ public class SettingFragment extends Fragment implements Views.SettingFragmentVi
         binding.setPlus(this);
         binding.setGrade(this);
 
+        settingFragmentPresenter  = new SettingFragmentPresenter(this, getContext());
         pref = new SharedPreferences(getActivity());
+
         mainView = (MainActivity) getActivity();
         mainActivityPresenter = new MainActivityPresenter(mainView);
         setViewsForMemorizedAddresses();
