@@ -1,5 +1,7 @@
 package com.finedust.retrofit.api;
 
+import android.util.Log;
+
 import com.finedust.model.Const;
 
 import java.util.HashMap;
@@ -45,13 +47,13 @@ public class RetrofitClient {
     }
 
     public static Map<String, String> setQueryParamsForAddress(String umdName) {
-        Map<String, String> queryParmas = new HashMap<>();
-        queryParmas.put("_returnType", "json");
-        queryParmas.put("pageNo", "1");
-        queryParmas.put("numOfRows", "50");
-        queryParmas.put("umdName",umdName);
+        Map<String, String> queryParams = new HashMap<>();
+        queryParams.put("_returnType", "json");
+        queryParams.put("pageNo", "1");
+        queryParams.put("numOfRows", "50");
+        queryParams.put("umdName",umdName);
 
-        return queryParmas;
+        return queryParams;
     }
 
     public static String getGpsConvertUrl(String y, String x) {
@@ -59,6 +61,16 @@ public class RetrofitClient {
                 + "?fromCoord=wgs84" + "&toCoord=TM" + "&output=json"
                 + "&x=" + x  + "&y=" + y
                 + "&apikey=" + Const.DAUM_API_KEY ;
+    }
+
+    public static Map<String, String> setQueryParamsForForecast(String date, String informCode) {
+        Map<String, String> queryParams = new HashMap<>();
+        queryParams.put("searchDate", date);
+        queryParams.put("informCode", informCode);
+        queryParams.put("searchCondition", "DAILY");
+        queryParams.put("_returnType", "json");
+
+        return queryParams;
     }
 
 }

@@ -44,4 +44,6 @@ public class Const {
     public static final String GRADE_BAD     = "3";
     public static final String GRADE_VERYBAD = "4";
 
+    public static final String[] FORECAST_INFORM_CODE = {"pm10" , "pm25" , "o3"};
+
 }

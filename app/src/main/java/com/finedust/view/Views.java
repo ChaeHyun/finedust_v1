@@ -12,6 +12,11 @@ import java.util.List;
 
 public interface Views {
 
+    interface BaseView {
+        void showToastMessage(String msg);
+        void showSnackBarMessage(String msg);
+    }
+
     interface MainActivityView {
         void onFloatingButtonClick(View view);
         void fragmentReplace(Fragment newFragment);
@@ -30,7 +35,7 @@ public interface Views {
         void checkGpsEnabled();
     }
 
-    interface ForecastFragmentView {
+    interface ForecastFragmentView extends BaseView {
 
     }
 

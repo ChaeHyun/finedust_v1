@@ -3,6 +3,7 @@ package com.finedust.retrofit.api;
 import com.finedust.model.AirConditionList;
 import com.finedust.model.Const;
 import com.finedust.model.AddressList;
+import com.finedust.model.ForecastList;
 import com.finedust.model.GpsData;
 import com.finedust.model.Station;
 import com.finedust.model.StationList;
@@ -39,5 +40,10 @@ public interface ApiService {
 
     @GET
     Observable<GpsData> convertGpsData(@Url String url);
+
+    @GET("ArpltnInforInqireSvc/getMinuDustFrcstDspth?ServiceKey=" + Const.SERVICEKEY)
+    Observable<ForecastList> getForecastData(
+            @QueryMap Map<String, String> params
+    );
 
 }

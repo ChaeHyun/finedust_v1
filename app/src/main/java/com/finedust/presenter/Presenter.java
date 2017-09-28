@@ -31,8 +31,8 @@ interface Presenter {
         void getAddressData(Context context, String str);
     }
 
-    interface ForecastFragmentPresenter {
-
+    interface ForecastFragmentPresenter extends BasePresenter {
+        void getForecastData(int index);
     }
 
     interface SettingFragmentPresenter {
