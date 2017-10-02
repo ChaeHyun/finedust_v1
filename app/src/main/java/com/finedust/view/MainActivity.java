@@ -21,6 +21,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.finedust.R;
 import com.finedust.databinding.ActivityMainBinding;
 
@@ -61,7 +62,7 @@ public class MainActivity extends AppCompatActivity
         // MODE Check & Instant run as AirConditionFragment
         String MODE = pref.getValue(SharedPreferences.CURRENT_MODE, Const.EMPTY_STRING);
         Log.i(TAG+ "+ checkCurrentMode ","   MODE >> " + MODE);
-        fragmentReplace(new AirConditionFragment());
+        //fragmentReplace(new AirConditionFragment());
     }
 
     @Override
@@ -234,6 +235,7 @@ public class MainActivity extends AppCompatActivity
             if(i != 0)
                 setNavigationTitle(Const.EMPTY_STRING, i, Const.NAVI_ICON_LOCATION_NOT_SAVED);
         }
+        pref.removeValue(SharedPreferences.RECENT_DATA_FORECAST);
 
         checkNavigationForLocation();
         Snackbar.make(view, "All of preference data deleted.", Snackbar.LENGTH_LONG)
@@ -315,5 +317,15 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
+    @Override
+    public void onLowMemory() {
+        super.onLowMemory();
+        Glide.get(this).clearMemory();
+    }
 
+    @Override
+    public void onTrimMemory(int level) {
+        super.onTrimMemory(level);
+        Glide.get(this).trimMemory(level);
+    }
 }

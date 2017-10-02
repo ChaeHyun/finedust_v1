@@ -63,13 +63,12 @@ public class RetrofitClient {
                 + "&apikey=" + Const.DAUM_API_KEY ;
     }
 
-    public static Map<String, String> setQueryParamsForForecast(String date, String informCode) {
+    public static Map<String, String> setQueryParamsForForecast(String date) {
         Map<String, String> queryParams = new HashMap<>();
         queryParams.put("searchDate", date);
-        queryParams.put("informCode", informCode);
-        queryParams.put("searchCondition", "DAILY");
         queryParams.put("_returnType", "json");
 
+        Log.i(TAG, "파라미터 확인 : \n" + queryParams.toString());
         return queryParams;
     }
 

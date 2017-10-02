@@ -32,7 +32,8 @@ interface Presenter {
     }
 
     interface ForecastFragmentPresenter extends BasePresenter {
-        void getForecastData(int index);
+        void getForecastDataFromServer(String date);
+        void getForecastData();
     }
 
     interface SettingFragmentPresenter {

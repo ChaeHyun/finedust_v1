@@ -169,7 +169,7 @@ public class AirConditionFragment extends Fragment implements Views.AirCondition
 
     @Override
     public void showSnackBarMessage(String msg) {
-        Snackbar.make(binding.getRoot(), msg, 3000).show();
+        Snackbar.make(getActivity().findViewById(android.R.id.content), msg, 3000).show();
     }
 
     @Override

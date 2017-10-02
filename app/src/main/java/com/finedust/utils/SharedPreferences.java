@@ -15,6 +15,8 @@ public class SharedPreferences {
     public static final String GRADE_MODE = "GradeMode";
     public static final String[] RECENT_DATA = {"RecentData_CURRENT", "RecentData_ONE", "RecentData_TWO", "RecentData_THREE"};
     public static final String[] MEMORIZED_LOCATIONS = {"MemorizedAddress_Zero", "MemorizedAddress_One", "MemorizedAddress_Two", "MemorizedAddress_Three"};
+    public static final String RECENT_DATA_FORECAST = "RecentData_Forecast";
+
 
 
 
