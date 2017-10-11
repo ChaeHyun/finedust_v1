@@ -62,7 +62,7 @@ public class MainActivity extends AppCompatActivity
         // MODE Check & Instant run as AirConditionFragment
         String MODE = pref.getValue(SharedPreferences.CURRENT_MODE, Const.EMPTY_STRING);
         Log.i(TAG+ "+ checkCurrentMode ","   MODE >> " + MODE);
-        //fragmentReplace(new AirConditionFragment());
+        fragmentReplace(new AirConditionFragment());
     }
 
     @Override

@@ -444,8 +444,19 @@ public class AirConditionFragmentPresenter
             previousData.get(0).setO3Grade(nextStationData.getO3Grade());
             previousData.get(0).setO3Value(nextStationData.getO3Value());
         }
+        if( previousData.get(0).getNo2Value().equals("-") ) {
+            previousData.get(0).setNo2Grade(nextStationData.getNo2Grade());
+            previousData.get(0).setNo2Value(nextStationData.getNo2Value());
+        }
+        if( previousData.get(0).getCoValue().equals("-") ) {
+            previousData.get(0).setCoGrade(nextStationData.getCoGrade());
+            previousData.get(0).setCoValue(nextStationData.getCoValue());
+        }
+        if( previousData.get(0).getSo2Value().equals("-") ) {
+            previousData.get(0).setSo2Grade(nextStationData.getSo2Grade());
+            previousData.get(0).setSo2Value(nextStationData.getSo2Value());
+        }
 
-        // 나중에 Co, NO2, SO2 추가 가능
 
         return previousData;
     }
@@ -455,7 +466,10 @@ public class AirConditionFragmentPresenter
         if ( airData.getKhaiValue().equals("-")
                 || airData.getPm10Value().equals("-")
                 || airData.getPm25Value().equals("-")
-                || airData.getO3Value().equals("-") ) {
+                || airData.getO3Value().equals("-")
+                || airData.getNo2Value().equals("-")
+                || airData.getCoValue().equals("-")
+                || airData.getSo2Value().equals("-") ) {
             return false;
         }
         return true;
