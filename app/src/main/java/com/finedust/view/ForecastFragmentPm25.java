@@ -4,7 +4,6 @@ package com.finedust.view;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -60,11 +59,11 @@ public class ForecastFragmentPm25 extends Fragment {
             binding.layoutInfoZero.textDate.setText(recentForecast.getPM25().getDataTime());
             binding.layoutInfoZero.textContentZero.setText(recentForecast.getInformOverallToday_PM25());
             binding.layoutInfo.textContentOne.setText(recentForecast.getPM25().getInformOverall());
-            binding.layoutReason.textContentTwo.setText(recentForecast.getPM25().getInformCause());
-            binding.layoutStates.textContentThree.setText(recentForecast.getPM25().getInformGrade() + "\n" + recentForecast.getImageUrl_PM25());
+            binding.layoutReason.textContentTwo.setText(recentForecast.getInformCause_PM25());
+            binding.layoutStates.textContentThree.setText(recentForecast.getPM25().getInformGrade());
 
-            binding.layoutInfo.imageLayout.setVisibility(View.VISIBLE);
-            GlideDrawableImageViewTarget gifImage = new GlideDrawableImageViewTarget(binding.layoutInfo.imgYebo);
+            binding.layoutReason.imageLayout.setVisibility(View.VISIBLE);
+            GlideDrawableImageViewTarget gifImage = new GlideDrawableImageViewTarget(binding.layoutReason.imgYebo);
             Glide.with(getContext()).load(recentForecast.getImageUrl_PM25()).dontTransform().dontAnimate().diskCacheStrategy(DiskCacheStrategy.RESULT).into(gifImage);
         }
         catch (NullPointerException e) {

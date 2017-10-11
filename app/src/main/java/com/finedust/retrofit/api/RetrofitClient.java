@@ -68,7 +68,6 @@ public class RetrofitClient {
         queryParams.put("searchDate", date);
         queryParams.put("_returnType", "json");
 
-        Log.i(TAG, "파라미터 확인 : \n" + queryParams.toString());
         return queryParams;
     }
 

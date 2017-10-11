@@ -15,7 +15,6 @@ import com.bumptech.glide.request.target.GlideDrawableImageViewTarget;
 import com.finedust.R;
 import com.finedust.databinding.ForecastUiBinding;
 import com.finedust.model.Const;
-import com.finedust.model.Forecast;
 import com.finedust.model.RecentForecast;
 import com.finedust.utils.SharedPreferences;
 
@@ -27,7 +26,6 @@ public class ForecastFragmentPm10 extends Fragment {
     private static final String TAG = ForecastFragmentPm10.class.getSimpleName();
 
     ForecastUiBinding binding;
-    Forecast recentForecastPm10;
     SharedPreferences pref;
 
     public ForecastFragmentPm10() {
@@ -62,11 +60,11 @@ public class ForecastFragmentPm10 extends Fragment {
             binding.layoutInfoZero.textDate.setText(recentForecast.getPM10().getDataTime());
             binding.layoutInfoZero.textContentZero.setText(recentForecast.getInformOverallToday_PM10());
             binding.layoutInfo.textContentOne.setText(recentForecast.getPM10().getInformOverall());
-            binding.layoutReason.textContentTwo.setText(recentForecast.getPM10().getInformCause());
-            binding.layoutStates.textContentThree.setText(recentForecast.getPM10().getInformGrade() + "\n" + recentForecast.getImageUrl_PM10());
+            binding.layoutReason.textContentTwo.setText(recentForecast.getInformCause_PM10());
+            binding.layoutStates.textContentThree.setText(recentForecast.getPM10().getInformGrade());
 
-            binding.layoutInfo.imageLayout.setVisibility(View.VISIBLE);
-            GlideDrawableImageViewTarget gifImage = new GlideDrawableImageViewTarget(binding.layoutInfo.imgYebo);
+            binding.layoutReason.imageLayout.setVisibility(View.VISIBLE);
+            GlideDrawableImageViewTarget gifImage = new GlideDrawableImageViewTarget(binding.layoutReason.imgYebo);
             Glide.with(getContext()).load(recentForecast.getImageUrl_PM10()).dontTransform().dontAnimate().diskCacheStrategy(DiskCacheStrategy.RESULT).into(gifImage);
 
         }

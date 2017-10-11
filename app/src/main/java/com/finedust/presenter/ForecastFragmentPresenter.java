@@ -14,10 +14,12 @@ import com.finedust.utils.SharedPreferences;
 import com.finedust.view.Views;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.StringTokenizer;
 
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -64,13 +66,10 @@ public class ForecastFragmentPresenter implements Presenter.ForecastFragmentPres
         if (currentHour >= 0 && currentHour < 5)
             mCalendar.add(Calendar.DATE, -1);
 
-        //SimpleDateFormat dayFormat = new SimpleDateFormat("dd", Locale.getDefault());
         String currentDay = dateFormat.format(mCalendar.getTime()).substring(8,10);
 
         if (!compareSavedDataTime(currentDay, String.valueOf(currentHour))) {
             date = dateFormat.format(mCalendar.getTime());
-            Log.i(TAG, "current Hour : " + currentHour + " , Day : " + currentDay + "\nDate : " + date);
-            view.showToastMessage("current Hour : " + currentHour + " , Day : " + currentDay + "\nDate : " + date);
 
             return date;
         }
@@ -83,18 +82,9 @@ public class ForecastFragmentPresenter implements Presenter.ForecastFragmentPres
         try {
             RecentForecast recentForecast = (RecentForecast) pref.getObject(SharedPreferences.RECENT_DATA_FORECAST, Const.EMPTY_STRING, new RecentForecast());
 
-            Log.i(TAG, "currentDay : " + currentDay + " , pastDay : " + recentForecast.getSaveDay());
             if (String.valueOf(currentDay).equals(recentForecast.getSaveDay())) {
-                //최근정보로 업데이트
                 int pastHour = Integer.parseInt(recentForecast.getPM10().getDataTime().substring(11,13));
-                String msg = "pastHour : " + pastHour
-                        +"\n과거시간 페이즈 : " + getTimePhaseZone(pastHour)
-                        +"\n현재시간 페이즈 : " + getTimePhaseZone(Integer.parseInt(currentHour))
-                        +"\n비교결과 : " + (getTimePhaseZone(pastHour) == getTimePhaseZone(Integer.parseInt(currentHour)));
-                Log.i(TAG, msg);
-                view.showToastMessage(msg);
 
-                //최근정보로 업데이트
                 if ( getTimePhaseZone(pastHour) == getTimePhaseZone(Integer.parseInt(currentHour)) ) {
                     view.saveDataToPreferences(recentForecast);
 
@@ -138,7 +128,7 @@ public class ForecastFragmentPresenter implements Presenter.ForecastFragmentPres
                         }, new Consumer<Throwable>() {
                             @Override
                             public void accept(@NonNull Throwable throwable) throws Exception {
-                                Log.v(TAG, "Fail to get data from server[getForecastDataFromServer()] " + day);
+                                Log.v(TAG, "Fail to get data from server[getForecastDataFromServer()] ");
                                 view.showToastMessage(Const.STR_FAIL_GET_DATA_FROM_SERVER);
                             }
                         })
@@ -149,27 +139,67 @@ public class ForecastFragmentPresenter implements Presenter.ForecastFragmentPres
 
 
     private void saveRecentForecastData(List<Forecast> forecastRecent , String day) {
-        Log.i(TAG, "# pref에 데이터 저장하기.");
         RecentForecast recentForecast = new RecentForecast();
         recentForecast.setSaveDay(day);
 
+        forecastRecent.get(1).setInformGrade(setStringArrange(forecastRecent.get(1).getInformGrade()));
         recentForecast.setInformOverallToday_PM10(forecastRecent.get(0).getInformOverall());
+        recentForecast.setInformCause_PM10(forecastRecent.get(0).getInformCause());
         recentForecast.setPM10(forecastRecent.get(1));
         recentForecast.setImageUrl_PM10(forecastRecent.get(1).getImageUrl7());
 
-
+        forecastRecent.get(4).setInformGrade(setStringArrange(forecastRecent.get(4).getInformGrade()));
         recentForecast.setInformOverallToday_PM25(forecastRecent.get(3).getInformOverall());
+        recentForecast.setInformCause_PM25(forecastRecent.get(3).getInformCause());
         recentForecast.setPM25(forecastRecent.get(4));
         recentForecast.setImageUrl_PM25(forecastRecent.get(4).getImageUrl8());
 
-
+        forecastRecent.get(7).setInformGrade(setStringArrange(forecastRecent.get(7).getInformGrade()));
         recentForecast.setInformOverallToday_O3(forecastRecent.get(6).getInformOverall());
+        recentForecast.setInformCause_O3(forecastRecent.get(6).getInformCause());
         recentForecast.setO3(forecastRecent.get(7));
         recentForecast.setImageUrl_O3(forecastRecent.get(7).getImageUrl9());
 
         pref.putObject(SharedPreferences.RECENT_DATA_FORECAST, recentForecast);
 
         view.saveDataToPreferences(recentForecast);
+    }
+
+
+    private String setStringArrange(String str) {
+        if (str.equals(""))
+            return "";
+
+        String result = null;
+        ArrayList<String> cityGradeList = new ArrayList<>();
+        StringTokenizer token = new StringTokenizer(str, ",");
+        int cntToken = token.countTokens();
+        for (int i = 0; i < cntToken; i++) {
+            String divided = token.nextToken();
+            cityGradeList.add(divided);
+        }
+
+        if (!cityGradeList.isEmpty()) {
+            String temp = cityGradeList.get(15);
+            cityGradeList.set(15, cityGradeList.get(17));
+            cityGradeList.set(17, temp);
+
+            if (cityGradeList.get(0).equals("서울 : 예보없음")) {
+                result = "○[시도별등급] 현재 예보정보 없음";
+            }
+            else {
+                result = "[ " + cityGradeList.get(0);
+                for (int i = 1; i < cityGradeList.size(); i++) {
+                    if ( (i%3 == 0 && i != 18) || i == 17)
+                        result += " ]\n[ " + cityGradeList.get(i);
+                    else
+                        result += " ] [" + cityGradeList.get(i);
+                }
+                result += " ]";
+            }
+        }
+
+        return result;
     }
 
     private int getTimePhaseZone(int hour) {

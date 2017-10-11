@@ -11,6 +11,10 @@ public class RecentForecast {
     private String informOverallToday_PM25;
     private String informOverallToday_O3;
 
+    private String informCause_PM10;
+    private String informCause_PM25;
+    private String informCause_O3;
+
     private String imageUrl_PM10;
     private String imageUrl_PM25;
     private String imageUrl_O3;
@@ -20,6 +24,30 @@ public class RecentForecast {
     private String saveDay;
 
     public RecentForecast() {
+    }
+
+    public String getInformCause_PM10() {
+        return informCause_PM10;
+    }
+
+    public void setInformCause_PM10(String informCause_PM10) {
+        this.informCause_PM10 = informCause_PM10;
+    }
+
+    public String getInformCause_PM25() {
+        return informCause_PM25;
+    }
+
+    public void setInformCause_PM25(String informCause_PM25) {
+        this.informCause_PM25 = informCause_PM25;
+    }
+
+    public String getInformCause_O3() {
+        return informCause_O3;
+    }
+
+    public void setInformCause_O3(String informCause_O3) {
+        this.informCause_O3 = informCause_O3;
     }
 
     public String getImageUrl_PM10() {
