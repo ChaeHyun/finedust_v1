@@ -4,6 +4,7 @@ package com.finedust.view;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -71,7 +72,7 @@ public class ForecastFragmentO3 extends Fragment {
         }
         else {
             binding.layoutInfoZero.textDate.setText("비운영기간");
-            binding.layoutInfoZero.textContentZero.setText("오존 예보는 매년 4월15일 ~ 10월15일까지 발표됩니다.");
+            binding.layoutInfoZero.textContentZero.setText("오존 예보는 4월15일~10월15일만 운영 중입니다.");
         }
     }
 
@@ -92,10 +93,9 @@ public class ForecastFragmentO3 extends Fragment {
         mCalendar.set(Calendar.DATE, 15);
         int end = mCalendar.get(Calendar.DAY_OF_YEAR);
 
-
         Calendar today = Calendar.getInstance();
         int dayOfYear = today.get(Calendar.DAY_OF_YEAR);
 
-        return (start <= dayOfYear && dayOfYear <= end);
+        return (start <= dayOfYear && dayOfYear < end);
     }
 }
