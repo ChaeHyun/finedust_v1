@@ -1,0 +1,80 @@
+<layout>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.finedust.view.ForecastFragment">
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:background="@drawable/border_for_menu"
+        android:id="@+id/menu_buttons">
+
+        <Button
+            android:layout_width="20dp"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:textColor="@drawable/clicked_btn"
+            android:textColorHighlight="@drawable/clicked_btn"
+            android:text="@string/air_data_title_pm10"
+            android:textSize="13sp"
+            android:id="@+id/btn_pm10"
+            android:layout_weight="1"
+            android:layout_gravity="center" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:contentDescription="@string/missing_img"
+            android:layout_gravity="center"
+            android:src="@drawable/line_black"
+            android:id="@+id/imageView2" />
+
+        <Button
+            android:layout_width="20dp"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:textColor="@drawable/clicked_btn"
+            android:textColorHighlight="@drawable/clicked_btn"
+            android:text="@string/air_data_title_pm25"
+            android:textSize="13sp"
+            android:id="@+id/btn_pm25"
+            android:layout_weight="1"
+            android:layout_gravity="center" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:contentDescription="@string/missing_img"
+            android:layout_gravity="center"
+            android:src="@drawable/line_black"
+            android:id="@+id/imageView3" />
+
+        <Button
+            android:layout_width="20dp"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:textColor="@drawable/clicked_btn"
+            android:textColorHighlight="@drawable/clicked_btn"
+            android:text="@string/air_data_o3"
+            android:textSize="13sp"
+            android:id="@+id/btn_o3"
+            android:layout_weight="1"
+            android:layout_gravity="center" />
+
+    </LinearLayout>
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/viewPager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/menu_buttons">
+
+    </android.support.v4.view.ViewPager>
+
+</RelativeLayout>
+</layout>

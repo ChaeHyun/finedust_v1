@@ -5,11 +5,11 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
 
+
 public class AirConditionList {
     @SerializedName("list")
     @Expose
     private ArrayList<AirCondition> list = null;
-
     @SerializedName("totalCount")
     @Expose
     private Integer totalCount;

@@ -3,6 +3,7 @@ package com.finedust.model;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+
 public class AirCondition {
     @SerializedName("_returnType")
     @Expose
@@ -138,6 +139,10 @@ public class AirCondition {
 
     public String getDataTime() {
         return dataTime;
+    }
+
+    public String getDataTimeTrim() {
+        return dataTime.substring(0,13) + "시 발표";
     }
 
     public void setDataTime(String dataTime) {

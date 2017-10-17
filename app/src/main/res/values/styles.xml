@@ -13,6 +13,34 @@
         <item name="windowNoTitle">true</item>
     </style>
 
+
+    <style name="DefaultTheme" parent="Base.Theme.AppCompat.Light.DarkActionBar">
+        <item name="colorPrimary">@color/toolBar_DEFAULT</item>
+        <item name="colorPrimaryDark">@color/toolBar_DEFAULT_Dark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+    <style name="OverlayPrimaryColorRed">
+        <item name="colorPrimary">@color/toolBar_RED</item>
+        <item name="colorPrimaryDark">@color/toolBar_RED_Dark</item>
+    </style>
+
+    <style name="OverlayPrimaryColorYellow">
+        <item name="colorPrimary">@color/toolBar_YELLOW</item>
+        <item name="colorPrimaryDark">@color/toolBar_YELLOW_Dark</item>
+    </style>
+
+    <style name="OverlayPrimaryColorGreen">
+        <item name="colorPrimary">@color/toolBar_GREEN</item>
+        <item name="colorPrimaryDark">@color/toolBar_GREEN_Dark</item>
+    </style>
+
+    <style name="OverlayPrimaryColorBlue">
+        <item name="colorPrimary">@color/toolBar_BLUE</item>
+        <item name="colorPrimaryDark">@color/toolBar_BLUE_Dark</item>
+    </style>
+
+
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+    <data>
+        <variable
+            name="button"
+            type="com.finedust.view.ChangeGradeActivity"/>
+    </data>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ScrollView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/scrollView2">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <include
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/layout_grade_pm10"
+                android:layout_centerHorizontal="true"
+                layout="@layout/setting_change_grade_pm10" />
+
+            <include
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/layout_grade_pm10"
+                android:id="@+id/layout_grade_pm25"
+                android:layout_centerHorizontal="true"
+                layout="@layout/setting_change_grade_pm25" />
+
+            <include
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/layout_data"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@+id/layout_grade_pm25"
+                layout="@layout/setting_change_grade_info"
+                android:layout_margin="15dp"
+                app:button="@{button}" />
+
+        </RelativeLayout>
+    </ScrollView>
+
+</RelativeLayout>
+</layout>

@@ -1,0 +1,78 @@
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+    <data>
+        <variable
+            name="aircondition"
+            type="com.finedust.view.AirConditionFragment" />
+    </data>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.finedust.view.AirConditionFragment">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/scrollView"
+        android:layout_alignParentBottom="false">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <include
+                android:id="@+id/layout_location_info"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="5dp"
+                layout="@layout/aircondition_current_location" />
+
+            <include
+                android:id="@+id/layout_general"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@+id/layout_location_info"
+                layout="@layout/aircondition_general" />
+
+            <include
+                android:id="@+id/layout_pm_info"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@+id/layout_general"
+                layout="@layout/aircondition_data_pm" />
+
+
+            <include
+                android:id="@+id/layout_others"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@+id/layout_pm_info"
+                layout="@layout/aircondition_data_etc" />
+
+            <include
+                android:id="@+id/layout_stations"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@+id/layout_others"
+                layout="@layout/aircondition_stations" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/missing_img"
+                android:id="@+id/img_Status"
+                android:src="@drawable/states_bar_round"
+                android:layout_below="@+id/layout_stations"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp" />
+        </RelativeLayout>
+
+    </ScrollView>
+
+</RelativeLayout>
+</layout>
