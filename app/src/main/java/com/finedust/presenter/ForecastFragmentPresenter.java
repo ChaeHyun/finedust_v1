@@ -129,7 +129,7 @@ public class ForecastFragmentPresenter implements Presenter.ForecastFragmentPres
                             @Override
                             public void accept(@NonNull Throwable throwable) throws Exception {
                                 Log.v(TAG, "Fail to get data from server[getForecastDataFromServer()] ");
-                                view.showToastMessage(Const.STR_FAIL_GET_DATA_FROM_SERVER);
+                                view.showSnackBarMessage(Const.STR_FAIL_GET_DATA_FROM_SERVER);
                             }
                         })
             );
@@ -154,11 +154,16 @@ public class ForecastFragmentPresenter implements Presenter.ForecastFragmentPres
         recentForecast.setPM25(forecastRecent.get(4));
         recentForecast.setImageUrl_PM25(forecastRecent.get(4).getImageUrl8());
 
-        forecastRecent.get(7).setInformGrade(setStringArrange(forecastRecent.get(7).getInformGrade()));
-        recentForecast.setInformOverallToday_O3(forecastRecent.get(6).getInformOverall());
-        recentForecast.setInformCause_O3(forecastRecent.get(6).getInformCause());
-        recentForecast.setO3(forecastRecent.get(7));
-        recentForecast.setImageUrl_O3(forecastRecent.get(7).getImageUrl9());
+        try {
+            forecastRecent.get(7).setInformGrade(setStringArrange(forecastRecent.get(7).getInformGrade()));
+            recentForecast.setInformOverallToday_O3(forecastRecent.get(6).getInformOverall());
+            recentForecast.setInformCause_O3(forecastRecent.get(6).getInformCause());
+            recentForecast.setO3(forecastRecent.get(7));
+            recentForecast.setImageUrl_O3(forecastRecent.get(7).getImageUrl9());
+        }
+        catch (IndexOutOfBoundsException e) {
+            Log.i(TAG, "No Data for O3");
+        }
 
         pref.putObject(SharedPreferences.RECENT_DATA_FORECAST, recentForecast);
 
