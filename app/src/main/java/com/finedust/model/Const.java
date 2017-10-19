@@ -45,4 +45,7 @@ public class Const {
     public static final String GRADE_VERYBAD = "4";
 
 
+    public static final String DEVICE_CATEGORY_SAMSUNG = "samsung";
+
+
 }
