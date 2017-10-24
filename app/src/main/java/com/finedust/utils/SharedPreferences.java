@@ -17,6 +17,14 @@ public class SharedPreferences {
     public static final String[] MEMORIZED_LOCATIONS = {"MemorizedAddress_Zero", "MemorizedAddress_One", "MemorizedAddress_Two", "MemorizedAddress_Three"};
     public static final String RECENT_DATA_FORECAST = "RecentData_Forecast";
 
+    public static final String INTERVAL = "Interval_";
+    public static final String TRANSPARENT = "Transparent_";
+    public static final String WIDGET_SELECTED_LOCATION_INDEX = "SelectedLocation_";
+    public static final String WIDGET_MODE = "WidgetMode_";
+
+
+
+
 
 
 

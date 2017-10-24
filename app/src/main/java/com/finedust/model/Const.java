@@ -45,7 +45,22 @@ public class Const {
     public static final String GRADE_VERYBAD = "4";
 
 
+    public static final String BOOT_COMPLETED = "ch.bootcompleted.control.BootCompletedReceiver";
+
+
     public static final String DEVICE_CATEGORY_SAMSUNG = "samsung";
+
+    public static final String WIDGET_DEFAULT_INTERVAL = "3";
+    public static final String WIDGET_DEFAULT_TRANSPARENT = "170";
+
+    public static final String WIDGET_DARK_REFRESH = "ch.widget_action.WIDGET_DARK_REFRESH";
+    public static final String WIDGET_DARK_CALL_SERVICE = "ch.widget_action.WIDGET_DARK_GETDATA_FROM_SERVER";
+    public static final String WIDGET_DARK_RESPONSE_FROM_SERVER = "ch.widget_action.WIDGET_DARK_RESPONSE_FROM_SERVER";
+
+    public static final String WIDGET_MODE = "WidgetMode_";
+    public static final String WIDGET_LOCATION = "WidgetLocation_";
+    public static final String WIDGET_TM_X = "Widget_TM_X_";
+    public static final String WIDGET_TM_Y = "Widget_TM_Y_";
 
 
 }

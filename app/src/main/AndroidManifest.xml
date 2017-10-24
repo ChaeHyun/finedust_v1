@@ -8,6 +8,7 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
     <application
         android:allowBackup="true"
@@ -30,9 +31,20 @@
         <activity android:name=".view.SearchAddressActivity" />
         <activity android:name=".view.ChangeGradeActivity" />
 
-        <receiver android:name=".widget.WidgetDark">
+        <!-- Widget Dark -->
+        <receiver
+            android:name=".widget.WidgetDark"
+            android:label="가나다_위젯(어두운버전)">
             <intent-filter>
+
+                <!-- Essential Parameter -->
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+
+                <!-- Custom actions -->
+                <action android:name="ch.widget_action.WIDGET_DARK_REFRESH" />
+                <action android:name="ch.widget_action.WIDGET_DARK_RESPONSE_FROM_SERVER" />
+
+                <action android:name="ch.bootcompleted.control.BootCompletedReceiver" />
             </intent-filter>
 
             <meta-data
@@ -45,6 +57,23 @@
                 <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
             </intent-filter>
         </activity>
+
+        <service android:name=".service.WidgetDarkService">
+            <intent-filter>
+                <action android:name="ch.widget_action.WIDGET_DARK_GETDATA_FROM_SERVER" />
+            </intent-filter>
+        </service>
+
+        <receiver
+            android:name=".service.BootCompletedReceiver"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMMPLETED" />
+
+            </intent-filter>
+        </receiver>
+
     </application>
 
 </manifest>
