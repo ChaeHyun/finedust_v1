@@ -29,8 +29,6 @@ import java.util.Locale;
 public class WidgetDark extends AppWidgetProvider implements WidgetViews.WidgetDarkView {
     private final static String TAG = WidgetDark.class.getSimpleName();
 
-    SharedPreferences pref;
-
     static String intervalValue;
     static String transparentValue;
     static int selectedRadioButton;
@@ -52,7 +50,7 @@ public class WidgetDark extends AppWidgetProvider implements WidgetViews.WidgetD
             Log.i(TAG, "selectedRadioButton : " + selectedRadioButton);
 
             savedLocation = (Addresses) pref.getObject(SharedPreferences.MEMORIZED_LOCATIONS[selectedRadioButton], Const.EMPTY_STRING ,new Addresses());
-            Log.i(TAG, "주소 : " + savedLocation.getAddr() + "\n좌표 : " + savedLocation.getTmX() + " , " + savedLocation.getTmY()
+            Log.i(TAG, "주소 : " + savedLocation.getAddr() + " > " + savedLocation.getTmX() + " , " + savedLocation.getTmY()
                     + "\n시간 : " + intervalValue + " , 투명도 : " + transparentValue + " , 모드 : " + widgetMode);
 
             if  (selectedRadioButton != 0) {
@@ -123,7 +121,7 @@ public class WidgetDark extends AppWidgetProvider implements WidgetViews.WidgetD
         Log.i(TAG, "## onDeleted() ");
         // When the user deletes the widget, delete the preference associated with it.
         for (int appWidgetId : appWidgetIds) {
-            Log.i(TAG, "  # 위젯아이디 : " + appWidgetId);
+            Log.i(TAG, "  # widgetId : " + appWidgetId);
             WidgetDarkConfigureActivity.deletePrefForWidgets(context, appWidgetId);
             WidgetDarkService.cancelAlarmSchedule(context, appWidgetId);
         }
@@ -145,39 +143,34 @@ public class WidgetDark extends AppWidgetProvider implements WidgetViews.WidgetD
     public void onReceive(Context context, Intent intent) {
         Log.i(TAG, "#onReceive() ");
 
-        pref = new SharedPreferences(context);
+        SharedPreferences pref = new SharedPreferences(context);
 
         String action = intent.getAction();
         RemoteViews remoteViews = getProperRemoteViews(context);
         AppWidgetManager manager  = AppWidgetManager.getInstance(context);
 
         if (AppWidgetManager.ACTION_APPWIDGET_UPDATE.equals(action)) {
-            Log.i(TAG, "  #onReceive() - ACTION_APPWIDGET_UPDATE + ");
+            Log.i(TAG, "  #onReceive() - ACTION_APPWIDGET_UPDATE  ");
             //updateWidget 하나만 업데이트 할 방법 찾기. mAppWidgetId를 받아올 방법. Uri 이용.
             int id = intent.getExtras().getInt(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
-            String widgetId = intent.getStringExtra("widgetId");
-            String trans = intent.getStringExtra("transparent");
-            String location = intent.getStringExtra("location");
 
-            if (id != 0) {
-                Log.i(TAG, "Receive >>  ## id : " + id + " , widgetId(str) : " + widgetId + " , trans : " + trans + " , location : " + location);
-
+            if (id != AppWidgetManager.INVALID_APPWIDGET_ID) {
+                Log.i(TAG, "    Receive >>  ## id : " + id);
                 updateAppWidget(context, manager, id);
             }
-
         }
 
         else if (Const.WIDGET_DARK_RESPONSE_FROM_SERVER.equals(action)) {
             Log.i(TAG, "  #onReceive() - RESPONSE FROM SERVER(SERVICE).");
-            String widgetId = intent.getStringExtra("WidgetId");
+            String widgetId = intent.getStringExtra(Const.WIDGET_ID);
             int appWidgetId = Integer.parseInt(widgetId);
-            String location = intent.getStringExtra("Location");
-            String widgetMode = intent.getStringExtra("WidgetMode");
-            String tmX = intent.getStringExtra("tmX");
-            String tmY = intent.getStringExtra("tmY");
+            String location = intent.getStringExtra(Const.WIDGET_LOCATION);
+            String widgetMode = intent.getStringExtra(Const.WIDGET_MODE);
+            String tmX = intent.getStringExtra(Const.WIDGET_TM_X);
+            String tmY = intent.getStringExtra(Const.WIDGET_TM_Y);
             String transparent = pref.getValue(SharedPreferences.TRANSPARENT + widgetId, Const.WIDGET_DEFAULT_TRANSPARENT);
 
-            Log.i(TAG, "Service 응답 확인\n" +"  location : " + location + " at " + tmX + " , " + tmY +"\n  위젯ID : " + widgetId);
+            Log.i(TAG, "Service 응답 확인 >> " + " id  : " + widgetId +" , location : " + location + " at " + tmX + " , " + tmY);
 
             /**
              * 위젯의 특정 부분을 클릭하였을 때 발생하는 이벤트 - 재부팅 시 (Galaxy Series)
@@ -204,12 +197,17 @@ public class WidgetDark extends AppWidgetProvider implements WidgetViews.WidgetD
             PendingIntent darkRefreshPending = PendingIntent.getService(context, appWidgetId, refreshIntent, PendingIntent.FLAG_UPDATE_CURRENT);
             remoteViews.setOnClickPendingIntent(R.id.refresh, darkRefreshPending);
 
-
-            // calculate updated time
-            String refreshedTime = calculateCurrentTime();
-            remoteViews.setTextViewText(R.id.value_date, refreshedTime);
+            // updated time
+            remoteViews.setTextViewText(R.id.value_date, calculateCurrentTime());
             remoteViews.setTextViewText(R.id.value_location, location);     // UI needs to be updated here in case reboot is completed.
             remoteViews.setInt(R.id.layout_ground, "setBackgroundColor", Color.argb(Integer.parseInt(transparent), 0,0,0));
+
+            // For testing.
+            try {
+                Thread.sleep(1000);
+            } catch(InterruptedException e) {
+                //e.printStackTrace();
+            }
 
             setProgressViewVisibility(context, appWidgetId, false);         // stop progress dial.
 
@@ -221,7 +219,6 @@ public class WidgetDark extends AppWidgetProvider implements WidgetViews.WidgetD
             //onUpdate with all widgetIds[]..
             onUpdate(context, manager, manager.getAppWidgetIds(new ComponentName(context, WidgetDark.class)));
         }
-
         super.onReceive(context, intent);
     }
 
@@ -242,7 +239,6 @@ public class WidgetDark extends AppWidgetProvider implements WidgetViews.WidgetD
         }
     }
 
-
     public static void setProgressViewVisibility(Context context, int mAppWidgetId, boolean on) {
         RemoteViews views = getProperRemoteViews(context);
 
@@ -260,6 +256,7 @@ public class WidgetDark extends AppWidgetProvider implements WidgetViews.WidgetD
         AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
         appWidgetManager.updateAppWidget(mAppWidgetId, views);
     }
+
 
 }
 

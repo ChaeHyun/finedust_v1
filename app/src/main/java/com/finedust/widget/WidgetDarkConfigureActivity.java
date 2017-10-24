@@ -187,9 +187,7 @@ public class WidgetDarkConfigureActivity extends AppCompatActivity {
         update.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
         update.setData(Uri.withAppendedPath(Uri.parse("WidgetDark" + "://widget/id/") , String.valueOf(mAppWidgetId)));
         update.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, mAppWidgetId);
-        update.putExtra("widgetId" , String.valueOf(mAppWidgetId));
-        update.putExtra("transparent" , transparent);
-        update.putExtra("location" , selectedLocation);
+
         sendBroadcast(update);
 
     }

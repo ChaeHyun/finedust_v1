@@ -12,9 +12,7 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.util.Log;
-import android.widget.RemoteViews;
 
-import com.finedust.R;
 import com.finedust.model.Const;
 import com.finedust.utils.SharedPreferences;
 import com.finedust.widget.WidgetDark;
@@ -25,10 +23,8 @@ public class WidgetDarkService extends Service {
 
     static int mAppWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
 
-    Context mContext;
-    SharedPreferences pref;
-
-    static int cnt =  0;
+    private Context mContext;
+    private SharedPreferences pref;
 
     public WidgetDarkService() {
         this.mContext = this;
@@ -67,8 +63,8 @@ public class WidgetDarkService extends Service {
             Intent alarmRefresh = new Intent(context , WidgetDarkService.class);
             alarmRefresh.setData(Uri.withAppendedPath(Uri.parse("WidgetDark" + "://widget/id/") , String.valueOf(mAppWidgetId)));
             alarmRefresh.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID , mAppWidgetId);
-            alarmRefresh.putExtra(Const.WIDGET_MODE, widgetMode);
             alarmRefresh.putExtra(Const.WIDGET_LOCATION, location);
+            alarmRefresh.putExtra(Const.WIDGET_MODE, widgetMode);
             alarmRefresh.putExtra(Const.WIDGET_TM_X, tm_x);
             alarmRefresh.putExtra(Const.WIDGET_TM_Y, tm_y);
 
@@ -107,24 +103,15 @@ public class WidgetDarkService extends Service {
     public void updateWidgetDataFromServer(String location, String widgetMode, String tmX, String tmY) {
 
         Intent i  = new Intent(Const.WIDGET_DARK_RESPONSE_FROM_SERVER);
-        i.putExtra("msg", "# Service 응답 #");
-        i.putExtra("WidgetId", String.valueOf(mAppWidgetId));
-        i.putExtra("Location", location);
-        i.putExtra("widgetMode", widgetMode);
-        i.putExtra("tmX", tmX);
-        i.putExtra("tmY", tmY);
+        i.putExtra(Const.WIDGET_ID, String.valueOf(mAppWidgetId));
+        i.putExtra(Const.WIDGET_LOCATION, location);
+        i.putExtra(Const.WIDGET_MODE, widgetMode);
+        i.putExtra(Const.WIDGET_TM_X, tmX);
+        i.putExtra(Const.WIDGET_TM_Y, tmY);
 
         // Run Progress Dial
         WidgetDark.setProgressViewVisibility(getmContext(), mAppWidgetId, true);
 
-        try {
-            Thread.sleep(1000);
-        } catch(InterruptedException e) {
-            //e.printStackTrace();
-        }
-
-        // remove  Progress Dial
-        WidgetDark.setProgressViewVisibility(getmContext(), mAppWidgetId, false);
 
         mContext.sendBroadcast(i);
     }

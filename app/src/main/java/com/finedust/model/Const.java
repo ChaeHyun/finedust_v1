@@ -63,6 +63,10 @@ public class Const {
     public static final String WIDGET_TM_Y = "Widget_TM_Y_";
     public static final String WIDGET_THEME_DARK = "DarkWidget_";
 
+    public static final String WIDGET_ID = "WidgetId";
+    public static final String WIDGET_TRANS = "TransparentValue";
+
+
     public static final String DARK = "Dark";
 
 
