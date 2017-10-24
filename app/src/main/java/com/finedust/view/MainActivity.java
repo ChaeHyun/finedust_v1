@@ -2,6 +2,7 @@ package com.finedust.view;
 
 
 import android.app.Activity;
+import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
@@ -39,7 +40,8 @@ public class MainActivity extends AppCompatActivity
     ActivityMainBinding mainBinding;
     MainActivityPresenter mainActivityPresenter = new MainActivityPresenter(this);
 
-
+    private int mAppWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
+    private String selectedWidgetMode = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +60,15 @@ public class MainActivity extends AppCompatActivity
         toggle.syncState();
 
         mainActivityPresenter.onCreate();
+
+        // Check widgetId and widgetMode. - in case of launching by clicking a widget.
+        Intent intent = getIntent();
+        Bundle mExtras = intent.getExtras();
+        if (mExtras != null) {
+            mAppWidgetId = mExtras.getInt(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
+            selectedWidgetMode = intent.getStringExtra(Const.WIDGET_MODE);
+            pref.put(SharedPreferences.CURRENT_MODE, selectedWidgetMode);
+        }
 
         // MODE Check & Instant run as AirConditionFragment
         String MODE = pref.getValue(SharedPreferences.CURRENT_MODE, Const.EMPTY_STRING);

@@ -19,6 +19,7 @@ import com.finedust.model.Const;
 import com.finedust.service.WidgetDarkService;
 import com.finedust.utils.DeviceInfo;
 import com.finedust.utils.SharedPreferences;
+import com.finedust.view.MainActivity;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -69,27 +70,32 @@ public class WidgetDark extends AppWidgetProvider implements WidgetViews.WidgetD
                 PendingIntent refreshPending = PendingIntent.getService(context, appWidgetId, requestIntent, PendingIntent.FLAG_UPDATE_CURRENT);
                 views.setOnClickPendingIntent(R.id.refresh, refreshPending);
                 context.startService(requestIntent);
-
             }
-
         }
         catch (NullPointerException e) {
-            Log.i(TAG, "예외발생");
             //e.printStackTrace();
         }
 
+        // Lauch MainActivity.
+        Intent mainActivity = new Intent(context, MainActivity.class);
+        mainActivity.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        mainActivity.setData(Uri.withAppendedPath(Uri.parse("WidgetDark" + "://widget/id/"), String.valueOf(appWidgetId)));
+        mainActivity.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);    //실제 id첨부
+        mainActivity.putExtra(Const.WIDGET_MODE, widgetMode);
+        mainActivity.putExtra(Const.WIDGET_THEME_DARK, Const.DARK);
+        PendingIntent mainActivityPendingIntent = PendingIntent.getActivity(context, appWidgetId, mainActivity, PendingIntent.FLAG_UPDATE_CURRENT);
 
-        /*
+        views.setOnClickPendingIntent(R.id.layout_ground, mainActivityPendingIntent);
+
+        // Configuration setting launch.
         Intent configIntent = new Intent(context, WidgetDarkConfigureActivity.class);
-        configIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         configIntent.setData(Uri.withAppendedPath(Uri.parse("WidgetDark" + "://widget/id/"), String.valueOf(appWidgetId)));
+        configIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         configIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
 
         PendingIntent configPendingIntent = PendingIntent.getActivity(context, appWidgetId, configIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         views.setOnClickPendingIntent(R.id.setting, configPendingIntent);
-*/
 
-        setProgressViewVisibility(context, appWidgetId, false);
 
         // Instruct the widget manager to update the widget
         appWidgetManager.updateAppWidget(appWidgetId, views);
@@ -164,37 +170,38 @@ public class WidgetDark extends AppWidgetProvider implements WidgetViews.WidgetD
         else if (Const.WIDGET_DARK_RESPONSE_FROM_SERVER.equals(action)) {
             Log.i(TAG, "  #onReceive() - RESPONSE FROM SERVER(SERVICE).");
             String widgetId = intent.getStringExtra("WidgetId");
+            int appWidgetId = Integer.parseInt(widgetId);
             String location = intent.getStringExtra("Location");
             String widgetMode = intent.getStringExtra("WidgetMode");
             String tmX = intent.getStringExtra("tmX");
             String tmY = intent.getStringExtra("tmY");
             String transparent = pref.getValue(SharedPreferences.TRANSPARENT + widgetId, Const.WIDGET_DEFAULT_TRANSPARENT);
 
-            Log.i(TAG, "Service 응답 확인\n" +"  location : " + location + " at " + tmX + " , " + tmY +"\n위젯ID : " + widgetId);
+            Log.i(TAG, "Service 응답 확인\n" +"  location : " + location + " at " + tmX + " , " + tmY +"\n  위젯ID : " + widgetId);
 
             /**
-             * 위젯의 특정 부분을 클릭하였을 때 발생하는 이벤트
+             * 위젯의 특정 부분을 클릭하였을 때 발생하는 이벤트 - 재부팅 시 (Galaxy Series)
              * */
             //  PendingIntent - Configuration Button clicked
             Intent configIntent = new Intent(context, WidgetDarkConfigureActivity.class);
+            configIntent.setData(Uri.withAppendedPath(Uri.parse("WidgetDark" + "://widget/id/"), widgetId));
             configIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            configIntent.setData(Uri.withAppendedPath(Uri.parse("WidgetDark" + "://widget/id/"), String.valueOf(widgetId)));
-            configIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, Integer.parseInt(widgetId));
+            configIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
 
-            PendingIntent configPendingIntent = PendingIntent.getActivity(context, Integer.parseInt(widgetId), configIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+            PendingIntent configPendingIntent = PendingIntent.getActivity(context, appWidgetId, configIntent, PendingIntent.FLAG_UPDATE_CURRENT);
             remoteViews.setOnClickPendingIntent(R.id.setting, configPendingIntent);
 
 
             // PendingIntent - Refresh Button  Clicked
             Intent refreshIntent = new Intent(context, WidgetDarkService.class);
             refreshIntent.setData(Uri.withAppendedPath(Uri.parse("WidgetDark" + "://widget/id/"), widgetId));
-            refreshIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, Integer.parseInt(widgetId));
+            refreshIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
             refreshIntent.putExtra(Const.WIDGET_LOCATION, location);
             refreshIntent.putExtra(Const.WIDGET_MODE, widgetMode);
             refreshIntent.putExtra(Const.WIDGET_TM_X, tmX);
             refreshIntent.putExtra(Const.WIDGET_TM_Y, tmY);
 
-            PendingIntent darkRefreshPending = PendingIntent.getService(context, Integer.parseInt(widgetId), refreshIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+            PendingIntent darkRefreshPending = PendingIntent.getService(context, appWidgetId, refreshIntent, PendingIntent.FLAG_UPDATE_CURRENT);
             remoteViews.setOnClickPendingIntent(R.id.refresh, darkRefreshPending);
 
 
@@ -204,11 +211,9 @@ public class WidgetDark extends AppWidgetProvider implements WidgetViews.WidgetD
             remoteViews.setTextViewText(R.id.value_location, location);     // UI needs to be updated here in case reboot is completed.
             remoteViews.setInt(R.id.layout_ground, "setBackgroundColor", Color.argb(Integer.parseInt(transparent), 0,0,0));
 
-            manager.updateAppWidget(Integer.parseInt(widgetId) , remoteViews);
-        }
+            setProgressViewVisibility(context, appWidgetId, false);         // stop progress dial.
 
-        else if (Const.WIDGET_DARK_REFRESH.equals(action)) {
-            Log.i(TAG, "  #onReceive() - REFRESH BUTTON.");
+            manager.updateAppWidget(appWidgetId , remoteViews);
         }
 
         else if (Const.BOOT_COMPLETED.equals(action)) {

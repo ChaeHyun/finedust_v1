@@ -192,14 +192,6 @@ public class WidgetDarkConfigureActivity extends AppCompatActivity {
         update.putExtra("location" , selectedLocation);
         sendBroadcast(update);
 
-/*
-        RemoteViews views = WidgetDark.getProperRemoteViews(this);
-        views.setTextViewText(R.id.value_location,  selectedLocation);
-        views.setInt(R.id.layout_ground, "setBackgroundColor", Color.argb(Integer.parseInt(transparent), 0,0,0));
-        AppWidgetManager manager  = AppWidgetManager.getInstance(this);
-        manager.updateAppWidget(mAppWidgetId , views);
-*/
-
     }
 
     static void deletePrefForWidgets(Context context, int appWidgetId) {
