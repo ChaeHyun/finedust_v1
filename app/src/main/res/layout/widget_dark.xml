@@ -118,7 +118,7 @@
                             android:text="-"
                             android:textAppearance="?android:attr/textAppearanceSmall"
                             android:textColor="#cfd8dc"
-                            android:textSize="13sp"
+                            android:textSize="12sp"
                             android:textStyle="bold" />
 
                     </LinearLayout>
@@ -165,7 +165,7 @@
                             android:gravity="center_vertical|center|center_horizontal"
                             android:text="-"
                             android:textColor="#cfd8dc"
-                            android:textSize="13sp"
+                            android:textSize="12sp"
                             android:textStyle="bold" />
                     </LinearLayout>
 
@@ -202,7 +202,7 @@
                             android:layout_marginBottom="3dp"
                             android:layout_marginTop="3dp"
                             android:contentDescription="@string/missing_img"
-                            android:src="@drawable/old_face_fail" />
+                            android:src="@drawable/small_face_fail" />
 
                         <TextView
                             android:id="@+id/value_cai"
@@ -211,7 +211,7 @@
                             android:gravity="center_vertical|center|center_horizontal"
                             android:text="-"
                             android:textColor="#cfd8dc"
-                            android:textSize="13sp"
+                            android:textSize="12sp"
                             android:textStyle="bold" />
                     </LinearLayout>
 

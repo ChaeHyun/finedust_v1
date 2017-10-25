@@ -202,7 +202,7 @@
                             android:layout_marginBottom="3dp"
                             android:layout_marginTop="2dp"
                             android:contentDescription="@string/missing_img"
-                            android:src="@drawable/old_face_fail" />
+                            android:src="@drawable/small_face_fail" />
 
                         <TextView
                             android:id="@+id/value_cai"

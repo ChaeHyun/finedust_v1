@@ -164,7 +164,7 @@ public class WidgetDarkConfigureActivity extends AppCompatActivity {
             }
         }
 
-        if (!checkRadioButtons) {
+        if (!checkRadioButtons || selectedRadioButton == 0) {
             Toast.makeText(this, "저장 위치를 등록 후 사용하세요.", Toast.LENGTH_SHORT).show();
             finish();
             return;
@@ -180,7 +180,10 @@ public class WidgetDarkConfigureActivity extends AppCompatActivity {
         pref.put(SharedPreferences.WIDGET_SELECTED_LOCATION_INDEX + mAppWidgetId , String.valueOf(selectedRadioButton));
         pref.put(SharedPreferences.WIDGET_MODE + mAppWidgetId , Const.MODE[selectedRadioButton]);
 
-        Log.i(TAG, "# [ Widget Configuration Check ]  , Interval : " + interval + " , MODE : " + Const.MODE[selectedRadioButton] + " , trans : " + transparent + " , widgetId : " + mAppWidgetId);
+        Addresses savedLocation = (Addresses) pref.getObject(SharedPreferences.MEMORIZED_LOCATIONS[selectedRadioButton], Const.EMPTY_STRING, new Addresses());
+        pref.put(SharedPreferences.WIDGET_LOCATION + mAppWidgetId, savedLocation.getAddr());
+
+        Log.i(TAG, "# [ Widget Configuration Check ]  , Interval : " + interval + " , MODE : " + Const.MODE[selectedRadioButton] + " , trans : " + transparent + " , widgetId : " + mAppWidgetId + "\n   location : " + savedLocation.getAddr());
 
         // Broadcast - send a update flag.
         Intent update = new Intent(this, WidgetDark.class);

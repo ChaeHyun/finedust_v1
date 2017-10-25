@@ -7,11 +7,15 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.content.res.ResourcesCompat;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.RemoteViews;
+import android.widget.TextView;
 
 import com.finedust.R;
 import com.finedust.model.Addresses;
@@ -20,8 +24,10 @@ import com.finedust.service.WidgetDarkService;
 import com.finedust.utils.DeviceInfo;
 import com.finedust.utils.SharedPreferences;
 import com.finedust.view.MainActivity;
+import com.google.android.gms.location.ActivityRecognitionResult;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 
@@ -33,7 +39,8 @@ public class WidgetDark extends AppWidgetProvider implements WidgetViews.WidgetD
     static String transparentValue;
     static int selectedRadioButton;
     static String widgetMode;
-    static Addresses savedLocation;
+    static String widgetLocation;
+    //static Addresses savedLocation;
 
 
     static void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
@@ -42,47 +49,41 @@ public class WidgetDark extends AppWidgetProvider implements WidgetViews.WidgetD
         RemoteViews views = getProperRemoteViews(context);
         SharedPreferences pref = new SharedPreferences(context);
 
-        try {
             intervalValue = pref.getValue(SharedPreferences.INTERVAL + appWidgetId, Const.WIDGET_DEFAULT_INTERVAL);
             transparentValue = pref.getValue(SharedPreferences.TRANSPARENT + appWidgetId, Const.WIDGET_DEFAULT_TRANSPARENT);
             widgetMode = pref.getValue(SharedPreferences.WIDGET_MODE + appWidgetId , Const.MODE[0]);
             selectedRadioButton = Integer.parseInt(pref.getValue(SharedPreferences.WIDGET_SELECTED_LOCATION_INDEX + appWidgetId, "0"));
+            widgetLocation = pref.getValue(SharedPreferences.WIDGET_LOCATION, Const.EMPTY_STRING);
             Log.i(TAG, "selectedRadioButton : " + selectedRadioButton);
 
-            savedLocation = (Addresses) pref.getObject(SharedPreferences.MEMORIZED_LOCATIONS[selectedRadioButton], Const.EMPTY_STRING ,new Addresses());
-            Log.i(TAG, "주소 : " + savedLocation.getAddr() + " > " + savedLocation.getTmX() + " , " + savedLocation.getTmY()
-                    + "\n시간 : " + intervalValue + " , 투명도 : " + transparentValue + " , 모드 : " + widgetMode);
+            views.setTextViewText(R.id.value_location, widgetLocation);
+            views.setInt(R.id.layout_ground, "setBackgroundColor", Color.argb(Integer.parseInt(transparentValue), 0,0,0));
+
+            Log.i(TAG, "주소 : " + widgetLocation + " , id : " + appWidgetId + "\n시간 : " + intervalValue + " , 투명도 : " + transparentValue + " , 모드 : " + widgetMode);
+
 
             if  (selectedRadioButton != 0) {
-                views.setTextViewText(R.id.value_location, savedLocation.getAddr());
-                views.setInt(R.id.layout_ground, "setBackgroundColor", Color.argb(Integer.parseInt(transparentValue), 0,0,0));
-
                 Intent requestIntent = new Intent(context, WidgetDarkService.class);
                 requestIntent.setData(Uri.withAppendedPath(Uri.parse("WidgetDark" + "://widget/id/"), String.valueOf(appWidgetId)));
                 requestIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
-                requestIntent.putExtra(Const.WIDGET_LOCATION, savedLocation.getAddr());
                 requestIntent.putExtra(Const.WIDGET_MODE, widgetMode);
-                requestIntent.putExtra(Const.WIDGET_TM_X, savedLocation.getTmX());
-                requestIntent.putExtra(Const.WIDGET_TM_Y, savedLocation.getTmY());
+                requestIntent.putExtra(Const.WIDGET_THEME, Const.DARK);
 
                 PendingIntent refreshPending = PendingIntent.getService(context, appWidgetId, requestIntent, PendingIntent.FLAG_UPDATE_CURRENT);
                 views.setOnClickPendingIntent(R.id.refresh, refreshPending);
                 context.startService(requestIntent);
             }
-        }
-        catch (NullPointerException e) {
-            //e.printStackTrace();
-        }
 
-        // Lauch MainActivity.
+
+        // Launch MainActivity.
         Intent mainActivity = new Intent(context, MainActivity.class);
         mainActivity.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         mainActivity.setData(Uri.withAppendedPath(Uri.parse("WidgetDark" + "://widget/id/"), String.valueOf(appWidgetId)));
         mainActivity.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);    //실제 id첨부
         mainActivity.putExtra(Const.WIDGET_MODE, widgetMode);
-        mainActivity.putExtra(Const.WIDGET_THEME_DARK, Const.DARK);
-        PendingIntent mainActivityPendingIntent = PendingIntent.getActivity(context, appWidgetId, mainActivity, PendingIntent.FLAG_UPDATE_CURRENT);
+        mainActivity.putExtra(Const.WIDGET_THEME, Const.DARK);
 
+        PendingIntent mainActivityPendingIntent = PendingIntent.getActivity(context, appWidgetId, mainActivity, PendingIntent.FLAG_UPDATE_CURRENT);
         views.setOnClickPendingIntent(R.id.layout_ground, mainActivityPendingIntent);
 
         // Configuration setting launch.
@@ -94,10 +95,8 @@ public class WidgetDark extends AppWidgetProvider implements WidgetViews.WidgetD
         PendingIntent configPendingIntent = PendingIntent.getActivity(context, appWidgetId, configIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         views.setOnClickPendingIntent(R.id.setting, configPendingIntent);
 
-
         // Instruct the widget manager to update the widget
         appWidgetManager.updateAppWidget(appWidgetId, views);
-
     }
 
     @Override
@@ -164,13 +163,30 @@ public class WidgetDark extends AppWidgetProvider implements WidgetViews.WidgetD
             Log.i(TAG, "  #onReceive() - RESPONSE FROM SERVER(SERVICE).");
             String widgetId = intent.getStringExtra(Const.WIDGET_ID);
             int appWidgetId = Integer.parseInt(widgetId);
-            String location = intent.getStringExtra(Const.WIDGET_LOCATION);
             String widgetMode = intent.getStringExtra(Const.WIDGET_MODE);
-            String tmX = intent.getStringExtra(Const.WIDGET_TM_X);
-            String tmY = intent.getStringExtra(Const.WIDGET_TM_Y);
+            String widgetLocation = intent.getStringExtra(Const.WIDGET_LOCATION);
+            ArrayList<String> gradeList = intent.getStringArrayListExtra(Const.ARRAY_GRADE);
+            ArrayList<String> valueList = intent.getStringArrayListExtra(Const.ARRAY_VALUE);
+
             String transparent = pref.getValue(SharedPreferences.TRANSPARENT + widgetId, Const.WIDGET_DEFAULT_TRANSPARENT);
 
-            Log.i(TAG, "Service 응답 확인 >> " + " id  : " + widgetId +" , location : " + location + " at " + tmX + " , " + tmY);
+            Log.i(TAG, "Service 응답 확인 >> " + " id  : " + widgetId + " , location : " + widgetLocation);
+
+            if (widgetMode.equals(Const.WIDGET_DELETED)) {
+                WidgetDarkService.cancelAlarmSchedule(context, appWidgetId);
+            }
+            else {
+                // PendingIntent - Refresh Button  Clicked
+                Intent refreshIntent = new Intent(context, WidgetDarkService.class);
+                refreshIntent.setData(Uri.withAppendedPath(Uri.parse("WidgetDark" + "://widget/id/"), widgetId));
+                refreshIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
+                refreshIntent.putExtra(Const.WIDGET_MODE, widgetMode);
+
+                PendingIntent darkRefreshPending = PendingIntent.getService(context, appWidgetId, refreshIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+                remoteViews.setOnClickPendingIntent(R.id.refresh, darkRefreshPending);
+
+                remoteViews.setTextViewText(R.id.value_date, calculateCurrentTime());       // updated time
+            }
 
             /**
              * 위젯의 특정 부분을 클릭하였을 때 발생하는 이벤트 - 재부팅 시 (Galaxy Series)
@@ -184,30 +200,13 @@ public class WidgetDark extends AppWidgetProvider implements WidgetViews.WidgetD
             PendingIntent configPendingIntent = PendingIntent.getActivity(context, appWidgetId, configIntent, PendingIntent.FLAG_UPDATE_CURRENT);
             remoteViews.setOnClickPendingIntent(R.id.setting, configPendingIntent);
 
-
-            // PendingIntent - Refresh Button  Clicked
-            Intent refreshIntent = new Intent(context, WidgetDarkService.class);
-            refreshIntent.setData(Uri.withAppendedPath(Uri.parse("WidgetDark" + "://widget/id/"), widgetId));
-            refreshIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
-            refreshIntent.putExtra(Const.WIDGET_LOCATION, location);
-            refreshIntent.putExtra(Const.WIDGET_MODE, widgetMode);
-            refreshIntent.putExtra(Const.WIDGET_TM_X, tmX);
-            refreshIntent.putExtra(Const.WIDGET_TM_Y, tmY);
-
-            PendingIntent darkRefreshPending = PendingIntent.getService(context, appWidgetId, refreshIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-            remoteViews.setOnClickPendingIntent(R.id.refresh, darkRefreshPending);
-
-            // updated time
-            remoteViews.setTextViewText(R.id.value_date, calculateCurrentTime());
-            remoteViews.setTextViewText(R.id.value_location, location);     // UI needs to be updated here in case reboot is completed.
+            // Update results to widgetUI.
+            remoteViews.setTextViewText(R.id.value_location, widgetLocation);
             remoteViews.setInt(R.id.layout_ground, "setBackgroundColor", Color.argb(Integer.parseInt(transparent), 0,0,0));
 
-            // For testing.
-            try {
-                Thread.sleep(1000);
-            } catch(InterruptedException e) {
-                //e.printStackTrace();
-            }
+            setValuesAndImages(remoteViews, R.id.info_img_one, R.id.value_pm10, gradeList.get(0), valueList.get(0), Const.DRAWABLE_STATES);
+            setValuesAndImages(remoteViews, R.id.info_img_two, R.id.value_pm25, gradeList.get(1), valueList.get(1), Const.DRAWABLE_STATES);
+            setValuesAndImages(remoteViews, R.id.info_img_three, R.id.value_cai, gradeList.get(2), valueList.get(2), Const.DRAWABLE_STATES_FACE_SMALL);
 
             setProgressViewVisibility(context, appWidgetId, false);         // stop progress dial.
 
@@ -220,6 +219,24 @@ public class WidgetDark extends AppWidgetProvider implements WidgetViews.WidgetD
             onUpdate(context, manager, manager.getAppWidgetIds(new ComponentName(context, WidgetDark.class)));
         }
         super.onReceive(context, intent);
+    }
+
+    private void setValuesAndImages(RemoteViews views, int imageViewId, int textViewId, String grade, String value, int[] imageType) {
+        if (grade == null ) {
+            return;
+        }
+        if (grade.equals("-") || grade.equals("")) {
+            views.setImageViewResource(imageViewId, imageType[0]);
+            views.setTextColor(textViewId, Const.COLORS[0]);
+        }
+        else {
+            int GRADE = Integer.parseInt(grade);
+
+            views.setImageViewResource(imageViewId, imageType[GRADE]);
+            views.setTextColor(textViewId, Const.COLORS[GRADE]);
+        }
+
+        views.setTextViewText(textViewId, value);
     }
 
     private String calculateCurrentTime() {

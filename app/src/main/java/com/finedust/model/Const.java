@@ -26,7 +26,9 @@ public class Const {
     public static final String STR_NEED_PERMISSION = "권한 허가가 필요합니다.";
 
     public static final int[] DRAWABLE_STATES =  {R.drawable.state_fail, R.drawable.state_best, R.drawable.state_good, R.drawable.state_bad, R.drawable.state_verybad};
+    public static final int[] DRAWABLE_STATES_SMALL =  {R.drawable.small_face_fail, R.drawable.small_best, R.drawable.small_good, R.drawable.small_bad, R.drawable.small_verybad};
     public static final int[] DRAWABLE_STATES_FACE =  {R.drawable.face_fail, R.drawable.face_best, R.drawable.face_good, R.drawable.face_bad, R.drawable.face_verybad};
+    public static final int[] DRAWABLE_STATES_FACE_SMALL =  {R.drawable.small_face_fail, R.drawable.small_face_best, R.drawable.small_face_good, R.drawable.small_face_bad, R.drawable.small_face_verybad};
     public static final int[] COLORS = {Color.rgb(0, 0, 0) , Color.rgb(0,150,250), Color.rgb(120, 190, 80) , Color.rgb(255, 220, 80) , Color.rgb(255, 80, 80)};     //FAIL , BEST, GOOD, BAD, VERYBAD
     public static final int[] TOOLBAR_COLORS_DARK = {Color.rgb(0, 105, 92) , Color.rgb(21, 101,192) , Color.rgb(46, 125, 50) , Color.rgb(255, 143, 0) , Color.rgb(211, 47, 47) };
     public static final int[] TOOLBAR_COLORS = { Color.rgb(0, 150, 136) , Color.rgb(33, 150, 243) , Color.rgb(76, 175, 80) , Color.rgb(255, 193, 7) , Color.rgb(244, 67, 54)};
@@ -61,13 +63,20 @@ public class Const {
     public static final String WIDGET_LOCATION = "WidgetLocation_";
     public static final String WIDGET_TM_X = "Widget_TM_X_";
     public static final String WIDGET_TM_Y = "Widget_TM_Y_";
-    public static final String WIDGET_THEME_DARK = "DarkWidget_";
+    public static final String WIDGET_THEME = "WidgetTheme_";
 
     public static final String WIDGET_ID = "WidgetId";
     public static final String WIDGET_TRANS = "TransparentValue";
 
 
-    public static final String DARK = "Dark";
+    public static final String DARK = "DarkWidget";
+    public static final String WHITE = "WhiteWidget";
+
+    public static final String ARRAY_VALUE = "ArrayValue";
+    public static final String ARRAY_GRADE = "ArrayGrade";
+
+    public static final String WIDGET_DELETED = "DELETED";
+
 
 
 }

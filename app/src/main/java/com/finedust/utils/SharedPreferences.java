@@ -21,6 +21,7 @@ public class SharedPreferences {
     public static final String TRANSPARENT = "Transparent_";
     public static final String WIDGET_SELECTED_LOCATION_INDEX = "SelectedLocation_";
     public static final String WIDGET_MODE = "WidgetMode_";
+    public static final String WIDGET_LOCATION = "WidgetLocation_";
 
 
 
