@@ -31,7 +31,6 @@ public class WidgetWhiteConfigureActivity extends AppCompatActivity {
     RadioButton[] locationCheck = new RadioButton[4];
     Addresses[] saveLocations = new Addresses[4];
 
-
     public WidgetWhiteConfigureActivity() {
         super();
     }
@@ -47,13 +46,11 @@ public class WidgetWhiteConfigureActivity extends AppCompatActivity {
         Bundle extras = intent.getExtras();
         if (extras != null) {
             mAppWidgetId = extras.getInt(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
-
         }
 
         Intent resultValue = new Intent();
         resultValue.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, mAppWidgetId);
         setResult(RESULT_CANCELED, resultValue);
-
 
         if (mAppWidgetId == AppWidgetManager.INVALID_APPWIDGET_ID) {
             finish();
@@ -142,7 +139,6 @@ public class WidgetWhiteConfigureActivity extends AppCompatActivity {
         // Save setting values to SharedPreferences.
         pref.put(SharedPreferences.INTERVAL + mAppWidgetId , interval);
         pref.put(SharedPreferences.TRANSPARENT + mAppWidgetId , transparent);
-        pref.put(SharedPreferences.WIDGET_SELECTED_LOCATION_INDEX + mAppWidgetId , String.valueOf(selectedRadioButton));
         pref.put(SharedPreferences.WIDGET_MODE + mAppWidgetId , Const.MODE[selectedRadioButton]);
 
         Addresses savedLocation = (Addresses) pref.getObject(SharedPreferences.MEMORIZED_LOCATIONS[selectedRadioButton], Const.EMPTY_STRING, new Addresses());
@@ -153,8 +149,9 @@ public class WidgetWhiteConfigureActivity extends AppCompatActivity {
         // Broadcast - send a update flag.
         Intent update = new Intent(this, WidgetWhite.class);
         update.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
-        update.setData(Uri.withAppendedPath(Uri.parse("WidgetWhite" + "://widget/id/") , String.valueOf(mAppWidgetId)));
+        update.setData(Uri.withAppendedPath(Uri.parse(Const.WHITEWIDGET + "://widget/id/") , String.valueOf(mAppWidgetId)));
         update.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, mAppWidgetId);
+
         sendBroadcast(update);
     }
 
@@ -171,7 +168,6 @@ public class WidgetWhiteConfigureActivity extends AppCompatActivity {
         public void onClick(View view) {
             switch (view.getId()) {
                 case  R.id.button_save:
-
 
                     updateWidget();
 

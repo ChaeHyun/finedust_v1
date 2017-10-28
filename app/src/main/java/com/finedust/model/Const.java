@@ -57,6 +57,7 @@ public class Const {
 
 
     public static final String WIDGET_DARK_CALL_SERVICE = "ch.widget_action.WIDGET_DARK_GETDATA_FROM_SERVER";
+    public static final String WIDGET_WHITE_CALL_SERVICE = "ch.widget_action.WIDGET_WHITE_GETDATA_FROM_SERVER";
     public static final String WIDGET_DARK_RESPONSE_FROM_SERVER = "ch.widget_action.WIDGET_DARK_RESPONSE_FROM_SERVER";
     public static final String WIDGET_WHITE_RESPONSE_FROM_SERVER = "ch.widget_action.WIDGET_WHITE_RESPONSE_FROM_SERVER";
 

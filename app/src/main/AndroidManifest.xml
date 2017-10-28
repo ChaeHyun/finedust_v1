@@ -79,9 +79,15 @@
             </intent-filter>
         </activity>
 
-        <service android:name=".service.WidgetService">
+        <service android:name=".service.WidgetDarkService">
             <intent-filter>
                 <action android:name="ch.widget_action.WIDGET_DARK_GETDATA_FROM_SERVER" />
+            </intent-filter>
+        </service>
+
+        <service android:name=".service.WidgetWhiteService">
+            <intent-filter>
+                <action android:name="ch.widget_action.WIDGET_WHITE_GETDATA_FROM_SERVER" />
             </intent-filter>
         </service>
 

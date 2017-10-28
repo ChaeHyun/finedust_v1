@@ -33,7 +33,6 @@ public class WidgetDarkConfigureActivity extends AppCompatActivity {
     RadioButton[] locationCheck = new RadioButton[4];
     Addresses[] saveLocations = new Addresses[4];
 
-
     public WidgetDarkConfigureActivity() {
         super();
     }
@@ -44,7 +43,6 @@ public class WidgetDarkConfigureActivity extends AppCompatActivity {
         binding = DataBindingUtil.setContentView(this, R.layout.widget_configure);
 
         pref = new SharedPreferences(this);
-
 
         // Find the widget id from the intent.
         Intent intent = getIntent();
@@ -162,7 +160,6 @@ public class WidgetDarkConfigureActivity extends AppCompatActivity {
         update.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
         update.setData(Uri.withAppendedPath(Uri.parse("WidgetDark" + "://widget/id/") , String.valueOf(mAppWidgetId)));
         update.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, mAppWidgetId);
-
         sendBroadcast(update);
 
     }

@@ -8,9 +8,6 @@ import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-import android.os.Bundle;
-import android.os.IBinder;
-import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.finedust.model.Addresses;
@@ -40,107 +37,48 @@ import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 
+public class RequestWidgetData {
+    private static final String TAG = RequestWidgetData.class.getSimpleName();
 
-public class WidgetService extends Service {
-    private static final String TAG = WidgetService.class.getSimpleName();
-
-    int mAppWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
-
-    private Context mContext;
+    private int mAppWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
+    private Context context;
     private SharedPreferences pref;
-
     private ApiService apiService;
+
     private CompositeDisposable compositeDisposable;
     private RecentData mRecent;
 
-    String widgetMode;
-    String widgetTheme;
-    Addresses data;
+    private String widgetMode;
+    private String widgetTheme;
+    private Addresses data;
 
-    public WidgetService() {
-        this.mContext = this;
-        this.pref = new SharedPreferences(this);
-        mRecent = new RecentData();
-        mRecent.setAddr(new Addresses());
-        apiService = RetrofitClient.getApiService();
+    private String ACTION_RESPONSE_WIDGET;
+
+    public RequestWidgetData() {
         compositeDisposable = new CompositeDisposable();
     }
 
-    public Context getmContext() {
-        return mContext;
-    }
+    public RequestWidgetData(Context context, int mAppWidgetId, String widgetMode, String widgetTheme) {
+        this.mAppWidgetId = mAppWidgetId;
+        this.context = context;
+        this.widgetMode = widgetMode;
+        this.widgetTheme = widgetTheme;
 
-    @Override
-    public int onStartCommand(Intent intent, int flags, int startId) {
-        Log.i(TAG, " ** onStartCommand()");
-        Context context = getmContext();
+        this.pref = new SharedPreferences(context);
+        this.apiService = RetrofitClient.getApiService();
+        compositeDisposable = new CompositeDisposable();
+        this.mRecent = new RecentData();
+        mRecent.setAddr(new Addresses());
 
-        try {
-            Bundle mExtras = intent.getExtras();
-            mAppWidgetId = mExtras.getInt(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
-            widgetMode = intent.getStringExtra(Const.WIDGET_MODE);
-            widgetTheme = intent.getStringExtra(Const.WIDGET_THEME);
-
-            //Temp Interval time
-            String interval = pref.getValue(SharedPreferences.INTERVAL + mAppWidgetId, Const.WIDGET_DEFAULT_INTERVAL);
-            int intervalNum = Integer.parseInt(interval) * 1000 * 60 * 60;
-
-            Log.i(TAG, "  ** 알람설정(WidgetService)\n  mAppWidgetId : " + mAppWidgetId + " , THEME : " + widgetTheme +" , 인터벌 : " + interval + " 시간 , 모드 : " + widgetMode);
-
-            // set Alarm
-            long nextTime = System.currentTimeMillis() + intervalNum;
-            Intent alarmRefresh = new Intent(context , WidgetService.class);
-            alarmRefresh.setData(Uri.withAppendedPath(Uri.parse(widgetTheme + "://widget/id"), String.valueOf(mAppWidgetId)));
-            alarmRefresh.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID , mAppWidgetId);
-            alarmRefresh.putExtra(Const.WIDGET_MODE, widgetMode);
-            alarmRefresh.putExtra(Const.WIDGET_THEME, widgetTheme);
-
-            if (mAppWidgetId != 0) {
-                PendingIntent pendingAlarmRefresh = PendingIntent.getService(context, mAppWidgetId, alarmRefresh, PendingIntent.FLAG_UPDATE_CURRENT);
-                AlarmManager alarmManager = (AlarmManager) context.getSystemService(Service.ALARM_SERVICE);
-                alarmManager.cancel(pendingAlarmRefresh);       // cancel the existing schedule before setting a new one.
-                alarmManager.set(AlarmManager.RTC_WAKEUP, nextTime, pendingAlarmRefresh);
-            }
-
-            // GET DATA FROM THE SERVER.
-            checkCurrentMode(widgetMode);
-
+        if (widgetTheme.equals(Const.DARKWIDGET)) {
+            ACTION_RESPONSE_WIDGET = Const.WIDGET_DARK_RESPONSE_FROM_SERVER;
         }
-        catch (NullPointerException e) {
-            Log.v(TAG, "AppWidgetId is not valid. [Wrong Widget Id].");
-            //e.printStackTrace();
-        }
-
-        return super.onStartCommand(intent, flags, startId);
-    }
-
-    public static void cancelAlarmSchedule(Context context, int mAppWidgetId, String widgetTheme) {
-        Log.i(TAG, "WidgetId [" + mAppWidgetId + "]'s schedule is deleted.");
-        Intent alarmRefresh = new Intent(context , WidgetService.class);
-        alarmRefresh.setData(Uri.withAppendedPath(Uri.parse(widgetTheme + "://widget/id/") , String.valueOf(mAppWidgetId)));
-
-        if (mAppWidgetId != 0) {
-            PendingIntent pendingAlarmRefresh = PendingIntent.getService(context, mAppWidgetId, alarmRefresh, PendingIntent.FLAG_UPDATE_CURRENT);
-            AlarmManager alarmManager = (AlarmManager) context.getSystemService(Service.ALARM_SERVICE);
-            alarmManager.cancel(pendingAlarmRefresh);
+        else {
+            ACTION_RESPONSE_WIDGET = Const.WIDGET_WHITE_RESPONSE_FROM_SERVER;
         }
     }
 
-    @Nullable
-    @Override
-    public IBinder onBind(Intent intent) {
-        return null;
-    }
-
-    @Override
-    public void onDestroy() {
-        Log.i(TAG, "onDestroy()");
-        super.onDestroy();
-        clearDisposable();
-    }
-
-    public void checkCurrentMode(String widgetMode) {
-        Context context = getmContext();
+    public void startGetDataFromServer(String widgetMode) {
         if (!CheckConnectivity.checkNetworkConnection(context))
             return;
 
@@ -159,71 +97,46 @@ public class WidgetService extends Service {
         }
     }
 
-    private Intent createFailureResponseIntent(String failMessage) {
-        ArrayList<String> gradeList = new ArrayList<>();
-        gradeList.add("");
-        gradeList.add("");
-        gradeList.add("");
-
-        ArrayList<String> valueList = new ArrayList<>();
-        valueList.add("-");
-        valueList.add("-");
-        valueList.add("-");
-
-        Intent response  = new Intent(Const.WIDGET_DARK_RESPONSE_FROM_SERVER);
-        response.putExtra(Const.WIDGET_ID, String.valueOf(mAppWidgetId));
-        response.putExtra(Const.WIDGET_MODE, Const.WIDGET_DELETED);
-        response.putExtra(Const.WIDGET_LOCATION, failMessage);
-        response.putStringArrayListExtra(Const.ARRAY_GRADE, gradeList);
-        response.putStringArrayListExtra(Const.ARRAY_VALUE, valueList);
-
-        return response;
-    }
-
-
-    public void getAirConditionDataFromServer(final String x, final String y) {
+    private void getAirConditionDataFromServer(final String x, final String y) {
         Log.i(TAG, "[WidgetService] #getAirConditionDataFromServer( " + x + " , " + y + " )");
-
-        // Run Progress Dial
-        setProgressViewVisibility(widgetTheme, getmContext(), mAppWidgetId, true);
 
         Observable<StationList> stationListObservable = apiService.getNearStationList(x, y, Const.RETURNTYPE_JSON);
         addDisposable(
                 stationListObservable
-                .flatMap(new Function<StationList, Observable<AirConditionList>>() {
-                    @Override
-                    public Observable<AirConditionList> apply(@NonNull StationList stationList) throws Exception {
-                        List<Station> list = stationList.getList();
+                        .flatMap(new Function<StationList, Observable<AirConditionList>>() {
+                            @Override
+                            public Observable<AirConditionList> apply(@NonNull StationList stationList) throws Exception {
+                                List<Station> list = stationList.getList();
 
-                        if (!list.isEmpty()) {
-                            mRecent.getAddr().setTmXTmY(x, y);
-                            mRecent.setSavedStations(stationList.getList());
+                                if (!list.isEmpty()) {
+                                    mRecent.getAddr().setTmXTmY(x, y);
+                                    mRecent.setSavedStations(stationList.getList());
 
-                            Log.i(TAG, "측정소명 : " + list.get(0).getStationName());
-                            Map<String, String> queryParams = RetrofitClient.setQueryParamsForStationName(list.get(0).getStationName());
-                            return apiService.getAirConditionData(queryParams);
-                        }
-                        return null;
-                    }
-                })
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<AirConditionList>() {
-                    @Override
-                    public void accept(@NonNull AirConditionList airConditionList) throws Exception {
-                        List<AirCondition> air = airConditionList.getList();
-                        if (!air.isEmpty()) {
-                            mRecent.setAirCondition(airConditionList.getList());
-                            checkAllDataFilled(mRecent, 0);
-                        }
-                    }
-                }, new Consumer<Throwable>() {
-                    @Override
-                    public void accept(@NonNull Throwable throwable) throws Exception {
-                        Log.v(TAG, "[WidgetService] Fail to get data from server.");
-                        setProgressViewVisibility(widgetTheme, getmContext(), mAppWidgetId, false);
-                    }
-                })
+                                    Log.i(TAG, "측정소명 : " + list.get(0).getStationName());
+                                    Map<String, String> queryParams = RetrofitClient.setQueryParamsForStationName(list.get(0).getStationName());
+                                    return apiService.getAirConditionData(queryParams);
+                                }
+                                return null;
+                            }
+                        })
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(new Consumer<AirConditionList>() {
+                            @Override
+                            public void accept(@NonNull AirConditionList airConditionList) throws Exception {
+                                List<AirCondition> air = airConditionList.getList();
+                                if (!air.isEmpty()) {
+                                    mRecent.setAirCondition(airConditionList.getList());
+                                    checkAllDataFilled(mRecent, 0);
+                                }
+                            }
+                        }, new Consumer<Throwable>() {
+                            @Override
+                            public void accept(@NonNull Throwable throwable) throws Exception {
+                                Log.v(TAG, "[WidgetService] Fail to get data from server.");
+                                setProgressVisibility(context, mAppWidgetId, false);
+                            }
+                        })
         );
 
     }
@@ -251,7 +164,7 @@ public class WidgetService extends Service {
                     @Override
                     public void accept(@NonNull Throwable throwable) throws Exception {
                         Log.v(TAG, "[WidgetService] Fail to get data from server.");
-                        setProgressViewVisibility(widgetTheme, getmContext(), mAppWidgetId, false);
+                        setProgressVisibility(context, mAppWidgetId, false);
                     }
                 })
         );
@@ -259,7 +172,7 @@ public class WidgetService extends Service {
 
     private void checkAllDataFilled(RecentData recentData, int index) {
         if (isAllAirDataFilled(recentData.getAirCondition().get(0)) || (index >= recentData.getSavedStations().size() - 1)) {
-            updateDataWithIntent(recentData);
+            getResultIntent(recentData);
         }
         else {
             // research with next station.
@@ -267,7 +180,7 @@ public class WidgetService extends Service {
         }
     }
 
-    private void updateDataWithIntent(RecentData recent) {
+    private void getResultIntent(RecentData recent) {
         recent.setAddr(data);
 
         if (pref.getValue(SharedPreferences.GRADE_MODE, Const.ON_OFF[1]).equals(Const.ON_OFF[0])) {
@@ -286,25 +199,14 @@ public class WidgetService extends Service {
         valueList.add(recent.getAirCondition().get(0).getKhaiValue());
 
 
-        Intent response = getResponseForWidgetTheme(widgetTheme);
+        Intent response = new Intent(ACTION_RESPONSE_WIDGET);
         response.putExtra(Const.WIDGET_ID, String.valueOf(mAppWidgetId));
         response.putExtra(Const.WIDGET_MODE, widgetMode);
         response.putExtra(Const.WIDGET_LOCATION, data.getAddr());
         response.putStringArrayListExtra(Const.ARRAY_GRADE, gradeList);
         response.putStringArrayListExtra(Const.ARRAY_VALUE, valueList);
 
-        setProgressViewVisibility(widgetTheme, getmContext(), mAppWidgetId, false);
-
-        mContext.sendBroadcast(response);
-    }
-
-    private Intent getResponseForWidgetTheme(String widgetTheme) {
-        if (widgetTheme.equals(Const.DARKWIDGET)) {
-            return new Intent(Const.WIDGET_DARK_RESPONSE_FROM_SERVER);
-        }
-        else {
-            return new Intent(Const.WIDGET_WHITE_RESPONSE_FROM_SERVER);
-        }
+        context.sendBroadcast(response);
     }
 
     private boolean isAllAirDataFilled(final AirCondition airData) {
@@ -363,7 +265,6 @@ public class WidgetService extends Service {
         return recent;
     }
 
-
     private ArrayList<AirCondition> updateAirConditionDataFromNextStation(final AirCondition nextStationData, ArrayList<AirCondition> previousData) {
 
         if( previousData.get(0).getKhaiValue().equals("-") ) {
@@ -398,7 +299,42 @@ public class WidgetService extends Service {
         return previousData;
     }
 
-    public int convertModeToInteger(final String mode) {
+
+    private Intent createFailureResponseIntent(String failMessage) {
+        ArrayList<String> gradeList = new ArrayList<>();
+        gradeList.add("");
+        gradeList.add("");
+        gradeList.add("");
+
+        ArrayList<String> valueList = new ArrayList<>();
+        valueList.add("-");
+        valueList.add("-");
+        valueList.add("-");
+
+        Intent response  = new Intent(ACTION_RESPONSE_WIDGET);
+        response.putExtra(Const.WIDGET_ID, String.valueOf(mAppWidgetId));
+        response.putExtra(Const.WIDGET_MODE, Const.WIDGET_DELETED);
+        response.putExtra(Const.WIDGET_LOCATION, failMessage);
+        response.putStringArrayListExtra(Const.ARRAY_GRADE, gradeList);
+        response.putStringArrayListExtra(Const.ARRAY_VALUE, valueList);
+
+        return response;
+    }
+
+
+    public static void cancelAlarmSchedule(Context context, int mAppWidgetId, String widgetTheme) {
+        Log.i(TAG, "WidgetId [" + mAppWidgetId + "]'s schedule is deleted.");
+        Intent alarmRefresh = new Intent(context , WidgetDarkService.class);
+        alarmRefresh.setData(Uri.withAppendedPath(Uri.parse(widgetTheme + "://widget/id/") , String.valueOf(mAppWidgetId)));
+
+        if (mAppWidgetId != 0) {
+            PendingIntent pendingAlarmRefresh = PendingIntent.getService(context, mAppWidgetId, alarmRefresh, PendingIntent.FLAG_UPDATE_CURRENT);
+            AlarmManager alarmManager = (AlarmManager) context.getSystemService(Service.ALARM_SERVICE);
+            alarmManager.cancel(pendingAlarmRefresh);
+        }
+    }
+
+    private int convertModeToInteger(final String mode) {
         if ( mode.equals(Const.MODE[1]) )
             return 1;
         if ( mode.equals(Const.MODE[2]) )
@@ -408,20 +344,25 @@ public class WidgetService extends Service {
         return 0;
     }
 
-    private void setProgressViewVisibility(String widgetTheme, Context context, int mAppWidgetId, boolean on) {
+    private void setProgressVisibility(Context context, int id, boolean on)  {
         if (widgetTheme.equals(Const.DARKWIDGET))
-            WidgetDark.setProgressViewVisibility(context, mAppWidgetId, on);
-        else
-            WidgetWhite.setProgressViewVisibility(context, mAppWidgetId, on);
+            WidgetDark.setProgressViewVisibility(context, id, on);
+        else if (widgetTheme.equals(Const.WHITEWIDGET))
+            WidgetWhite.setProgressViewVisibility(context, id, on);
     }
 
-    public void addDisposable(Disposable disposable) {
+    private void addDisposable(Disposable disposable) {
         compositeDisposable.add(disposable);
     }
 
-    public void clearDisposable() {
+    private void clearDisposable() {
         compositeDisposable.clear();
     }
 
-
+    @Override
+    protected void finalize() throws Throwable {
+        super.finalize();
+        Log.i(TAG, "[Clear Disposable]");
+        clearDisposable();
+    }
 }
