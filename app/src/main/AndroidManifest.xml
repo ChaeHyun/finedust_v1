@@ -18,6 +18,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
         <activity
             android:name=".view.MainActivity"
             android:label="@string/app_name"
@@ -31,12 +32,11 @@
         <activity android:name=".view.SearchAddressActivity" />
         <activity android:name=".view.ChangeGradeActivity" />
 
-        <!-- Widget Dark -->
+        <!-- About Widgets -->
         <receiver
             android:name=".widget.WidgetDark"
             android:label="가나다_위젯(어두운버전)">
             <intent-filter>
-
                 <!-- Essential Parameter -->
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
 
@@ -56,7 +56,30 @@
             </intent-filter>
         </activity>
 
-        <service android:name=".service.WidgetDarkService">
+        <receiver
+            android:name=".widget.WidgetWhite"
+            android:label="가나다_위젯(밝은버전)">
+            <intent-filter>
+                <!-- Essential Parameter -->
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+
+                <!-- Custom actions -->
+                <action android:name="ch.widget_action.WIDGET_WHITE_RESPONSE_FROM_SERVER" />
+                <action android:name="ch.bootcompleted.control.BootCompletedReceiver" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/widget_white_info" />
+        </receiver>
+
+        <activity android:name=".widget.WidgetWhiteConfigureActivity">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
+            </intent-filter>
+        </activity>
+
+        <service android:name=".service.WidgetService">
             <intent-filter>
                 <action android:name="ch.widget_action.WIDGET_DARK_GETDATA_FROM_SERVER" />
             </intent-filter>
@@ -68,10 +91,8 @@
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMMPLETED" />
-
             </intent-filter>
         </receiver>
-
     </application>
 
 </manifest>

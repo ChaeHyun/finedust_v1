@@ -1,13 +1,12 @@
 package com.finedust.widget;
 
-
 import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.net.Uri;
-import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.RadioButton;
@@ -20,9 +19,8 @@ import com.finedust.model.Addresses;
 import com.finedust.model.Const;
 import com.finedust.utils.SharedPreferences;
 
-
-public class WidgetDarkConfigureActivity extends AppCompatActivity {
-    private static final String TAG = WidgetDarkConfigureActivity.class.getSimpleName();
+public class WidgetWhiteConfigureActivity extends AppCompatActivity {
+    public static final String TAG = WidgetWhiteConfigureActivity.class.getSimpleName();
 
     int mAppWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
 
@@ -34,31 +32,29 @@ public class WidgetDarkConfigureActivity extends AppCompatActivity {
     Addresses[] saveLocations = new Addresses[4];
 
 
-    public WidgetDarkConfigureActivity() {
+    public WidgetWhiteConfigureActivity() {
         super();
     }
 
     @Override
-    public void onCreate(Bundle icicle) {
-        super.onCreate(icicle);
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.widget_configure);
 
         pref = new SharedPreferences(this);
 
-
-        // Find the widget id from the intent.
         Intent intent = getIntent();
         Bundle extras = intent.getExtras();
         if (extras != null) {
-            mAppWidgetId = extras.getInt(
-                    AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
+            mAppWidgetId = extras.getInt(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
+
         }
 
         Intent resultValue = new Intent();
         resultValue.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, mAppWidgetId);
         setResult(RESULT_CANCELED, resultValue);
 
-        // If this activity was started with an intent without an app widget ID, finish with an error.
+
         if (mAppWidgetId == AppWidgetManager.INVALID_APPWIDGET_ID) {
             finish();
             return;
@@ -67,7 +63,6 @@ public class WidgetDarkConfigureActivity extends AppCompatActivity {
         getPreviousSettingValues(mAppWidgetId);
 
     }
-
 
     private void getPreviousSettingValues(final int mAppWidgetId) {
         locationCheck[0] = binding.layoutSetLocation.locZero;
@@ -108,7 +103,6 @@ public class WidgetDarkConfigureActivity extends AppCompatActivity {
             }
         }
 
-
         // progressbar값 불러오기
         String intervalValue = pref.getValue( SharedPreferences.INTERVAL + mAppWidgetId , Const.WIDGET_DEFAULT_INTERVAL);
         String transparentValue = pref.getValue( SharedPreferences.TRANSPARENT + mAppWidgetId , Const.WIDGET_DEFAULT_TRANSPARENT);
@@ -129,8 +123,8 @@ public class WidgetDarkConfigureActivity extends AppCompatActivity {
         for (int i = 1; i < locationCheck.length; i++) {
             if (locationCheck[i].isChecked()) {
                 selectedRadioButton = i;
-                selectedLocation  = locationCheck[i].getText().toString();
-                Log.i(TAG, "SELECTEDD LOCOATION : " + selectedLocation);
+                selectedLocation = locationCheck[i].getText().toString();
+                Log.i(TAG, "SELECTED LOCATION : " + selectedLocation);
                 checkRadioButtons = true;
                 break;
             }
@@ -145,7 +139,6 @@ public class WidgetDarkConfigureActivity extends AppCompatActivity {
         String interval = String.valueOf(binding.layoutUpdate.seekBarUpdate.getProgress());
         String transparent = String.valueOf(binding.layoutUpdate.seekBarTransparent.getProgress());
 
-
         // Save setting values to SharedPreferences.
         pref.put(SharedPreferences.INTERVAL + mAppWidgetId , interval);
         pref.put(SharedPreferences.TRANSPARENT + mAppWidgetId , transparent);
@@ -155,16 +148,14 @@ public class WidgetDarkConfigureActivity extends AppCompatActivity {
         Addresses savedLocation = (Addresses) pref.getObject(SharedPreferences.MEMORIZED_LOCATIONS[selectedRadioButton], Const.EMPTY_STRING, new Addresses());
         pref.put(SharedPreferences.WIDGET_LOCATION + mAppWidgetId, savedLocation.getAddr());
 
-        Log.i(TAG, "# [ Widget Configuration Check ]  , Interval : " + interval + " , MODE : " + Const.MODE[selectedRadioButton] + " , trans : " + transparent + " , widgetId : " + mAppWidgetId + "\n   location : " + savedLocation.getAddr());
+        Log.i(TAG, "# [ Widget Configuration Check(White) ]  , Interval : " + interval + " , MODE : " + Const.MODE[selectedRadioButton] + " , trans : " + transparent + " , widgetId : " + mAppWidgetId + "\n   location : " + savedLocation.getAddr());
 
         // Broadcast - send a update flag.
-        Intent update = new Intent(this, WidgetDark.class);
+        Intent update = new Intent(this, WidgetWhite.class);
         update.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
-        update.setData(Uri.withAppendedPath(Uri.parse("WidgetDark" + "://widget/id/") , String.valueOf(mAppWidgetId)));
+        update.setData(Uri.withAppendedPath(Uri.parse("WidgetWhite" + "://widget/id/") , String.valueOf(mAppWidgetId)));
         update.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, mAppWidgetId);
-
         sendBroadcast(update);
-
     }
 
     static void deletePrefForWidgets(Context context, int appWidgetId) {
@@ -176,9 +167,11 @@ public class WidgetDarkConfigureActivity extends AppCompatActivity {
     }
 
     View.OnClickListener mOnClickListener = new View.OnClickListener() {
-        public void onClick(View v) {
-            switch (v.getId()) {
+        @Override
+        public void onClick(View view) {
+            switch (view.getId()) {
                 case  R.id.button_save:
+
 
                     updateWidget();
 
@@ -236,4 +229,3 @@ public class WidgetDarkConfigureActivity extends AppCompatActivity {
         }
     };
 }
-

@@ -9,7 +9,7 @@
             android:id="@+id/layout_ground"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/widget_background_dark"
+            android:background="@drawable/widget_background_white"
             android:orientation="vertical"
             android:padding="4dp">
 
@@ -43,7 +43,7 @@
                         android:layout_height="wrap_content"
                         android:text="-"
                         android:textAppearance="?android:attr/textAppearanceSmall"
-                        android:textColor="#cfd8dc"
+                        android:textColor="#212121"
                         android:textSize="10sp" />
                 </LinearLayout>
 
@@ -63,7 +63,7 @@
                         android:gravity="center_vertical"
                         android:text="갱신시간"
                         android:textAppearance="?android:attr/textAppearanceSmall"
-                        android:textColor="#cfd8dc"
+                        android:textColor="#212121"
                         android:textSize="9sp" />
 
                 </LinearLayout>
@@ -96,7 +96,7 @@
                             android:gravity="center"
                             android:text="@string/air_data_title_pm10"
                             android:textAppearance="?android:attr/textAppearanceSmall"
-                            android:textColor="#cfd8dc"
+                            android:textColor="#212121"
                             android:textSize="10sp" />
 
                         <ImageView
@@ -115,7 +115,7 @@
                             android:gravity="center"
                             android:text="-"
                             android:textAppearance="?android:attr/textAppearanceSmall"
-                            android:textColor="#cfd8dc"
+                            android:textColor="#212121"
                             android:textSize="12sp"
                             android:textStyle="bold" />
 
@@ -128,7 +128,7 @@
                         android:layout_gravity="center"
                         android:layout_margin="5dp"
                         android:contentDescription="@string/missing_img"
-                        android:src="@drawable/line" />
+                        android:src="@drawable/line_black_long" />
 
                     <LinearLayout
                         android:id="@+id/layout_area_pm20"
@@ -145,7 +145,7 @@
                             android:gravity="center"
                             android:text="@string/air_data_title_pm25"
                             android:textAppearance="?android:attr/textAppearanceSmall"
-                            android:textColor="#cfd8dc"
+                            android:textColor="#212121"
                             android:textSize="10sp" />
 
                         <ImageView
@@ -162,7 +162,7 @@
                             android:layout_height="wrap_content"
                             android:gravity="center_vertical|center|center_horizontal"
                             android:text="-"
-                            android:textColor="#cfd8dc"
+                            android:textColor="#212121"
                             android:textSize="12sp"
                             android:textStyle="bold" />
                     </LinearLayout>
@@ -173,7 +173,7 @@
                         android:layout_height="match_parent"
                         android:layout_gravity="center"
                         android:layout_margin="5dp"
-                        android:src="@drawable/line" />
+                        android:src="@drawable/line_black_long" />
 
                     <LinearLayout
                         android:id="@+id/layout_area_cai"
@@ -190,7 +190,7 @@
                             android:gravity="center"
                             android:text="통합대기"
                             android:textAppearance="?android:attr/textAppearanceSmall"
-                            android:textColor="#cfd8dc"
+                            android:textColor="#212121"
                             android:textSize="10sp" />
 
                         <ImageView
@@ -208,7 +208,7 @@
                             android:layout_height="wrap_content"
                             android:gravity="center_vertical|center|center_horizontal"
                             android:text="-"
-                            android:textColor="#cfd8dc"
+                            android:textColor="#212121"
                             android:textSize="12sp"
                             android:textStyle="bold" />
                     </LinearLayout>

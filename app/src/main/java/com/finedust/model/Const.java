@@ -58,6 +58,8 @@ public class Const {
 
     public static final String WIDGET_DARK_CALL_SERVICE = "ch.widget_action.WIDGET_DARK_GETDATA_FROM_SERVER";
     public static final String WIDGET_DARK_RESPONSE_FROM_SERVER = "ch.widget_action.WIDGET_DARK_RESPONSE_FROM_SERVER";
+    public static final String WIDGET_WHITE_RESPONSE_FROM_SERVER = "ch.widget_action.WIDGET_WHITE_RESPONSE_FROM_SERVER";
+
 
     public static final String WIDGET_MODE = "WidgetMode_";
     public static final String WIDGET_LOCATION = "WidgetLocation_";
@@ -69,8 +71,8 @@ public class Const {
     public static final String WIDGET_TRANS = "TransparentValue";
 
 
-    public static final String DARK = "DarkWidget";
-    public static final String WHITE = "WhiteWidget";
+    public static final String DARKWIDGET = "WidgetDark";
+    public static final String WHITEWIDGET = "WidgetWhite";
 
     public static final String ARRAY_VALUE = "ArrayValue";
     public static final String ARRAY_GRADE = "ArrayGrade";

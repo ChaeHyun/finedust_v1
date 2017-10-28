@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout>
+
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -9,7 +10,7 @@
             android:id="@+id/layout_ground"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/widget_background_dark"
+            android:background="@drawable/widget_background_white"
             android:orientation="vertical"
             android:padding="4dp">
 
@@ -31,8 +32,8 @@
 
                     <ImageView
                         android:id="@+id/imageView8"
-                        android:layout_width="15dp"
-                        android:layout_height="15dp"
+                        android:layout_width="12dp"
+                        android:layout_height="12dp"
                         android:layout_marginStart="5dp"
                         android:contentDescription="@string/missing_img"
                         android:src="@drawable/pin_128" />
@@ -43,8 +44,8 @@
                         android:layout_height="wrap_content"
                         android:text="-"
                         android:textAppearance="?android:attr/textAppearanceSmall"
-                        android:textColor="#cfd8dc"
-                        android:textSize="10sp" />
+                        android:textColor="#212121"
+                        android:textSize="9sp" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -63,7 +64,7 @@
                         android:gravity="center_vertical"
                         android:text="갱신시간"
                         android:textAppearance="?android:attr/textAppearanceSmall"
-                        android:textColor="#cfd8dc"
+                        android:textColor="#212121"
                         android:textSize="9sp" />
 
                 </LinearLayout>
@@ -73,6 +74,7 @@
                 android:id="@+id/layout_bottom"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_below="@id/layout_top"
                 android:orientation="horizontal"
                 android:paddingBottom="2dp">
 
@@ -96,15 +98,15 @@
                             android:gravity="center"
                             android:text="@string/air_data_title_pm10"
                             android:textAppearance="?android:attr/textAppearanceSmall"
-                            android:textColor="#cfd8dc"
-                            android:textSize="10sp" />
+                            android:textColor="#212121"
+                            android:textSize="9sp" />
 
                         <ImageView
                             android:id="@+id/info_img_one"
-                            android:layout_width="42dp"
-                            android:layout_height="42dp"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
                             android:layout_marginBottom="3dp"
-                            android:layout_marginTop="3dp"
+                            android:layout_marginTop="2dp"
                             android:contentDescription="@string/missing_img"
                             android:src="@drawable/state_fail" />
 
@@ -115,8 +117,8 @@
                             android:gravity="center"
                             android:text="-"
                             android:textAppearance="?android:attr/textAppearanceSmall"
-                            android:textColor="#cfd8dc"
-                            android:textSize="12sp"
+                            android:textColor="#212121"
+                            android:textSize="13sp"
                             android:textStyle="bold" />
 
                     </LinearLayout>
@@ -128,7 +130,7 @@
                         android:layout_gravity="center"
                         android:layout_margin="5dp"
                         android:contentDescription="@string/missing_img"
-                        android:src="@drawable/line" />
+                        android:src="@drawable/line_black_long" />
 
                     <LinearLayout
                         android:id="@+id/layout_area_pm20"
@@ -145,15 +147,15 @@
                             android:gravity="center"
                             android:text="@string/air_data_title_pm25"
                             android:textAppearance="?android:attr/textAppearanceSmall"
-                            android:textColor="#cfd8dc"
-                            android:textSize="10sp" />
+                            android:textColor="#212121"
+                            android:textSize="9sp" />
 
                         <ImageView
                             android:id="@+id/info_img_two"
-                            android:layout_width="42dp"
-                            android:layout_height="42dp"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
                             android:layout_marginBottom="3dp"
-                            android:layout_marginTop="3dp"
+                            android:layout_marginTop="2dp"
                             android:src="@drawable/state_fail" />
 
                         <TextView
@@ -162,8 +164,8 @@
                             android:layout_height="wrap_content"
                             android:gravity="center_vertical|center|center_horizontal"
                             android:text="-"
-                            android:textColor="#cfd8dc"
-                            android:textSize="12sp"
+                            android:textColor="#212121"
+                            android:textSize="13sp"
                             android:textStyle="bold" />
                     </LinearLayout>
 
@@ -173,7 +175,7 @@
                         android:layout_height="match_parent"
                         android:layout_gravity="center"
                         android:layout_margin="5dp"
-                        android:src="@drawable/line" />
+                        android:src="@drawable/line_black_long" />
 
                     <LinearLayout
                         android:id="@+id/layout_area_cai"
@@ -190,15 +192,15 @@
                             android:gravity="center"
                             android:text="통합대기"
                             android:textAppearance="?android:attr/textAppearanceSmall"
-                            android:textColor="#cfd8dc"
-                            android:textSize="10sp" />
+                            android:textColor="#212121"
+                            android:textSize="9sp" />
 
                         <ImageView
                             android:id="@+id/info_img_three"
-                            android:layout_width="42dp"
-                            android:layout_height="42dp"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
                             android:layout_marginBottom="3dp"
-                            android:layout_marginTop="3dp"
+                            android:layout_marginTop="2dp"
                             android:contentDescription="@string/missing_img"
                             android:src="@drawable/small_face_fail" />
 
@@ -208,8 +210,8 @@
                             android:layout_height="wrap_content"
                             android:gravity="center_vertical|center|center_horizontal"
                             android:text="-"
-                            android:textColor="#cfd8dc"
-                            android:textSize="12sp"
+                            android:textColor="#212121"
+                            android:textSize="13sp"
                             android:textStyle="bold" />
                     </LinearLayout>
 
@@ -224,36 +226,37 @@
 
                         <ImageView
                             android:id="@+id/setting"
-                            android:layout_width="23dp"
-                            android:layout_height="23dp"
+                            android:layout_width="18dp"
+                            android:layout_height="18dp"
                             android:layout_weight="0.5"
                             android:contentDescription="@string/missing_img"
                             android:src="@drawable/settings_1" />
 
                         <ImageView
                             android:id="@+id/refresh"
-                            android:layout_width="23dp"
-                            android:layout_height="23dp"
+                            android:layout_width="18dp"
+                            android:layout_height="18dp"
                             android:layout_weight="0.5"
                             android:contentDescription="@string/missing_img"
                             android:src="@drawable/refresh_1" />
 
                         <RelativeLayout
-                            android:layout_width="23dp"
-                            android:layout_height="23dp"
-                            android:visibility="gone"
                             android:id="@+id/layout_progress"
-                            android:gravity="center_vertical|center|center_horizontal">
+                            android:layout_width="18dp"
+                            android:layout_height="18dp"
+                            android:gravity="center_vertical|center|center_horizontal"
+                            android:visibility="gone">
 
                             <ProgressBar
-                                android:layout_width="23dp"
-                                android:layout_height="23dp"
                                 android:id="@+id/progressView"
-                                android:visibility="gone"
                                 style="?android:attr/progressBarStyleSmall"
-                                android:indeterminate="false" />
+                                android:layout_width="18dp"
+                                android:layout_height="18dp"
+                                android:indeterminate="false"
+                                android:visibility="gone" />
 
                         </RelativeLayout>
+
                     </LinearLayout>
                 </LinearLayout>
             </LinearLayout>
