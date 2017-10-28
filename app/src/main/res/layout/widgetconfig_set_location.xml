@@ -2,19 +2,16 @@
 <layout>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="15dp"
-        android:id="@+id/layout_set_location">
+    android:layout_height="match_parent"
+    android:padding="15dp"
+    android:id="@+id/layout_set_location">
 
         <ImageView
             android:layout_width="30dp"
             android:layout_height="30dp"
+            android:contentDescription="@string/missing_img"
             android:src="@drawable/icon_map"
-            android:layout_marginLeft="0dp"
+            android:layout_marginStart="0dp"
             android:layout_marginTop="5dp"
             android:id="@+id/icon_one"/>
 
@@ -28,7 +25,7 @@
             android:layout_toEndOf="@+id/icon_one"
             android:textStyle="bold"
             android:textIsSelectable="false"
-            android:layout_marginLeft="5dp"
+            android:layout_marginStart="5dp"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="5dp" />
 
@@ -44,24 +41,19 @@
             <RadioGroup
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_alignParentStart="true" >
+                android:orientation="vertical">
 
                 <RadioButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="현재위치"
                     android:id="@+id/loc_zero"
-                    android:visibility="gone"
-                    android:layout_below="@+id/status"
-                    android:layout_alignParentStart="true"/>
+                    android:visibility="gone"/>
 
                 <RadioButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/loc_one"
-                    android:layout_below="@+id/loc_zero"
-                    android:layout_alignParentStart="true"
                     android:padding="10dp"
                     android:clickable="false"
                     android:checked="false"
@@ -71,8 +63,6 @@
                     android:id="@+id/loc_two"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentStart="true"
-                    android:layout_below="@+id/loc_one"
                     android:checked="false"
                     android:clickable="false"
                     android:padding="10dp"
@@ -96,8 +86,6 @@
                 android:id="@+id/textView13"
                 android:layout_marginTop="15dp" />
         </LinearLayout>
-
-    </RelativeLayout>
 
 </RelativeLayout>
 </layout>

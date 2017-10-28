@@ -14,8 +14,9 @@
         <ImageView
             android:layout_width="30dp"
             android:layout_height="30dp"
+            android:contentDescription="@string/missing_img"
             android:src="@drawable/hourglass"
-            android:layout_marginLeft="0dp"
+            android:layout_marginStart="0dp"
             android:layout_marginTop="5dp"
             android:id="@+id/imageView9" />
 
@@ -29,7 +30,7 @@
             android:layout_toEndOf="@+id/imageView9"
             android:textStyle="bold"
             android:textIsSelectable="false"
-            android:layout_marginLeft="5dp"
+            android:layout_marginStart="5dp"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="5dp" />
 
@@ -49,7 +50,7 @@
                 android:layout_height="wrap_content"
                 android:text="업데이트주기 : "
                 android:id="@+id/value_update"
-                android:textSize="12dp"
+                android:textSize="12sp"
                 android:textColor="#000000" />
 
             <SeekBar
@@ -66,7 +67,7 @@
                 android:layout_height="wrap_content"
                 android:text="위젯의 업데이트 주기를 설정합니다."
                 android:id="@+id/textView14"
-                android:textSize="12dp" />
+                android:textSize="12sp" />
         </LinearLayout>
     </RelativeLayout>
 
@@ -80,8 +81,9 @@
         <ImageView
             android:layout_width="30dp"
             android:layout_height="30dp"
+            android:contentDescription="@string/missing_img"
             android:src="@drawable/eye"
-            android:layout_marginLeft="0dp"
+            android:layout_marginStart="0dp"
             android:layout_marginTop="5dp"
             android:id="@+id/imageView11" />
 
@@ -94,7 +96,7 @@
             android:layout_alignParentTop="true"
             android:layout_toEndOf="@+id/imageView11"
             android:textStyle="bold"
-            android:layout_marginLeft="5dp"
+            android:layout_marginStart="5dp"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="5dp" />
 
@@ -113,7 +115,7 @@
                 android:layout_height="wrap_content"
                 android:text="투명도 : "
                 android:id="@+id/value_transparent"
-                android:textSize="12dp"
+                android:textSize="12sp"
                 android:textColor="#000000" />
 
             <SeekBar
@@ -130,7 +132,7 @@
                 android:layout_height="wrap_content"
                 android:text="0~255 , 숫자가 높을 수록 배경이 어두워집니다."
                 android:id="@+id/textView17"
-                android:textSize="12dp" />
+                android:textSize="12sp" />
         </LinearLayout>
     </RelativeLayout>
 </RelativeLayout>
