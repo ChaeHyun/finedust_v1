@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.SeekBar;
 import android.widget.Toast;
@@ -103,6 +104,10 @@ public class WidgetDarkConfigureActivity extends AppCompatActivity {
             }
             catch (NullPointerException e) {
                 //e.printStackTrace();
+                // 실제 저장된 주소가 삭제 되었을 경우 선택할 수 없도록 변경.
+                locationCheck[i].setText("-");
+                locationCheck[i].setClickable(false);
+                locationCheck[i].setChecked(false);
             }
         }
 
@@ -150,15 +155,21 @@ public class WidgetDarkConfigureActivity extends AppCompatActivity {
         pref.put(SharedPreferences.WIDGET_SELECTED_LOCATION_INDEX + mAppWidgetId , String.valueOf(selectedRadioButton));
         pref.put(SharedPreferences.WIDGET_MODE + mAppWidgetId , Const.MODE[selectedRadioButton]);
 
-        Addresses savedLocation = (Addresses) pref.getObject(SharedPreferences.MEMORIZED_LOCATIONS[selectedRadioButton], Const.EMPTY_STRING, new Addresses());
-        pref.put(SharedPreferences.WIDGET_LOCATION + mAppWidgetId, savedLocation.getAddr());
+        try {
+            Addresses savedLocation = (Addresses) pref.getObject(SharedPreferences.MEMORIZED_LOCATIONS[selectedRadioButton], Const.EMPTY_STRING, new Addresses());
+            pref.put(SharedPreferences.WIDGET_LOCATION + mAppWidgetId, savedLocation.getAddr());
+            Log.i(TAG, "# [ Widget Configuration Check ]  , Interval : " + interval + " , MODE : " + Const.MODE[selectedRadioButton] + " , trans : " + transparent + " , widgetId : " + mAppWidgetId + "\n   location : " + savedLocation.getAddr());
+        }
+        catch (NullPointerException e) {
+            Toast.makeText(this, "등록되지 않은 저장위치 입니다.", Toast.LENGTH_SHORT).show();
+            finish();
+        }
 
-        Log.i(TAG, "# [ Widget Configuration Check ]  , Interval : " + interval + " , MODE : " + Const.MODE[selectedRadioButton] + " , trans : " + transparent + " , widgetId : " + mAppWidgetId + "\n   location : " + savedLocation.getAddr());
 
         // Broadcast - send a update flag.
         Intent update = new Intent(this, WidgetDark.class);
         update.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
-        update.setData(Uri.withAppendedPath(Uri.parse("WidgetDark" + "://widget/id/") , String.valueOf(mAppWidgetId)));
+        update.setData(Uri.withAppendedPath(Uri.parse(Const.DARKWIDGET + "://widget/id/") , String.valueOf(mAppWidgetId)));
         update.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, mAppWidgetId);
         sendBroadcast(update);
 

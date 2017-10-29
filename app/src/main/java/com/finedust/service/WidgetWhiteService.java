@@ -36,7 +36,7 @@ public class WidgetWhiteService extends Service {
             String widgetTheme = intent.getStringExtra(Const.WIDGET_THEME);
 
             String interval = pref.getValue(SharedPreferences.INTERVAL + mAppWidgetId, Const.WIDGET_DEFAULT_INTERVAL);
-            int intervalNum = Integer.parseInt(interval) * 1000 * 60 * 60 / 10;
+            int intervalNum = Integer.parseInt(interval) * 1000 * 60 * 60;
 
             Log.i(TAG, "   [알람설정(WidgetWhiteService)]\n   widgetId : " + mAppWidgetId
             + " , Theme : " + widgetTheme + " , mode : " + widgetMode + " , interval : " + interval + "시간");

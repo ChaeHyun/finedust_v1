@@ -108,20 +108,28 @@ public class AirConditionFragmentPresenter
         mRecent.setCurrentMode(mode);
         int num = convertModeToInteger(mode);
         if ( !updateWithRecentData(mode) ) {
-            if ( num == 1 ) {
-                Addresses data = (Addresses) pref.getObject(SharedPreferences.MEMORIZED_LOCATIONS[num], Const.EMPTY_STRING, new Addresses());
-                getAirConditionData(data.getTmX(), data.getTmY());
+            try {
+                if ( num == 1 ) {
+                    Addresses data = (Addresses) pref.getObject(SharedPreferences.MEMORIZED_LOCATIONS[num], Const.EMPTY_STRING, new Addresses());
+                    getAirConditionData(data.getTmX(), data.getTmY());
+                }
+                else if ( num == 2 ) {
+                    Addresses data = (Addresses) pref.getObject(SharedPreferences.MEMORIZED_LOCATIONS[num], Const.EMPTY_STRING, new Addresses());
+                    getAirConditionData(data.getTmX(), data.getTmY());
+                }
+                else if ( num == 3 ) {
+                    Addresses data = (Addresses) pref.getObject(SharedPreferences.MEMORIZED_LOCATIONS[num], Const.EMPTY_STRING, new Addresses());
+                    getAirConditionData(data.getTmX(), data.getTmY());
+                }
+                else  {
+                    Log.v(TAG,"   GPS 이용해서 좌표구하기 실행" );
+                    getGPSCoordinates();
+                }
             }
-            else if ( num == 2 ) {
-                Addresses data = (Addresses) pref.getObject(SharedPreferences.MEMORIZED_LOCATIONS[num], Const.EMPTY_STRING, new Addresses());
-                getAirConditionData(data.getTmX(), data.getTmY());
-            }
-            else if ( num == 3 ) {
-                Addresses data = (Addresses) pref.getObject(SharedPreferences.MEMORIZED_LOCATIONS[num], Const.EMPTY_STRING, new Addresses());
-                getAirConditionData(data.getTmX(), data.getTmY());
-            }
-            else  {
-                Log.v(TAG,"   GPS 이용해서 좌표구하기 실행" );
+            catch (NullPointerException e) {
+                // 저장위치를 삭제 했으나, 기존의 남아있던 위젯으로 앱을 작동했을 때 MEMORIZED_LOCATIONS가 Null 일 수 있다.
+                pref.put(SharedPreferences.CURRENT_MODE, Const.MODE[0]);
+                mRecent.setCurrentMode(Const.MODE[0]);
                 getGPSCoordinates();
             }
         }

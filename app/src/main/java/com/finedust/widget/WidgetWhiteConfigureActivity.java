@@ -97,6 +97,10 @@ public class WidgetWhiteConfigureActivity extends AppCompatActivity {
             }
             catch (NullPointerException e) {
                 //e.printStackTrace();
+                // 실제 저장된 주소가 삭제 되었을 경우 선택할 수 없도록 변경.
+                locationCheck[i].setText("-");
+                locationCheck[i].setClickable(false);
+                locationCheck[i].setChecked(false);
             }
         }
 
@@ -141,10 +145,16 @@ public class WidgetWhiteConfigureActivity extends AppCompatActivity {
         pref.put(SharedPreferences.TRANSPARENT + mAppWidgetId , transparent);
         pref.put(SharedPreferences.WIDGET_MODE + mAppWidgetId , Const.MODE[selectedRadioButton]);
 
-        Addresses savedLocation = (Addresses) pref.getObject(SharedPreferences.MEMORIZED_LOCATIONS[selectedRadioButton], Const.EMPTY_STRING, new Addresses());
-        pref.put(SharedPreferences.WIDGET_LOCATION + mAppWidgetId, savedLocation.getAddr());
+        try {
+            Addresses savedLocation = (Addresses) pref.getObject(SharedPreferences.MEMORIZED_LOCATIONS[selectedRadioButton], Const.EMPTY_STRING, new Addresses());
+            pref.put(SharedPreferences.WIDGET_LOCATION + mAppWidgetId, savedLocation.getAddr());
+            Log.i(TAG, "# [ Widget Configuration Check(White) ]  , Interval : " + interval + " , MODE : " + Const.MODE[selectedRadioButton] + " , trans : " + transparent + " , widgetId : " + mAppWidgetId + "\n   location : " + savedLocation.getAddr());
+        }
+        catch (NullPointerException e) {
+            Toast.makeText(this, "등록되지 않은 저장위치 입니다.", Toast.LENGTH_SHORT).show();
+            finish();
+        }
 
-        Log.i(TAG, "# [ Widget Configuration Check(White) ]  , Interval : " + interval + " , MODE : " + Const.MODE[selectedRadioButton] + " , trans : " + transparent + " , widgetId : " + mAppWidgetId + "\n   location : " + savedLocation.getAddr());
 
         // Broadcast - send a update flag.
         Intent update = new Intent(this, WidgetWhite.class);
