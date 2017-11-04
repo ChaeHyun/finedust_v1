@@ -41,6 +41,7 @@
                 android:id="@+id/edit_search"
                 android:hint=" 동 / 읍 / 면을 입력하세요."
                 android:textSize="15sp"
+                android:inputType="text"
                 android:maxLines="1"
                 android:lines = "1"
                 android:layout_weight="1"

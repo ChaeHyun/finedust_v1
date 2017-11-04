@@ -43,8 +43,9 @@ public class SearchAddressActivity extends AppCompatActivity implements Views.Se
         binding.listViewAddress.setOnItemClickListener(onClickListViewItem);
 
         setActionBarTitle("주소검색");
+        binding.editSearch.setMaxLines(1);
         binding.editSearch.setOnKeyListener(onKeySearchEdit);
-        binding.editSearch.setText("삼덕");
+        binding.editSearch.setText("중앙");
 
         binding.buttonSearch.setOnClickListener(onSearchButtonClick);
 
@@ -64,10 +65,13 @@ public class SearchAddressActivity extends AppCompatActivity implements Views.Se
     private ImageView.OnClickListener onSearchButtonClick = new ImageView.OnClickListener() {
         @Override
         public void onClick(View view) {
+            Log.i(TAG, "onSearchButton Clicked!");
 
             binding.textVisible.setVisibility(View.VISIBLE);
             binding.listViewAddress.setVisibility(View.INVISIBLE);
             binding.listViewAddress.setOnItemClickListener(onClickListViewItem);
+
+            hideKeypadFromWindow(InputMethodManager.HIDE_IMPLICIT_ONLY);
 
             if (!binding.editSearch.getText().toString().equals("")) {
                 searchAddressActivityPresenter.getAddressData(getApplicationContext(), binding.editSearch.getText().toString());
@@ -101,13 +105,11 @@ public class SearchAddressActivity extends AppCompatActivity implements Views.Se
     }
 
     private View.OnKeyListener onKeySearchEdit = new View.OnKeyListener() {
-        final String TAG = "OnKeyListener";
         @Override
         public boolean onKey(View view, int i, KeyEvent keyEvent) {
             if (i == KeyEvent.KEYCODE_ENTER && keyEvent.getAction() == KeyEvent.ACTION_DOWN) {
                 // Hide keypad
-                InputMethodManager imm = (InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE);
-                imm.hideSoftInputFromWindow(binding.editSearch.getWindowToken(), 0);
+                hideKeypadFromWindow(0);
 
                 binding.buttonSearch.callOnClick();
                 return true;
@@ -115,6 +117,14 @@ public class SearchAddressActivity extends AppCompatActivity implements Views.Se
             return false;
         }
     };
+
+    private void hideKeypadFromWindow(int INPUTMETHOD_FLAG) {
+        View view = this.getCurrentFocus();
+        if (view != null) {
+            InputMethodManager imm = (InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromInputMethod(view.getWindowToken(), INPUTMETHOD_FLAG);
+        }
+    }
 
 
     @Override
