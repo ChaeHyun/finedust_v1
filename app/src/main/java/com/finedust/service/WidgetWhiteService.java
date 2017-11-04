@@ -13,16 +13,16 @@ import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.finedust.model.Const;
-import com.finedust.utils.SharedPreferences;
+import com.finedust.utils.AppSharedPreferences;
 import com.finedust.widget.WidgetWhite;
 
 public class WidgetWhiteService extends Service {
     private static final String TAG = WidgetWhiteService.class.getSimpleName();
 
-    SharedPreferences pref;
+    AppSharedPreferences pref;
 
     public WidgetWhiteService() {
-        pref = new SharedPreferences(this);
+        pref = new AppSharedPreferences(this);
     }
 
     @Override
@@ -35,7 +35,7 @@ public class WidgetWhiteService extends Service {
             String widgetMode = intent.getStringExtra(Const.WIDGET_MODE);
             String widgetTheme = intent.getStringExtra(Const.WIDGET_THEME);
 
-            String interval = pref.getValue(SharedPreferences.INTERVAL + mAppWidgetId, Const.WIDGET_DEFAULT_INTERVAL);
+            String interval = pref.getValue(AppSharedPreferences.INTERVAL + mAppWidgetId, Const.WIDGET_DEFAULT_INTERVAL);
             int intervalNum = Integer.parseInt(interval) * 1000 * 60 * 60;
 
             Log.i(TAG, "   [알람설정(WidgetWhiteService)]\n   widgetId : " + mAppWidgetId

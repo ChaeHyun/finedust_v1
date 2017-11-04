@@ -8,7 +8,6 @@ import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
@@ -20,7 +19,6 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.finedust.R;
@@ -29,19 +27,17 @@ import com.finedust.databinding.ActivityMainBinding;
 import com.finedust.model.Addresses;
 import com.finedust.model.Const;
 import com.finedust.presenter.MainActivityPresenter;
-import com.finedust.utils.SharedPreferences;
+import com.finedust.utils.AppSharedPreferences;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, Views.MainActivityView{
 
     private static final String TAG = MainActivity.class.getSimpleName();
 
-    SharedPreferences pref;
+    AppSharedPreferences pref;
     ActivityMainBinding mainBinding;
     MainActivityPresenter mainActivityPresenter = new MainActivityPresenter(this);
 
-    private int mAppWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
-    private String selectedWidgetMode = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,7 +46,7 @@ public class MainActivity extends AppCompatActivity
         mainBinding = DataBindingUtil.setContentView(this, R.layout.activity_main);
         mainBinding.setActivity(this);
 
-        pref = new SharedPreferences(this);
+        pref = new AppSharedPreferences(this);
 
         // ActionBar, DrawerLayout, Nav View
         setSupportActionBar(mainBinding.appBarMain.toolbar);
@@ -65,14 +61,14 @@ public class MainActivity extends AppCompatActivity
         Intent intent = getIntent();
         Bundle mExtras = intent.getExtras();
         if (mExtras != null) {
-            mAppWidgetId = mExtras.getInt(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
-            selectedWidgetMode = intent.getStringExtra(Const.WIDGET_MODE);
-            pref.put(SharedPreferences.CURRENT_MODE, selectedWidgetMode);
+            String selectedWidgetMode = intent.getStringExtra(Const.WIDGET_MODE);
+            if (selectedWidgetMode != null)
+                pref.put(AppSharedPreferences.CURRENT_MODE, selectedWidgetMode);
         }
 
         // MODE Check & Instant run as AirConditionFragment
-        String MODE = pref.getValue(SharedPreferences.CURRENT_MODE, Const.EMPTY_STRING);
-        Log.i(TAG+ "+ checkCurrentMode ","   MODE >> " + MODE);
+        String MODE = pref.getValue(AppSharedPreferences.CURRENT_MODE, Const.EMPTY_STRING);
+        Log.i(TAG,  "checkCurrentMode : " + MODE);
         fragmentReplace(new AirConditionFragment());
     }
 
@@ -135,12 +131,11 @@ public class MainActivity extends AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
-        Toast t = new Toast(getApplicationContext());
 
         switch(id) {
             case R.id.nav_current:
                 // Save the settings in SharedPreferences.
-                pref.put(SharedPreferences.CURRENT_MODE, Const.MODE[0]);
+                pref.put(AppSharedPreferences.CURRENT_MODE, Const.MODE[0]);
                 fragmentReplace(new AirConditionFragment());
                 break;
 
@@ -150,7 +145,7 @@ public class MainActivity extends AppCompatActivity
                     searchLocationIntent(1);
                 }
                 else {
-                    pref.put(SharedPreferences.CURRENT_MODE, Const.MODE[1]);
+                    pref.put(AppSharedPreferences.CURRENT_MODE, Const.MODE[1]);
                     fragmentReplace(new AirConditionFragment());
                 }
                 break;
@@ -161,7 +156,7 @@ public class MainActivity extends AppCompatActivity
                     searchLocationIntent(2);
                 }
                 else {
-                    pref.put(SharedPreferences.CURRENT_MODE, Const.MODE[2]);
+                    pref.put(AppSharedPreferences.CURRENT_MODE, Const.MODE[2]);
                     fragmentReplace(new AirConditionFragment());
                 }
                 break;
@@ -172,7 +167,7 @@ public class MainActivity extends AppCompatActivity
                     searchLocationIntent(3);
                 }
                 else {
-                    pref.put(SharedPreferences.CURRENT_MODE, Const.MODE[3]);
+                    pref.put(AppSharedPreferences.CURRENT_MODE, Const.MODE[3]);
                     fragmentReplace(new AirConditionFragment());
                 }
                 break;
@@ -180,7 +175,6 @@ public class MainActivity extends AppCompatActivity
             case R.id.nav_forecast:
                 setToolbarBackgroundColor(0);
                 fragmentReplace(new ForecastFragment());
-                t.makeText(getApplicationContext(), "예보정보 선택", Toast.LENGTH_SHORT).show();
                 break;
 
             case R.id.nav_airkorea:
@@ -190,7 +184,6 @@ public class MainActivity extends AppCompatActivity
             case R.id.nav_setting:
                 setToolbarBackgroundColor(0);
                 fragmentReplace(new SettingFragment());
-                t.makeText(getApplicationContext(), "설정화면 선택", Toast.LENGTH_SHORT).show();
                 break;
         }
 
@@ -205,20 +198,20 @@ public class MainActivity extends AppCompatActivity
         Addresses saveLocation;
 
         if (resultCode == Activity.RESULT_OK && requestCode == 1) {
-            saveLocation = saveAddrInPreferences(requestCode, data, SharedPreferences.MEMORIZED_LOCATIONS[requestCode]);
+            saveLocation = saveAddrInPreferences(requestCode, data, AppSharedPreferences.MEMORIZED_LOCATIONS[requestCode]);
             Log.i(TAG, "Addr_One : " + saveLocation.getAddr());
         }
         else if (resultCode == Activity.RESULT_OK && requestCode == 2) {
-            saveLocation = saveAddrInPreferences(requestCode, data, SharedPreferences.MEMORIZED_LOCATIONS[requestCode]);
+            saveLocation = saveAddrInPreferences(requestCode, data, AppSharedPreferences.MEMORIZED_LOCATIONS[requestCode]);
             Log.i(TAG, "Addr_Two : " + saveLocation.getAddr());
         }
         else if (resultCode == Activity.RESULT_OK && requestCode == 3) {
-            saveLocation = saveAddrInPreferences(requestCode, data, SharedPreferences.MEMORIZED_LOCATIONS[requestCode]);
+            saveLocation = saveAddrInPreferences(requestCode, data, AppSharedPreferences.MEMORIZED_LOCATIONS[requestCode]);
             Log.i(TAG, "Addr_Three : " + saveLocation.getAddr());
         }
 
         if ( (requestCode ==1 || requestCode == 2 || requestCode ==3) && resultCode == Activity.RESULT_OK ) {
-            pref.put(SharedPreferences.CURRENT_MODE, Const.MODE[requestCode]);
+            pref.put(AppSharedPreferences.CURRENT_MODE, Const.MODE[requestCode]);
             fragmentReplace(new AirConditionFragment());
         }
 
@@ -239,6 +232,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onFloatingButtonClick(View view) {
         Log.v(TAG, "onFloaotingButtonClick()");
+        /*
         for(int i = 0;  i < 4; i++) {
             pref.put(SharedPreferences.CURRENT_MODE, Const.MODE[0]);
             pref.removeValue(SharedPreferences.RECENT_DATA[i]);
@@ -246,11 +240,11 @@ public class MainActivity extends AppCompatActivity
             if(i != 0)
                 setNavigationTitle(Const.EMPTY_STRING, i, Const.NAVI_ICON_LOCATION_NOT_SAVED);
         }
-        pref.removeValue(SharedPreferences.RECENT_DATA_FORECAST);
 
         checkNavigationForLocation();
         Snackbar.make(view, "All of preference data deleted.", Snackbar.LENGTH_LONG)
                 .setAction("Action", null).show();
+        */
     }
 
     @Override
@@ -313,7 +307,7 @@ public class MainActivity extends AppCompatActivity
 
     void checkNavigationForLocation() {
         for(int i = 1; i < 4; i++) {
-            Addresses saved = (Addresses) pref.getObject(SharedPreferences.MEMORIZED_LOCATIONS[i], "", new Addresses());
+            Addresses saved = (Addresses) pref.getObject(AppSharedPreferences.MEMORIZED_LOCATIONS[i], "", new Addresses());
             if (saved != null) {
                 setNavigationTitle(saved.getAddr() ,i, Const.NAVI_ICON_LOCATION_SAVED);
             }

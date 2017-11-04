@@ -1,7 +1,9 @@
 package com.finedust.view;
 
 import android.Manifest;
+import android.appwidget.AppWidgetManager;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.databinding.DataBindingUtil;
 import android.graphics.drawable.Drawable;
@@ -31,7 +33,7 @@ import com.finedust.model.RecentData;
 import com.finedust.model.Station;
 import com.finedust.presenter.AirConditionFragmentPresenter;
 import com.finedust.utils.CheckConnectivity;
-import com.finedust.utils.SharedPreferences;
+import com.finedust.utils.AppSharedPreferences;
 
 
 public class AirConditionFragment extends Fragment implements Views.AirConditionFragmentView {
@@ -40,10 +42,15 @@ public class AirConditionFragment extends Fragment implements Views.AirCondition
     FragmentAirConditionBinding  binding;
     AirConditionFragmentPresenter airConditionFragmentPresenter = new AirConditionFragmentPresenter(this, getContext());
     Views.MainActivityView mainView;
-    SharedPreferences pref;
+    AppSharedPreferences pref;
 
     final int MY_PERMISSION_REQUEST_LOCATION = 1000;
     boolean isPermissionEnabled = false;
+
+    int mAppWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
+    private String selectedWidgetMode = null;
+    private String widgetThemeMode = null;
+    private String widgetThemeAction = null;
 
 
     public AirConditionFragment() {
@@ -56,14 +63,29 @@ public class AirConditionFragment extends Fragment implements Views.AirCondition
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_air_condition, container, false);
         binding.setAircondition(this);
 
-        pref = new SharedPreferences(getActivity());
+        pref = new AppSharedPreferences(getActivity());
 
         airConditionFragmentPresenter = new AirConditionFragmentPresenter(this, getContext());
         mainView = (MainActivity) getActivity();
 
+        // Check widgetId and widgetMode. - in case of launching by clicking a widget.
+        Intent intent = getActivity().getIntent();
+        Bundle mExtras = intent.getExtras();
+
+        if (mExtras != null) {
+            mAppWidgetId = mExtras.getInt(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
+            selectedWidgetMode = intent.getStringExtra(Const.WIDGET_MODE);
+            if (selectedWidgetMode != null) {
+                //pref.put(AppSharedPreferences.CURRENT_MODE, selectedWidgetMode);
+                widgetThemeMode = intent.getStringExtra(Const.WIDGET_THEME);
+                widgetThemeAction = getWidgetThemeAction(widgetThemeMode);
+                Log.i(TAG, "widgetMode : " + selectedWidgetMode + " , AppSharedPreferences.CURRENT_MODE : " + pref.getValue(AppSharedPreferences.CURRENT_MODE, Const.EMPTY_STRING));
+            }
+        }
+
         // launch at start, but not resume;
-        String MODE = pref.getValue(SharedPreferences.CURRENT_MODE, Const.MODE[0]);
-        Log.i(TAG+ " _checkCurrentMode ","   >> MODE : " + MODE);
+        String MODE = pref.getValue(AppSharedPreferences.CURRENT_MODE, Const.MODE[0]);
+        Log.i(TAG, " checkCurrentMode  : " + MODE);
         mainView.setNavigationChecked(airConditionFragmentPresenter.convertModeToInteger(MODE), true);
         airConditionFragmentPresenter.checkCurrentMode(MODE);
 
@@ -103,15 +125,20 @@ public class AirConditionFragment extends Fragment implements Views.AirCondition
             AirCondition air = recentData.getAirCondition().get(0);
             Station weatherStation = recentData.getSavedStations().get(0);
 
-            showToastMessage("최근 업데이트 시간 : " + recentData.getAirCondition().get(0).getDataTime()
-                    + "\n주소 : " + recentData.getAddr().getAddr()
-            + "\n측정소 : " + recentData.getSavedStations().get(0).getStationName());
-
             binding.layoutLocationInfo.textContentLocation.setText(recentData.getAddr().getAddr());
             setAllAirConditionData(air);
             binding.layoutStations.textContentWeathercenter.setText(weatherStation.toString());
+
+            // 받은 데이터를 이용해서 위젯의 정보도 업데이트.
+            Log.i(TAG, "RECENT MODE : " + recentData.getCurrentMode());
+            Log.i(TAG, "WIDGET SELECT : " + selectedWidgetMode);
+            if (recentData.getCurrentMode().equals(selectedWidgetMode)) {
+                Log.i(TAG, "App -> Widget Update");
+                airConditionFragmentPresenter.sendResponseToWidget(recentData, mAppWidgetId, widgetThemeMode, widgetThemeAction);
+            }
         }
         catch (NullPointerException e) {
+            e.printStackTrace();
             showSnackBarMessage(Const.STR_FAIL_UPDATE_DATA_TO_UI);
         }
     }
@@ -161,6 +188,12 @@ public class AirConditionFragment extends Fragment implements Views.AirCondition
         img.setImageDrawable(resource);
     }
 
+    private String getWidgetThemeAction(String widgetMode) {
+        if (widgetMode.equals(Const.DARKWIDGET))
+            return Const.WIDGET_DARK_RESPONSE_FROM_SERVER;
+        else
+            return Const.WIDGET_WHITE_RESPONSE_FROM_SERVER;
+    }
 
     @Override
     public void showToastMessage(String msg) {

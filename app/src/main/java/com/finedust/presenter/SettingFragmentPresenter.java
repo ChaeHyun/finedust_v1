@@ -2,8 +2,7 @@ package com.finedust.presenter;
 
 import android.content.Context;
 
-import com.finedust.model.Const;
-import com.finedust.utils.SharedPreferences;
+import com.finedust.utils.AppSharedPreferences;
 import com.finedust.view.Views;
 
 
@@ -12,12 +11,12 @@ public class SettingFragmentPresenter implements Presenter.SettingFragmentPresen
     private Views.SettingFragmentView view;
     private Context context;
 
-    SharedPreferences pref;
+    AppSharedPreferences pref;
 
     public SettingFragmentPresenter(Views.SettingFragmentView view, Context context) {
         this.view = view;
         this.context = context;
-        pref = new SharedPreferences(context);
+        pref = new AppSharedPreferences(context);
     }
 
     @Override
@@ -27,7 +26,7 @@ public class SettingFragmentPresenter implements Presenter.SettingFragmentPresen
 
     @Override
     public void deleteSavedData() {
-        for (int i=0; i < SharedPreferences.RECENT_DATA.length; i++)
-            pref.removeValue(SharedPreferences.RECENT_DATA[i]);
+        for (int i = 0; i < AppSharedPreferences.RECENT_DATA.length; i++)
+            pref.removeValue(AppSharedPreferences.RECENT_DATA[i]);
     }
 }

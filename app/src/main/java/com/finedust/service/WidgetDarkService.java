@@ -14,17 +14,17 @@ import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.finedust.model.Const;
-import com.finedust.utils.SharedPreferences;
+import com.finedust.utils.AppSharedPreferences;
 import com.finedust.widget.WidgetDark;
 
 
 public class WidgetDarkService extends Service {
     private static final String TAG = WidgetDarkService.class.getSimpleName();
 
-    private SharedPreferences pref;
+    private AppSharedPreferences pref;
 
     public WidgetDarkService() {
-        this.pref = new SharedPreferences(this);
+        this.pref = new AppSharedPreferences(this);
     }
 
     @Override
@@ -37,7 +37,7 @@ public class WidgetDarkService extends Service {
             String widgetTheme = intent.getStringExtra(Const.WIDGET_THEME);
 
             //Temp Interval time
-            String interval = pref.getValue(SharedPreferences.INTERVAL + mAppWidgetId, Const.WIDGET_DEFAULT_INTERVAL);
+            String interval = pref.getValue(AppSharedPreferences.INTERVAL + mAppWidgetId, Const.WIDGET_DEFAULT_INTERVAL);
             int intervalNum = Integer.parseInt(interval) * 1000 * 60 * 60;
 
             Log.i(TAG, "   [알람설정(WidgetService)\n   widgetId : " + mAppWidgetId + " , THEME : "+ widgetTheme + " , 모드 : " + widgetMode +" , 인터벌 : " + interval + " 시간 ");

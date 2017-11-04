@@ -1,13 +1,11 @@
 package com.finedust.widget;
 
-import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
-import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -18,14 +16,9 @@ import com.finedust.model.Const;
 import com.finedust.service.RequestWidgetData;
 import com.finedust.service.WidgetWhiteService;
 import com.finedust.utils.DeviceInfo;
-import com.finedust.utils.SharedPreferences;
-import com.finedust.view.MainActivity;
-import com.finedust.view.Views;
+import com.finedust.utils.AppSharedPreferences;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.Locale;
 
 /**
  * Implementation of App Widget functionality.
@@ -42,11 +35,11 @@ public class WidgetWhite extends AppWidgetProvider {
                                 int appWidgetId) {
         Log.i(TAG, "## updateAppWidget() with " + appWidgetId);
         RemoteViews views = getProperRemoteViews(context);
-        SharedPreferences pref = new SharedPreferences(context);
+        AppSharedPreferences pref = new AppSharedPreferences(context);
 
-        transparentValue = pref.getValue(SharedPreferences.TRANSPARENT + appWidgetId, Const.WIDGET_DEFAULT_TRANSPARENT);
-        widgetLocation = pref.getValue(SharedPreferences.WIDGET_LOCATION + appWidgetId, Const.EMPTY_STRING);
-        widgetMode = pref.getValue(SharedPreferences.WIDGET_MODE + appWidgetId , Const.MODE[0]);
+        transparentValue = pref.getValue(AppSharedPreferences.TRANSPARENT + appWidgetId, Const.WIDGET_DEFAULT_TRANSPARENT);
+        widgetLocation = pref.getValue(AppSharedPreferences.WIDGET_LOCATION + appWidgetId, Const.EMPTY_STRING);
+        widgetMode = pref.getValue(AppSharedPreferences.WIDGET_MODE + appWidgetId , Const.MODE[0]);
 
         views.setTextViewText(R.id.value_location, widgetLocation);
         views.setInt(R.id.layout_ground, "setBackgroundColor", Color.argb(Integer.parseInt(transparentValue), 238,238,238));
@@ -105,7 +98,7 @@ public class WidgetWhite extends AppWidgetProvider {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        SharedPreferences pref = new SharedPreferences(context);
+        AppSharedPreferences pref = new AppSharedPreferences(context);
         String action = intent.getAction();
         RemoteViews remoteViews = getProperRemoteViews(context);
         AppWidgetManager manager = AppWidgetManager.getInstance(context);
@@ -129,7 +122,7 @@ public class WidgetWhite extends AppWidgetProvider {
             String widgetLocation = intent.getStringExtra(Const.WIDGET_LOCATION);
             ArrayList<String> gradeList = intent.getStringArrayListExtra(Const.ARRAY_GRADE);
             ArrayList<String> valueList = intent.getStringArrayListExtra(Const.ARRAY_VALUE);
-            String transparent = pref.getValue(SharedPreferences.TRANSPARENT + widgetId, Const.WIDGET_DEFAULT_TRANSPARENT);
+            String transparent = pref.getValue(AppSharedPreferences.TRANSPARENT + widgetId, Const.WIDGET_DEFAULT_TRANSPARENT);
 
             if (widgetMode.equals(Const.WIDGET_DELETED)) {
                 RequestWidgetData.cancelAlarmSchedule(context, appWidgetId, widgetTheme);

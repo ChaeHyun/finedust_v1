@@ -3,10 +3,11 @@ package com.finedust.utils;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.SharedPreferences;
 
 import com.google.gson.Gson;
 
-public class SharedPreferences {
+public class AppSharedPreferences {
     private final String PREF_NAME = "pref";
 
     private Context context;
@@ -16,8 +17,8 @@ public class SharedPreferences {
     public static final String[] RECENT_DATA = {"RecentData_CURRENT", "RecentData_ONE", "RecentData_TWO", "RecentData_THREE"};
     public static final String[] MEMORIZED_LOCATIONS = {"MemorizedAddress_Zero", "MemorizedAddress_One", "MemorizedAddress_Two", "MemorizedAddress_Three"};
     public static final String RECENT_DATA_FORECAST = "RecentData_Forecast";
-
     public static final String INTERVAL = "Interval_";
+
     public static final String TRANSPARENT = "Transparent_";
     public static final String WIDGET_SELECTED_LOCATION_INDEX = "SelectedLocation_";
     public static final String WIDGET_MODE = "WidgetMode_";
@@ -25,18 +26,14 @@ public class SharedPreferences {
 
 
 
-
-
-
-
-    public SharedPreferences(Context context) {
+    public AppSharedPreferences(Context context) {
         this.context = context;
     }
 
     public void put(String key, String value)
     {
-        android.content.SharedPreferences pref = context.getSharedPreferences(PREF_NAME, Activity.MODE_PRIVATE);
-        android.content.SharedPreferences.Editor editor = pref.edit();
+        SharedPreferences pref = context.getSharedPreferences(PREF_NAME, Activity.MODE_PRIVATE);
+        SharedPreferences.Editor editor = pref.edit();
 
         editor.putString(key, value);
         editor.commit();
@@ -44,8 +41,8 @@ public class SharedPreferences {
 
     public void put(String key, boolean value)
     {
-        android.content.SharedPreferences pref = context.getSharedPreferences(PREF_NAME, Activity.MODE_PRIVATE);
-        android.content.SharedPreferences.Editor editor = pref.edit();
+        SharedPreferences pref = context.getSharedPreferences(PREF_NAME, Activity.MODE_PRIVATE);
+        SharedPreferences.Editor editor = pref.edit();
 
         editor.putBoolean(key, value);
         editor.commit();
@@ -91,6 +88,14 @@ public class SharedPreferences {
         android.content.SharedPreferences.Editor editor = pref.edit();
 
         editor.remove(key);
+        editor.commit();
+    }
+
+    public void clear() {
+        android.content.SharedPreferences pref = context.getSharedPreferences(PREF_NAME, Activity.MODE_PRIVATE);
+        android.content.SharedPreferences.Editor editor = pref.edit();
+
+        editor.clear();
         editor.commit();
     }
 

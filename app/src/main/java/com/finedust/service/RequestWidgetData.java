@@ -20,7 +20,7 @@ import com.finedust.model.StationList;
 import com.finedust.retrofit.api.ApiService;
 import com.finedust.retrofit.api.RetrofitClient;
 import com.finedust.utils.CheckConnectivity;
-import com.finedust.utils.SharedPreferences;
+import com.finedust.utils.AppSharedPreferences;
 import com.finedust.widget.WidgetDark;
 import com.finedust.widget.WidgetWhite;
 
@@ -42,7 +42,7 @@ public class RequestWidgetData {
 
     private int mAppWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
     private Context context;
-    private SharedPreferences pref;
+    private AppSharedPreferences pref;
     private ApiService apiService;
 
     private CompositeDisposable compositeDisposable;
@@ -64,7 +64,7 @@ public class RequestWidgetData {
         this.widgetMode = widgetMode;
         this.widgetTheme = widgetTheme;
 
-        this.pref = new SharedPreferences(context);
+        this.pref = new AppSharedPreferences(context);
         this.apiService = RetrofitClient.getApiService();
         compositeDisposable = new CompositeDisposable();
         this.mRecent = new RecentData();
@@ -82,10 +82,11 @@ public class RequestWidgetData {
         if (!CheckConnectivity.checkNetworkConnection(context))
             return;
 
+        mRecent.setCurrentMode(widgetMode);
         int mode = convertModeToInteger(widgetMode);
         if (mode != 0) {
             try {
-                data = (Addresses) pref.getObject(SharedPreferences.MEMORIZED_LOCATIONS[mode], Const.EMPTY_STRING, new Addresses());
+                data = (Addresses) pref.getObject(AppSharedPreferences.MEMORIZED_LOCATIONS[mode], Const.EMPTY_STRING, new Addresses());
                 //Log.i(TAG, "x : " + data.getTmX() + " , y : " + data.getTmY());
                 getAirConditionDataFromServer(data.getTmX(), data.getTmY());
             }
@@ -183,20 +184,21 @@ public class RequestWidgetData {
     private void getResultIntent(RecentData recent) {
         recent.setAddr(data);
 
-        if (pref.getValue(SharedPreferences.GRADE_MODE, Const.ON_OFF[1]).equals(Const.ON_OFF[0])) {
+        if (pref.getValue(AppSharedPreferences.GRADE_MODE, Const.ON_OFF[1]).equals(Const.ON_OFF[0])) {
             recent = judgeSelfGrade(recent);
         }
-        pref.putObject(SharedPreferences.RECENT_DATA[convertModeToInteger(widgetMode)], recent);
+        pref.putObject(AppSharedPreferences.RECENT_DATA[convertModeToInteger(widgetMode)], recent);
 
+        AirCondition air = recent.getAirCondition().get(0);
         ArrayList<String> gradeList = new ArrayList<>();
-        gradeList.add(recent.getAirCondition().get(0).getPm10Grade1h());
-        gradeList.add(recent.getAirCondition().get(0).getPm25Grade1h());
-        gradeList.add(recent.getAirCondition().get(0).getKhaiGrade());
+        gradeList.add(air.getPm10Grade1h());
+        gradeList.add(air.getPm25Grade1h());
+        gradeList.add(air.getKhaiGrade());
 
         ArrayList<String> valueList = new ArrayList<>();
-        valueList.add(recent.getAirCondition().get(0).getPm10Value());
-        valueList.add(recent.getAirCondition().get(0).getPm25Value());
-        valueList.add(recent.getAirCondition().get(0).getKhaiValue());
+        valueList.add(air.getPm10Value());
+        valueList.add(air.getPm25Value());
+        valueList.add(air.getKhaiValue());
 
 
         Intent response = new Intent(ACTION_RESPONSE_WIDGET);
