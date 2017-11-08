@@ -144,7 +144,12 @@ public class AirConditionFragment extends Fragment implements Views.AirCondition
     }
 
     private void setAllAirConditionData(AirCondition air) {
-        binding.layoutLocationInfo.textDate.setText(air.getDataTimeTrim());
+        try {
+            binding.layoutLocationInfo.textDate.setText(air.getDataTimeTrim());
+        }
+        catch (NullPointerException e) {
+            binding.layoutLocationInfo.textDate.setText("측정소오류");
+        }
         setValuesAndImages(air.getKhaiGrade(), air.getKhaiValue(), Const.DRAWABLE_STATES_FACE, binding.layoutGeneral.imgKhai, binding.layoutGeneral.textValueGeneral, binding.layoutGeneral.textGramGeneral);
 
         setValuesAndImages(air.getPm10Grade1h(), air.getPm10Value(), Const.DRAWABLE_STATES, binding.layoutPmInfo.imgPm10, binding.layoutPmInfo.textValuePm10, binding.layoutPmInfo.textGramPm10);

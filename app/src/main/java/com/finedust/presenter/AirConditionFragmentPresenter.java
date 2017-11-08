@@ -179,12 +179,13 @@ public class AirConditionFragmentPresenter
                     @Override
                     public void accept(@io.reactivex.annotations.NonNull AirConditionList airConditionList) throws Exception {
                         List<AirCondition> air = airConditionList.getList();
-                        if(air.isEmpty())
-                            view.showSnackBarMessage("대기오염 정보를 찾지 못하였습니다.");
-                        else {
-                            mRecent.setAirCondition(airConditionList.getList());
-                            checkAllDataFilled(mRecent, 0);
+                        if(air.isEmpty()) {
+                            AirCondition dummy = new AirCondition();
+                            air.add(dummy);
                         }
+
+                        mRecent.setAirCondition(air);
+                        checkAllDataFilled(mRecent, 0);
 
                     }
                 }, new Consumer<Throwable>() {
@@ -211,13 +212,15 @@ public class AirConditionFragmentPresenter
                     public void accept(@io.reactivex.annotations.NonNull AirConditionList airConditionList) throws Exception {
                         List<AirCondition> nextStationData = airConditionList.getList();
 
-                        if(nextStationData.isEmpty())
-                            view.showSnackBarMessage("대기오염 정보를 찾지 못하였습니다.");
-                        else {
-                            ArrayList<AirCondition> update = updateAirConditionDataFromNextStation(nextStationData.get(0), mRecent.getAirCondition());
-                            mRecent.setAirCondition( update );
-                            checkAllDataFilled(mRecent, index);
+                        if(nextStationData.isEmpty()) {
+                            //view.showSnackBarMessage("대기오염 정보를 찾지 못하였습니다.");
+                            AirCondition dummy = new AirCondition();
+                            nextStationData.add(dummy);
                         }
+
+                        List<AirCondition> update = updateAirConditionDataFromNextStation(nextStationData.get(0), mRecent.getAirCondition());
+                        mRecent.setAirCondition( update );
+                        checkAllDataFilled(mRecent, index);
 
                     }
                 }, new Consumer<Throwable>() {
@@ -438,35 +441,44 @@ public class AirConditionFragmentPresenter
         return recent;
     }
 
-    private ArrayList<AirCondition> updateAirConditionDataFromNextStation(final AirCondition nextStationData, ArrayList<AirCondition> previousData) {
+    private List<AirCondition> updateAirConditionDataFromNextStation(final AirCondition nextStationData, List<AirCondition> previousData) {
 
-        if( previousData.get(0).getKhaiValue().equals("-") ) {
-            previousData.get(0).setKhaiGrade(nextStationData.getKhaiGrade());
-            previousData.get(0).setKhaiValue(nextStationData.getKhaiValue());
+        try {
+            if( previousData.get(0).getKhaiValue().equals("-") ) {
+                previousData.get(0).setKhaiGrade(nextStationData.getKhaiGrade());
+                previousData.get(0).setKhaiValue(nextStationData.getKhaiValue());
+            }
+            if( previousData.get(0).getPm10Value().equals("-") ) {
+                previousData.get(0).setPm10Grade1h(nextStationData.getPm10Grade1h());
+                previousData.get(0).setPm10Value(nextStationData.getPm10Value());
+            }
+            if( previousData.get(0).getPm25Value().equals("-") ) {
+                previousData.get(0).setPm25Grade1h(nextStationData.getPm25Grade1h());
+                previousData.get(0).setPm25Value(nextStationData.getPm25Value());
+            }
+            if( previousData.get(0).getO3Value().equals("-") ) {
+                previousData.get(0).setO3Grade(nextStationData.getO3Grade());
+                previousData.get(0).setO3Value(nextStationData.getO3Value());
+            }
+            if( previousData.get(0).getNo2Value().equals("-") ) {
+                previousData.get(0).setNo2Grade(nextStationData.getNo2Grade());
+                previousData.get(0).setNo2Value(nextStationData.getNo2Value());
+            }
+            if( previousData.get(0).getCoValue().equals("-") ) {
+                previousData.get(0).setCoGrade(nextStationData.getCoGrade());
+                previousData.get(0).setCoValue(nextStationData.getCoValue());
+            }
+            if( previousData.get(0).getSo2Value().equals("-") ) {
+                previousData.get(0).setSo2Grade(nextStationData.getSo2Grade());
+                previousData.get(0).setSo2Value(nextStationData.getSo2Value());
+            }
+
+            previousData.get(0).setDataTime(nextStationData.getDataTime());
         }
-        if( previousData.get(0).getPm10Value().equals("-") ) {
-            previousData.get(0).setPm10Grade1h(nextStationData.getPm10Grade1h());
-            previousData.get(0).setPm10Value(nextStationData.getPm10Value());
-        }
-        if( previousData.get(0).getPm25Value().equals("-") ) {
-            previousData.get(0).setPm25Grade1h(nextStationData.getPm25Grade1h());
-            previousData.get(0).setPm25Value(nextStationData.getPm25Value());
-        }
-        if( previousData.get(0).getO3Value().equals("-") ) {
-            previousData.get(0).setO3Grade(nextStationData.getO3Grade());
-            previousData.get(0).setO3Value(nextStationData.getO3Value());
-        }
-        if( previousData.get(0).getNo2Value().equals("-") ) {
-            previousData.get(0).setNo2Grade(nextStationData.getNo2Grade());
-            previousData.get(0).setNo2Value(nextStationData.getNo2Value());
-        }
-        if( previousData.get(0).getCoValue().equals("-") ) {
-            previousData.get(0).setCoGrade(nextStationData.getCoGrade());
-            previousData.get(0).setCoValue(nextStationData.getCoValue());
-        }
-        if( previousData.get(0).getSo2Value().equals("-") ) {
-            previousData.get(0).setSo2Grade(nextStationData.getSo2Grade());
-            previousData.get(0).setSo2Value(nextStationData.getSo2Value());
+        catch (NullPointerException e) {
+            // 근접측정소목록찾기 결과로 받은 측정소 중 존재하지않는 Station 이 발생되었을 경우.
+            // 근접측정소목록 3개 중에 2개의 연속된 측정소가 모두 오류값일 경우 nextStationData 값을 참조할 수 없으므로 오류발생.
+            e.printStackTrace();
         }
 
 

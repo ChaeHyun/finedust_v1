@@ -67,6 +67,7 @@ public class RequestWidgetData {
         this.pref = new AppSharedPreferences(context);
         this.apiService = RetrofitClient.getApiService();
         compositeDisposable = new CompositeDisposable();
+
         this.mRecent = new RecentData();
         mRecent.setAddr(new Addresses());
 
@@ -113,7 +114,7 @@ public class RequestWidgetData {
                                     mRecent.getAddr().setTmXTmY(x, y);
                                     mRecent.setSavedStations(stationList.getList());
 
-                                    Log.i(TAG, "측정소명 : " + list.get(0).getStationName());
+                                    Log.i(TAG, "[WidgetService] 측정소명 : " + list.get(0).getStationName());
                                     Map<String, String> queryParams = RetrofitClient.setQueryParamsForStationName(list.get(0).getStationName());
                                     return apiService.getAirConditionData(queryParams);
                                 }
@@ -124,12 +125,14 @@ public class RequestWidgetData {
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(new Consumer<AirConditionList>() {
                             @Override
-                            public void accept(@NonNull AirConditionList airConditionList) throws Exception {
+                            public void accept(@io.reactivex.annotations.NonNull AirConditionList airConditionList) throws Exception {
                                 List<AirCondition> air = airConditionList.getList();
-                                if (!air.isEmpty()) {
-                                    mRecent.setAirCondition(airConditionList.getList());
-                                    checkAllDataFilled(mRecent, 0);
+                                if (air.isEmpty()) {
+                                    AirCondition dummy = new AirCondition();
+                                    air.add(dummy);
                                 }
+                                mRecent.setAirCondition(air);
+                                checkAllDataFilled(mRecent, 0);
                             }
                         }, new Consumer<Throwable>() {
                             @Override
@@ -143,7 +146,7 @@ public class RequestWidgetData {
     }
 
     private void getAirConditionDataAgain(final String stationName,  final int index) {
-        Log.i(TAG, "재검색 측정소명 : " + stationName);
+        Log.i(TAG, "[WidgetService] 재검색 측정소명 : " + stationName);
 
         Map<String, String> queryParams = RetrofitClient.setQueryParamsForStationName(stationName);
         Observable<AirConditionList> airConditionListObservable = apiService.getAirConditionData(queryParams);
@@ -155,16 +158,19 @@ public class RequestWidgetData {
                     public void accept(@NonNull AirConditionList airConditionList) throws Exception {
                         List<AirCondition> nextStationData = airConditionList.getList();
 
-                        if (!nextStationData.isEmpty()) {
-                            ArrayList<AirCondition> update = updateAirConditionDataFromNextStation(nextStationData.get(0), mRecent.getAirCondition());
-                            mRecent.setAirCondition( update );
-                            checkAllDataFilled(mRecent, index);
+                        if (nextStationData.isEmpty()) {
+                            AirCondition dummy = new AirCondition();
+                            nextStationData.add(dummy);
                         }
+                        List<AirCondition> update = updateAirConditionDataFromNextStation(nextStationData.get(0), mRecent.getAirCondition());
+                        mRecent.setAirCondition( update );
+                        checkAllDataFilled(mRecent, index);
                     }
                 }, new Consumer<Throwable>() {
                     @Override
                     public void accept(@NonNull Throwable throwable) throws Exception {
-                        Log.v(TAG, "[WidgetService] Fail to get data from server.");
+                        Log.v(TAG, "[WidgetServiceAgain] Fail to get data from server.");
+                        throwable.printStackTrace();
                         setProgressVisibility(context, mAppWidgetId, false);
                     }
                 })
@@ -267,7 +273,7 @@ public class RequestWidgetData {
         return recent;
     }
 
-    private ArrayList<AirCondition> updateAirConditionDataFromNextStation(final AirCondition nextStationData, ArrayList<AirCondition> previousData) {
+    private List<AirCondition> updateAirConditionDataFromNextStation(final AirCondition nextStationData, List<AirCondition> previousData) {
 
         if( previousData.get(0).getKhaiValue().equals("-") ) {
             previousData.get(0).setKhaiGrade(nextStationData.getKhaiGrade());
