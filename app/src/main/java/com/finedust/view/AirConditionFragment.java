@@ -226,9 +226,8 @@ public class AirConditionFragment extends Fragment implements Views.AirCondition
                             .setPositiveButton("네",new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialogInterface, int i) {
-                                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                                        requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, MY_PERMISSION_REQUEST_LOCATION);
-                                    }
+                                    requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, MY_PERMISSION_REQUEST_LOCATION);
+                                    airConditionFragmentPresenter.checkCurrentMode(Const.MODE[0]);
                                 }
                             })
                             .setNegativeButton("아니오", new DialogInterface.OnClickListener() {
@@ -242,6 +241,7 @@ public class AirConditionFragment extends Fragment implements Views.AirCondition
             }
             else {
                 //항상 허용 체크한 경우
+
                 return true;
             }
         }
@@ -261,6 +261,7 @@ public class AirConditionFragment extends Fragment implements Views.AirCondition
                 if(grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     showToastMessage("위치정보 권한을 허용하셨습니다.");
                     isPermissionEnabled = true;
+                    airConditionFragmentPresenter.checkCurrentMode(Const.MODE[0]);
                 }
                 //권한이 없는 경우
                 else {

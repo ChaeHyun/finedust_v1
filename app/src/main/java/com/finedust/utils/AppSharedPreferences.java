@@ -24,6 +24,8 @@ public class AppSharedPreferences {
     public static final String WIDGET_MODE = "WidgetMode_";
     public static final String WIDGET_LOCATION = "WidgetLocation_";
 
+    public static final String HAS_VISITED = "HAS_VISITED";
+
 
 
     public AppSharedPreferences(Context context) {

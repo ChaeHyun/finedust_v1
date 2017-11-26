@@ -45,8 +45,4 @@ public class AppInfo extends Dialog {
         });
     }
 
-    @Override
-    public void dismiss() {
-        super.dismiss();
-    }
 }

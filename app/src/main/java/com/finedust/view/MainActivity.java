@@ -3,6 +3,7 @@ package com.finedust.view;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.net.Uri;
@@ -29,18 +30,18 @@ import com.finedust.model.Const;
 import com.finedust.presenter.MainActivityPresenter;
 import com.finedust.utils.AppSharedPreferences;
 import com.finedust.view.dialog.AppInfo;
+import com.finedust.view.dialog.FirstVisit;
 import com.finedust.view.webpages.WebPageAirKorea;
 import com.finedust.view.webpages.WebpagesFragment;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, Views.MainActivityView{
+        implements NavigationView.OnNavigationItemSelectedListener, Views.MainActivityView {
 
     private static final String TAG = MainActivity.class.getSimpleName();
 
     AppSharedPreferences pref;
     ActivityMainBinding mainBinding;
     MainActivityPresenter mainActivityPresenter = new MainActivityPresenter(this);
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,10 +70,11 @@ public class MainActivity extends AppCompatActivity
                 pref.put(AppSharedPreferences.CURRENT_MODE, selectedWidgetMode);
         }
 
-        // MODE Check & Instant run as AirConditionFragment
-        String MODE = pref.getValue(AppSharedPreferences.CURRENT_MODE, Const.EMPTY_STRING);
-        Log.i(TAG,  "checkCurrentMode : " + MODE);
-        fragmentReplace(new AirConditionFragment());
+        if (hasVisit()) {
+            // initiate AirConditionFragment.
+            fragmentReplace(new AirConditionFragment());
+        }
+
     }
 
     @Override
@@ -82,7 +84,6 @@ public class MainActivity extends AppCompatActivity
 
         checkNavigationForLocation();
     }
-
 
     @Override
     protected void attachBaseContext(Context newBase) {
@@ -255,12 +256,13 @@ public class MainActivity extends AppCompatActivity
         return saveLocation;
     }
 
-
     // ------------ MainActivityView Interface --------------------
+
 
     @Override
     public void onFloatingButtonClick(View view) {
         Log.v(TAG, "onFloaotingButtonClick()");
+        pref.removeValue(AppSharedPreferences.HAS_VISITED);
         /*
         for(int i = 0;  i < 4; i++) {
             pref.put(SharedPreferences.CURRENT_MODE, Const.MODE[0]);
@@ -349,6 +351,24 @@ public class MainActivity extends AppCompatActivity
             getWindow().setStatusBarColor(Const.TOOLBAR_COLORS_DARK[color]);
             mainBinding.appBarMain.toolbar.setBackgroundColor(Const.TOOLBAR_COLORS[color]);
         }
+    }
+
+    private boolean hasVisit() {
+        boolean hasVisited = pref.getValue(AppSharedPreferences.HAS_VISITED, false);
+        if (!hasVisited) {
+            pref.put(AppSharedPreferences.HAS_VISITED, true);
+
+            FirstVisit firstVisit = new FirstVisit(this);
+            firstVisit.setOnCancelListener(new DialogInterface.OnCancelListener() {
+                @Override
+                public void onCancel(DialogInterface dialogInterface) {
+                    fragmentReplace(new AirConditionFragment());
+                }
+            });
+            firstVisit.show();
+        }
+
+        return hasVisited;
     }
 
     @Override
