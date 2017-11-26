@@ -3,19 +3,20 @@ package com.finedust.model;
 
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class RecentData {
     private String currentMode;
 
     private Addresses addr;     //
-    private ArrayList<Station> savedStations;   // 0~3, Const.RECENT_STATION_LIST
-    private ArrayList<AirCondition> airCondition;      //Aircondition Data
+    private List<Station> savedStations;   // 0~3, Const.RECENT_STATION_LIST
+    private List<AirCondition> airCondition;      //Aircondition Data
 
     public RecentData() {
 
     }
 
-    public RecentData(String currentMode, Addresses addr, ArrayList<Station> saveStations, ArrayList<AirCondition> airCondition) {
+    public RecentData(String currentMode, Addresses addr, ArrayList<Station> saveStations, List<AirCondition> airCondition) {
         this.currentMode = currentMode;
         this.addr = addr;
         this.savedStations = saveStations;
@@ -38,7 +39,7 @@ public class RecentData {
         this.addr = addr;
     }
 
-    public ArrayList<Station> getSavedStations() {
+    public List<Station> getSavedStations() {
         return savedStations;
     }
 
@@ -46,11 +47,11 @@ public class RecentData {
         this.savedStations = savedStations;
     }
 
-    public ArrayList<AirCondition> getAirCondition() {
+    public List<AirCondition> getAirCondition() {
         return airCondition;
     }
 
-    public void setAirCondition(ArrayList<AirCondition> airCondition) {
+    public void setAirCondition(List<AirCondition> airCondition) {
         this.airCondition = airCondition;
     }
 }

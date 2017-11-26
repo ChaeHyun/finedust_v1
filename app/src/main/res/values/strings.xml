@@ -45,4 +45,7 @@
     <string name="air_data_measure">㎍/㎥</string>
 
     <string name="missing_img"></string>
+    <string name="appwidget_text">EXAMPLE</string>
+    <string name="configure">Configure</string>
+    <string name="add_widget">Add widget</string>
 </resources>

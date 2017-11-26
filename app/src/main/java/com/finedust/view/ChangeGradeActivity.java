@@ -12,19 +12,18 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.SeekBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.finedust.R;
 import com.finedust.databinding.SettingChangeGradeBinding;
 import com.finedust.model.Const;
-import com.finedust.utils.SharedPreferences;
+import com.finedust.utils.AppSharedPreferences;
 
 
 public class ChangeGradeActivity extends AppCompatActivity implements Views.ChangeGradeActivityView , View.OnClickListener {
     private static final String TAG = ChangeGradeActivity.class.getSimpleName();
 
     SettingChangeGradeBinding binding;
-    SharedPreferences pref;
+    AppSharedPreferences pref;
     
     int[] progressValuePm10 = new int[3];
     int[] progressValuePm25 = new int[3];
@@ -38,7 +37,7 @@ public class ChangeGradeActivity extends AppCompatActivity implements Views.Chan
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        pref = new SharedPreferences(this);
+        pref = new AppSharedPreferences(this);
         binding = DataBindingUtil.setContentView(this, R.layout.setting_change_grade);
         binding.setButton(this);
 
@@ -138,7 +137,7 @@ public class ChangeGradeActivity extends AppCompatActivity implements Views.Chan
 
         else {
             Intent result = new Intent();
-            result.putExtra(SharedPreferences.GRADE_MODE , Const.ON_OFF[0]);
+            result.putExtra(AppSharedPreferences.GRADE_MODE , Const.ON_OFF[0]);
             for (int i=0; i < Const.SELF_GRADE_PM10.length; i++) {
                 result.putExtra(Const.SELF_GRADE_PM10[i], textViews_Pm10[i].getText().toString());
                 result.putExtra(Const.SELF_GRADE_PM25[i], textViews_Pm25[i].getText().toString());

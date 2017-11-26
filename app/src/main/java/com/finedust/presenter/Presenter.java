@@ -2,6 +2,8 @@ package com.finedust.presenter;
 
 import android.content.Context;
 
+import com.finedust.model.RecentData;
+
 import io.reactivex.disposables.Disposable;
 
 interface Presenter {
@@ -25,6 +27,7 @@ interface Presenter {
         void getGPSCoordinates();
         void checkCurrentMode(String mode);
         int convertModeToInteger(final String mode);
+        void sendResponseToWidget(RecentData recentData, int mAppWidgetId, String widgetTheme, String widgetThemeAction);
     }
 
     interface SearchAddressActivityPresenter extends BasePresenter {
