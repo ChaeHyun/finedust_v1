@@ -6,6 +6,7 @@ import android.databinding.DataBindingUtil;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,7 +24,7 @@ import com.finedust.presenter.SettingFragmentPresenter;
 import com.finedust.utils.AppSharedPreferences;
 
 
-public class SettingFragment extends Fragment implements Views.SettingFragmentView {
+public class SettingFragment extends Fragment implements Views.SettingFragmentView , View.OnClickListener {
     private final static String TAG = SettingFragment.class.getSimpleName();
     FragmentSettingBinding binding;
     AppSharedPreferences pref;
@@ -80,6 +81,7 @@ public class SettingFragment extends Fragment implements Views.SettingFragmentVi
         minusButton[0] = binding.layoutMemorizedAddress.imgButtonMinus1;
         minusButton[1] = binding.layoutMemorizedAddress.imgButtonMinus2;
         minusButton[2] = binding.layoutMemorizedAddress.imgButtonMinus3;
+
     }
 
     private void checkMemorizedAddresses() {
@@ -116,6 +118,7 @@ public class SettingFragment extends Fragment implements Views.SettingFragmentVi
             minusButton[pos-1].setEnabled(true);
             minusButton[pos-1].setVisibility(View.VISIBLE);
             addresses_edit[pos-1].setText(address);
+            addresses_edit[pos-1].setOnClickListener(this);
         }
         else {
             minusButton[pos-1].setEnabled(false);
@@ -215,16 +218,37 @@ public class SettingFragment extends Fragment implements Views.SettingFragmentVi
         settingFragmentPresenter.deleteSavedData();
     }
 
-    private void onClick(View view) {
+    @Override
+    public void onClick(View view) {
+        String location = "";
         switch (view.getId()) {
             case R.id.editText1:
+                location = binding.layoutMemorizedAddress.editText1.getText().toString();
+                if (!location.equals("")) {
+                    pref.put(AppSharedPreferences.CURRENT_MODE, Const.MODE[1]);
+                    mainView.setNavigationChecked(1, true);
+                }
                 break;
             case R.id.editText2:
+                location = binding.layoutMemorizedAddress.editText2.getText().toString();
+                if (!location.equals("")) {
+                    pref.put(AppSharedPreferences.CURRENT_MODE, Const.MODE[2]);
+                    mainView.setNavigationChecked(2, true);
+                }
                 break;
             case R.id.editText3:
+                location = binding.layoutMemorizedAddress.editText3.getText().toString();
+                if (!location.equals("")) {
+                    pref.put(AppSharedPreferences.CURRENT_MODE, Const.MODE[3]);
+                    mainView.setNavigationChecked(3, true);
+                }
                 break;
         }
 
+        if (!location.equals("")) {
+            Toast.makeText(getActivity(), "지역설정 : " + location , Toast.LENGTH_SHORT).show();
+            mainView.fragmentReplace(new AirConditionFragment());
+        }
     }
 
 
