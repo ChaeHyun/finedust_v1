@@ -49,13 +49,7 @@
         android:id="@+id/nav_kaq"
         android:icon="@drawable/speech_bubble"
         android:checkable="true"
-        android:title="한국대기질예보시스템" >
-    </item>
-    <item
-        android:id="@+id/nav_nullschool"
-        android:icon="@drawable/satellite_dish"
-        android:checkable="true"
-        android:title="earth.nullschool.net" >
+        android:title="유용한사이트" >
     </item>
     <item
         android:id="@+id/nav_alarm"

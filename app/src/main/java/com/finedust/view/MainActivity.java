@@ -2,7 +2,6 @@ package com.finedust.view;
 
 
 import android.app.Activity;
-import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
@@ -178,8 +177,13 @@ public class MainActivity extends AppCompatActivity
                 break;
 
             case R.id.nav_airkorea:
+                setToolbarBackgroundColor(0);
+                fragmentReplace(new WebPageAirKorea());
+
                 break;
             case R.id.nav_kaq:
+                setToolbarBackgroundColor(0);
+                fragmentReplace(new WebpagesFragment());
                 break;
             case R.id.nav_setting:
                 setToolbarBackgroundColor(0);
