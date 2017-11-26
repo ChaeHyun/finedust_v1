@@ -58,5 +58,9 @@
     <string name="setting_etc_recommend">추천하기 - 친구에게 추천하기</string>
     <string name="setting_etc_faq">추천하기 - 친구에게 추천하기</string>
 
+    <string name="menu_action_appinfo">앱정보</string>
+    <string name="menu_action_mail">문의하기</string>
+    <string name="menu_action_recommend">추천하기</string>
+
 
 </resources>

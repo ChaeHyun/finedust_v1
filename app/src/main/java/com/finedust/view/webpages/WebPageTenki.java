@@ -1,4 +1,4 @@
-package com.finedust.view;
+package com.finedust.view.webpages;
 
 
 import android.databinding.DataBindingUtil;
@@ -13,18 +13,18 @@ import android.webkit.WebViewClient;
 import com.finedust.R;
 import com.finedust.databinding.FragmentWebviewBinding;
 
-public class WebPageAQI extends Fragment {
+public class WebPageTenki extends Fragment {
     private FragmentWebviewBinding binding;
-    private String url = "http://aqicn.org/here";
+    private String url = "http://www.tenki.jp/particulate_matter/";
 
-    public WebPageAQI() {
+    public WebPageTenki() {
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_webview, container, false);
-        binding.textViewFrom.setText("");
+        binding.textViewFrom.setText("* 일본 기상협회에서 제공하는 정보입니다.");
         setProgressBar(true);
         getWebPage(url);
         setProgressBar(false);
@@ -55,6 +55,4 @@ public class WebPageAQI extends Fragment {
             binding.webView.setVisibility(View.VISIBLE);
         }
     }
-
-
 }

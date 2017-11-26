@@ -1,4 +1,4 @@
-package com.finedust.view;
+package com.finedust.view.webpages;
 
 
 import android.databinding.DataBindingUtil;

@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -27,6 +28,9 @@ import com.finedust.model.Addresses;
 import com.finedust.model.Const;
 import com.finedust.presenter.MainActivityPresenter;
 import com.finedust.utils.AppSharedPreferences;
+import com.finedust.view.dialog.AppInfo;
+import com.finedust.view.webpages.WebPageAirKorea;
+import com.finedust.view.webpages.WebpagesFragment;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, Views.MainActivityView{
@@ -113,7 +117,28 @@ public class MainActivity extends AppCompatActivity
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-            return true;
+            fragmentReplace(new SettingFragment());
+            setToolbarBackgroundColor(0);
+        }
+        if (id == R.id.action_appinfo) {
+            AppInfo appInfo = new AppInfo(this);
+            appInfo.show();
+        }
+        if (id == R.id.action_mail) {
+            Uri uri = Uri.parse("mailto:zephyrish9@gmail.com");
+            Intent email = new Intent(Intent.ACTION_SENDTO, uri);
+            email.putExtra(Intent.EXTRA_SUBJECT, "들숨날숨 앱 문의사항");
+            email.putExtra(Intent.EXTRA_TEXT, "문의사항을 입력해주세요.");
+            startActivity(email);
+        }
+        if (id == R.id.action_like) {
+            Intent shareIntent = new Intent(Intent.ACTION_SEND);
+            Uri marketUri = Uri.parse("https://play.google.com/store/apps/details?id=ch.breatheinandout");
+            shareIntent.addCategory(Intent.CATEGORY_DEFAULT);
+            shareIntent.setType("text/plain");
+            shareIntent.putExtra(Intent.EXTRA_SUBJECT, "[들숨날숨 - 대기환경/미세먼지/초미세먼지]\n");
+            shareIntent.putExtra(Intent.EXTRA_TEXT, "우리동네 실시간 대기환경 쉽게 확인하세요." + "\n" + marketUri.toString());
+            startActivity(Intent.createChooser(shareIntent, "들숨날숨 추천하기"));
         }
 
         return super.onOptionsItemSelected(item);

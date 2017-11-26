@@ -1,4 +1,4 @@
-package com.finedust.view;
+package com.finedust.view.webpages;
 
 
 import android.databinding.DataBindingUtil;
@@ -13,26 +13,29 @@ import android.webkit.WebViewClient;
 import com.finedust.R;
 import com.finedust.databinding.FragmentWebviewBinding;
 
-public class WebPageNullSchool extends Fragment {
+public class WebPageAirKorea extends Fragment {
+    private static final String TAG = WebPageAirKorea.class.getSimpleName();
     private FragmentWebviewBinding binding;
-    private String url = "https://earth.nullschool.net/#current/particulates/surface/level/overlay=pm10/orthographic=-233.47,40.95,1034";
 
-    public WebPageNullSchool() {
+    public WebPageAirKorea() {
+
     }
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_webview, container, false);
-        binding.textViewFrom.setText("* earth.nullschool.net에서 제공하는 정보입니다. \n  실시간 대기의 흐름을 확인 할 수 있습니다.");
+        binding.layoutTextview.setVisibility(View.GONE);
+
         setProgressBar(true);
-        getWebPage(url);
+        getAirKoreaPage();
         setProgressBar(false);
 
         return binding.getRoot();
     }
 
-    private void getWebPage(String url) {
+    private void getAirKoreaPage() {
+        String url = "http://m.airkorea.or.kr/sub_new/sub21.jsp";
         binding.webView.getSettings().setJavaScriptEnabled(true);
         binding.webView.getSettings().setLoadWithOverviewMode(true);
         binding.webView.getSettings().setUseWideViewPort(true);
