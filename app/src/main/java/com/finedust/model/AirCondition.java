@@ -105,6 +105,18 @@ public class AirCondition {
     @Expose
     private String ver;
 
+    public AirCondition() {
+        this.khaiValue = "-";
+        this.pm10Value = "-";
+        this.pm10Value24 = "-";
+        this.pm25Value = "-";
+        this.pm25Value24 = "-";
+        this.o3Value = "-";
+        this.no2Value = "-";
+        this.coValue = "-";
+        this.so2Value = "-";
+    }
+
     public String getReturnType() {
         return returnType;
     }

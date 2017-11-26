@@ -2,6 +2,7 @@ package com.finedust.presenter;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.IntentSender;
 import android.location.Address;
 import android.location.Geocoder;
@@ -22,7 +23,7 @@ import com.finedust.model.StationList;
 import com.finedust.retrofit.api.ApiService;
 import com.finedust.retrofit.api.RetrofitClient;
 import com.finedust.utils.CheckConnectivity;
-import com.finedust.utils.SharedPreferences;
+import com.finedust.utils.AppSharedPreferences;
 import com.finedust.view.Views;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -55,7 +56,7 @@ public class AirConditionFragmentPresenter
     private Views.AirConditionFragmentView view;
     private Context context;
 
-    private SharedPreferences pref;
+    private AppSharedPreferences pref;
 
     private GoogleApiClient googleApiClient;
     private final static int CONNECTION_FAILURE_RESOLUTION_REQUEST = 9000;
@@ -69,7 +70,7 @@ public class AirConditionFragmentPresenter
         this.context = context;
         mRecent = new RecentData();
         mRecent.setAddr(new Addresses());
-        pref = new SharedPreferences(context);
+        pref = new AppSharedPreferences(context);
         apiService = RetrofitClient.getApiService();
         compositeDisposable = new CompositeDisposable();
     }
@@ -80,7 +81,8 @@ public class AirConditionFragmentPresenter
         disconnectLocationService();
 
         try {
-            RecentData data = (RecentData) pref.getObject(SharedPreferences.RECENT_DATA[convertModeToInteger(pref.getValue(SharedPreferences.CURRENT_MODE, Const.MODE[0]))], Const.EMPTY_STRING, new RecentData());
+            Log.i(TAG, "onPause() : " + pref.getValue(AppSharedPreferences.CURRENT_MODE, "__Nothing__"));
+            RecentData data = (RecentData) pref.getObject(AppSharedPreferences.RECENT_DATA[convertModeToInteger(pref.getValue(AppSharedPreferences.CURRENT_MODE, Const.MODE[0]))], Const.EMPTY_STRING, new RecentData());
             Log.v(TAG , "[ RCENT_DATA from SharedPreferences ]"
                     + "\n현재모드: " +  data.getCurrentMode()
                     + "\n저장된 주소 : " + data.getAddr().getAddr()
@@ -97,6 +99,7 @@ public class AirConditionFragmentPresenter
                     + "  ||  CO : " + data.getAirCondition().get(0).getCoValue()
                     + "  ||  SO2 : " + data.getAirCondition().get(0).getSo2Value()
             );
+            Log.i(TAG, "CurrentMode : " + pref.getValue(AppSharedPreferences.CURRENT_MODE, "__Nothing__"));
         }
         catch (NullPointerException e) {
             //e.printStackTrace();
@@ -108,20 +111,29 @@ public class AirConditionFragmentPresenter
         mRecent.setCurrentMode(mode);
         int num = convertModeToInteger(mode);
         if ( !updateWithRecentData(mode) ) {
-            if ( num == 1 ) {
-                Addresses data = (Addresses) pref.getObject(SharedPreferences.MEMORIZED_LOCATIONS[num], Const.EMPTY_STRING, new Addresses());
-                getAirConditionData(data.getTmX(), data.getTmY());
+            try {
+                if ( num == 1 ) {
+                    Addresses data = (Addresses) pref.getObject(AppSharedPreferences.MEMORIZED_LOCATIONS[num], Const.EMPTY_STRING, new Addresses());
+                    getAirConditionData(data.getTmX(), data.getTmY());
+                }
+                else if ( num == 2 ) {
+                    Addresses data = (Addresses) pref.getObject(AppSharedPreferences.MEMORIZED_LOCATIONS[num], Const.EMPTY_STRING, new Addresses());
+                    getAirConditionData(data.getTmX(), data.getTmY());
+                }
+                else if ( num == 3 ) {
+                    Addresses data = (Addresses) pref.getObject(AppSharedPreferences.MEMORIZED_LOCATIONS[num], Const.EMPTY_STRING, new Addresses());
+                    getAirConditionData(data.getTmX(), data.getTmY());
+                }
+                else  {
+                    Log.v(TAG,"   GPS 이용해서 좌표구하기 실행" );
+                    getGPSCoordinates();
+                }
             }
-            else if ( num == 2 ) {
-                Addresses data = (Addresses) pref.getObject(SharedPreferences.MEMORIZED_LOCATIONS[num], Const.EMPTY_STRING, new Addresses());
-                getAirConditionData(data.getTmX(), data.getTmY());
-            }
-            else if ( num == 3 ) {
-                Addresses data = (Addresses) pref.getObject(SharedPreferences.MEMORIZED_LOCATIONS[num], Const.EMPTY_STRING, new Addresses());
-                getAirConditionData(data.getTmX(), data.getTmY());
-            }
-            else  {
-                Log.v(TAG,"   GPS 이용해서 좌표구하기 실행" );
+            catch (NullPointerException e) {
+                // 저장위치를 삭제 했으나, 기존의 남아있던 위젯으로 앱을 작동했을 때 MEMORIZED_LOCATIONS가 Null 일 수 있다.
+                e.printStackTrace();
+                mRecent.setCurrentMode(Const.MODE[0]);
+                pref.put(AppSharedPreferences.CURRENT_MODE, Const.MODE[0]);
                 getGPSCoordinates();
             }
         }
@@ -167,12 +179,13 @@ public class AirConditionFragmentPresenter
                     @Override
                     public void accept(@io.reactivex.annotations.NonNull AirConditionList airConditionList) throws Exception {
                         List<AirCondition> air = airConditionList.getList();
-                        if(air.isEmpty())
-                            view.showSnackBarMessage("대기오염 정보를 찾지 못하였습니다.");
-                        else {
-                            mRecent.setAirCondition(airConditionList.getList());
-                            checkAllDataFilled(mRecent, 0);
+                        if(air.isEmpty()) {
+                            AirCondition dummy = new AirCondition();
+                            air.add(dummy);
                         }
+
+                        mRecent.setAirCondition(air);
+                        checkAllDataFilled(mRecent, 0);
 
                     }
                 }, new Consumer<Throwable>() {
@@ -199,13 +212,15 @@ public class AirConditionFragmentPresenter
                     public void accept(@io.reactivex.annotations.NonNull AirConditionList airConditionList) throws Exception {
                         List<AirCondition> nextStationData = airConditionList.getList();
 
-                        if(nextStationData.isEmpty())
-                            view.showSnackBarMessage("대기오염 정보를 찾지 못하였습니다.");
-                        else {
-                            ArrayList<AirCondition> update = updateAirConditionDataFromNextStation(nextStationData.get(0), mRecent.getAirCondition());
-                            mRecent.setAirCondition( update );
-                            checkAllDataFilled(mRecent, index);
+                        if(nextStationData.isEmpty()) {
+                            //view.showSnackBarMessage("대기오염 정보를 찾지 못하였습니다.");
+                            AirCondition dummy = new AirCondition();
+                            nextStationData.add(dummy);
                         }
+
+                        List<AirCondition> update = updateAirConditionDataFromNextStation(nextStationData.get(0), mRecent.getAirCondition());
+                        mRecent.setAirCondition( update );
+                        checkAllDataFilled(mRecent, index);
 
                     }
                 }, new Consumer<Throwable>() {
@@ -374,14 +389,14 @@ public class AirConditionFragmentPresenter
         Log.i(TAG, "save Recent Data to Preferences.");
         if (convertModeToInteger(recent.getCurrentMode()) != 0) {
             // Case : Loc_ONE, Loc_TWO, Loc_THREE
-            Addresses addr = (Addresses) pref.getObject(SharedPreferences.MEMORIZED_LOCATIONS[convertModeToInteger(recent.getCurrentMode())], Const.EMPTY_STRING, new Addresses());
+            Addresses addr = (Addresses) pref.getObject(AppSharedPreferences.MEMORIZED_LOCATIONS[convertModeToInteger(recent.getCurrentMode())], Const.EMPTY_STRING, new Addresses());
             recent.setAddr(addr);
         }
-        if (pref.getValue(SharedPreferences.GRADE_MODE, Const.ON_OFF[1]).equals(Const.ON_OFF[0])) {
+        if (pref.getValue(AppSharedPreferences.GRADE_MODE, Const.ON_OFF[1]).equals(Const.ON_OFF[0])) {
             Log.i(TAG, "SelfGrade : ON");
             recent = judgeSelfGrade(recent);
         }
-        pref.putObject(SharedPreferences.RECENT_DATA[convertModeToInteger(recent.getCurrentMode())], recent);
+        pref.putObject(AppSharedPreferences.RECENT_DATA[convertModeToInteger(recent.getCurrentMode())], recent);
     }
 
     private RecentData judgeSelfGrade(RecentData recent) {
@@ -426,35 +441,44 @@ public class AirConditionFragmentPresenter
         return recent;
     }
 
-    private ArrayList<AirCondition> updateAirConditionDataFromNextStation(final AirCondition nextStationData, ArrayList<AirCondition> previousData) {
+    private List<AirCondition> updateAirConditionDataFromNextStation(final AirCondition nextStationData, List<AirCondition> previousData) {
 
-        if( previousData.get(0).getKhaiValue().equals("-") ) {
-            previousData.get(0).setKhaiGrade(nextStationData.getKhaiGrade());
-            previousData.get(0).setKhaiValue(nextStationData.getKhaiValue());
+        try {
+            if( previousData.get(0).getKhaiValue().equals("-") ) {
+                previousData.get(0).setKhaiGrade(nextStationData.getKhaiGrade());
+                previousData.get(0).setKhaiValue(nextStationData.getKhaiValue());
+            }
+            if( previousData.get(0).getPm10Value().equals("-") ) {
+                previousData.get(0).setPm10Grade1h(nextStationData.getPm10Grade1h());
+                previousData.get(0).setPm10Value(nextStationData.getPm10Value());
+            }
+            if( previousData.get(0).getPm25Value().equals("-") ) {
+                previousData.get(0).setPm25Grade1h(nextStationData.getPm25Grade1h());
+                previousData.get(0).setPm25Value(nextStationData.getPm25Value());
+            }
+            if( previousData.get(0).getO3Value().equals("-") ) {
+                previousData.get(0).setO3Grade(nextStationData.getO3Grade());
+                previousData.get(0).setO3Value(nextStationData.getO3Value());
+            }
+            if( previousData.get(0).getNo2Value().equals("-") ) {
+                previousData.get(0).setNo2Grade(nextStationData.getNo2Grade());
+                previousData.get(0).setNo2Value(nextStationData.getNo2Value());
+            }
+            if( previousData.get(0).getCoValue().equals("-") ) {
+                previousData.get(0).setCoGrade(nextStationData.getCoGrade());
+                previousData.get(0).setCoValue(nextStationData.getCoValue());
+            }
+            if( previousData.get(0).getSo2Value().equals("-") ) {
+                previousData.get(0).setSo2Grade(nextStationData.getSo2Grade());
+                previousData.get(0).setSo2Value(nextStationData.getSo2Value());
+            }
+
+            previousData.get(0).setDataTime(nextStationData.getDataTime());
         }
-        if( previousData.get(0).getPm10Value().equals("-") ) {
-            previousData.get(0).setPm10Grade1h(nextStationData.getPm10Grade1h());
-            previousData.get(0).setPm10Value(nextStationData.getPm10Value());
-        }
-        if( previousData.get(0).getPm25Value().equals("-") ) {
-            previousData.get(0).setPm25Grade1h(nextStationData.getPm25Grade1h());
-            previousData.get(0).setPm25Value(nextStationData.getPm25Value());
-        }
-        if( previousData.get(0).getO3Value().equals("-") ) {
-            previousData.get(0).setO3Grade(nextStationData.getO3Grade());
-            previousData.get(0).setO3Value(nextStationData.getO3Value());
-        }
-        if( previousData.get(0).getNo2Value().equals("-") ) {
-            previousData.get(0).setNo2Grade(nextStationData.getNo2Grade());
-            previousData.get(0).setNo2Value(nextStationData.getNo2Value());
-        }
-        if( previousData.get(0).getCoValue().equals("-") ) {
-            previousData.get(0).setCoGrade(nextStationData.getCoGrade());
-            previousData.get(0).setCoValue(nextStationData.getCoValue());
-        }
-        if( previousData.get(0).getSo2Value().equals("-") ) {
-            previousData.get(0).setSo2Grade(nextStationData.getSo2Grade());
-            previousData.get(0).setSo2Value(nextStationData.getSo2Value());
+        catch (NullPointerException e) {
+            // 근접측정소목록찾기 결과로 받은 측정소 중 존재하지않는 Station 이 발생되었을 경우.
+            // 근접측정소목록 3개 중에 2개의 연속된 측정소가 모두 오류값일 경우 nextStationData 값을 참조할 수 없으므로 오류발생.
+            e.printStackTrace();
         }
 
 
@@ -515,13 +539,36 @@ public class AirConditionFragmentPresenter
     }
 
     private boolean updateWithRecentData(final String mode) {
-        RecentData recentData = (RecentData) pref.getObject(SharedPreferences.RECENT_DATA[convertModeToInteger(mode)], Const.EMPTY_STRING, new RecentData());
+        RecentData recentData = (RecentData) pref.getObject(AppSharedPreferences.RECENT_DATA[convertModeToInteger(mode)], Const.EMPTY_STRING, new RecentData());
         if (compareSavedDataTime(recentData)) {
-            Log.i(TAG," updateWithRecentData()");
+            Log.i(TAG," updateWithRecentData() , recentData.current : " + recentData.getCurrentMode());
             view.updateDataToViews(recentData);
             return true;
         }
         return false;
+    }
+
+    @Override
+    public void sendResponseToWidget(final RecentData recentData, final int mAppWidgetId, final String widgetTheme, final String widgetThemeAction) {
+        AirCondition air = recentData.getAirCondition().get(0);
+        ArrayList<String> gradeList = new ArrayList<>();
+        gradeList.add(air.getPm10Grade1h());
+        gradeList.add(air.getPm25Grade1h());
+        gradeList.add(air.getKhaiGrade());
+
+        ArrayList<String> valueList  = new ArrayList<>();
+        valueList.add(air.getPm10Value());
+        valueList.add(air.getPm25Value());
+        valueList.add(air.getKhaiValue());
+
+        Intent response = new Intent(widgetThemeAction);
+        response.putExtra(Const.WIDGET_ID, String.valueOf(mAppWidgetId));
+        response.putExtra(Const.WIDGET_MODE, recentData.getCurrentMode());
+        response.putExtra(Const.WIDGET_LOCATION, recentData.getAddr().getAddr());
+        response.putExtra(Const.ARRAY_GRADE, gradeList);
+        response.putExtra(Const.ARRAY_VALUE, valueList);
+
+        context.sendBroadcast(response);
     }
 
     @Override

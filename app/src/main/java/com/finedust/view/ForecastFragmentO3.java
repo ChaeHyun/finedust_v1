@@ -4,7 +4,6 @@ package com.finedust.view;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,7 +15,7 @@ import com.finedust.R;
 import com.finedust.databinding.ForecastUiBinding;
 import com.finedust.model.Const;
 import com.finedust.model.RecentForecast;
-import com.finedust.utils.SharedPreferences;
+import com.finedust.utils.AppSharedPreferences;
 
 import java.util.Calendar;
 
@@ -24,7 +23,7 @@ public class ForecastFragmentO3 extends Fragment {
     private static final String TAG = ForecastFragmentO3.class.getSimpleName();
 
     ForecastUiBinding binding;
-    SharedPreferences pref;
+    AppSharedPreferences pref;
 
     public ForecastFragmentO3() {
         // Required empty public constructor
@@ -34,7 +33,7 @@ public class ForecastFragmentO3 extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater, R.layout.forecast_ui, container, false);
-        pref = new SharedPreferences(getContext());
+        pref = new AppSharedPreferences(getContext());
 
 
         return binding.getRoot();
@@ -55,7 +54,7 @@ public class ForecastFragmentO3 extends Fragment {
     private void updateDataToViews() {
         if (checkAvailableTime()) {
             try {
-                RecentForecast recentForecast = (RecentForecast) pref.getObject(SharedPreferences.RECENT_DATA_FORECAST, Const.EMPTY_STRING, new RecentForecast());
+                RecentForecast recentForecast = (RecentForecast) pref.getObject(AppSharedPreferences.RECENT_DATA_FORECAST, Const.EMPTY_STRING, new RecentForecast());
                 binding.layoutInfoZero.textDate.setText(recentForecast.getO3().getDataTime());
                 binding.layoutInfoZero.textContentZero.setText(recentForecast.getInformOverallToday_O3());
                 binding.layoutInfo.textContentOne.setText(recentForecast.getO3().getInformOverall());

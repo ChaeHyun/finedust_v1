@@ -16,7 +16,7 @@ import com.finedust.R;
 import com.finedust.databinding.ForecastUiBinding;
 import com.finedust.model.Const;
 import com.finedust.model.RecentForecast;
-import com.finedust.utils.SharedPreferences;
+import com.finedust.utils.AppSharedPreferences;
 
 
 /**
@@ -26,7 +26,7 @@ public class ForecastFragmentPm10 extends Fragment {
     private static final String TAG = ForecastFragmentPm10.class.getSimpleName();
 
     ForecastUiBinding binding;
-    SharedPreferences pref;
+    AppSharedPreferences pref;
 
     public ForecastFragmentPm10() {
         // Required empty public constructor
@@ -42,7 +42,7 @@ public class ForecastFragmentPm10 extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         binding = DataBindingUtil.inflate(inflater, R.layout.forecast_ui, container, false);
-        pref = new SharedPreferences(getContext());
+        pref = new AppSharedPreferences(getContext());
 
         return binding.getRoot();
     }
@@ -56,7 +56,7 @@ public class ForecastFragmentPm10 extends Fragment {
 
     private void updateDataToViews() {
         try {
-            RecentForecast recentForecast = (RecentForecast) pref.getObject(SharedPreferences.RECENT_DATA_FORECAST, Const.EMPTY_STRING, new RecentForecast());
+            RecentForecast recentForecast = (RecentForecast) pref.getObject(AppSharedPreferences.RECENT_DATA_FORECAST, Const.EMPTY_STRING, new RecentForecast());
             binding.layoutInfoZero.textDate.setText(recentForecast.getPM10().getDataTime());
             binding.layoutInfoZero.textContentZero.setText(recentForecast.getInformOverallToday_PM10());
             binding.layoutInfo.textContentOne.setText(recentForecast.getPM10().getInformOverall());

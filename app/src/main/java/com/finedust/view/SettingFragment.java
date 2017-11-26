@@ -20,13 +20,13 @@ import com.finedust.model.Const;
 import com.finedust.model.Addresses;
 import com.finedust.presenter.MainActivityPresenter;
 import com.finedust.presenter.SettingFragmentPresenter;
-import com.finedust.utils.SharedPreferences;
+import com.finedust.utils.AppSharedPreferences;
 
 
 public class SettingFragment extends Fragment implements Views.SettingFragmentView {
     private final static String TAG = SettingFragment.class.getSimpleName();
     FragmentSettingBinding binding;
-    SharedPreferences pref;
+    AppSharedPreferences pref;
 
     Views.MainActivityView mainView;
     MainActivityPresenter mainActivityPresenter;
@@ -49,7 +49,7 @@ public class SettingFragment extends Fragment implements Views.SettingFragmentVi
         binding.setGrade(this);
 
         settingFragmentPresenter  = new SettingFragmentPresenter(this, getContext());
-        pref = new SharedPreferences(getActivity());
+        pref = new AppSharedPreferences(getActivity());
 
         mainView = (MainActivity) getActivity();
         mainActivityPresenter = new MainActivityPresenter(mainView);
@@ -84,7 +84,7 @@ public class SettingFragment extends Fragment implements Views.SettingFragmentVi
 
     private void checkMemorizedAddresses() {
         for(int i = 1; i < 4; i++) {
-            Addresses save = (Addresses) pref.getObject(SharedPreferences.MEMORIZED_LOCATIONS[i], Const.EMPTY_STRING, new Addresses());
+            Addresses save = (Addresses) pref.getObject(AppSharedPreferences.MEMORIZED_LOCATIONS[i], Const.EMPTY_STRING, new Addresses());
             if (save != null) {
                 setDeleteButtonVisibility(true, i, save.getAddr());
             }
@@ -92,7 +92,7 @@ public class SettingFragment extends Fragment implements Views.SettingFragmentVi
     }
 
     private void checkSelfGradeOn() {
-        if (pref.getValue(SharedPreferences.GRADE_MODE, Const.ON_OFF[1]).equals(Const.ON_OFF[0])) {
+        if (pref.getValue(AppSharedPreferences.GRADE_MODE, Const.ON_OFF[1]).equals(Const.ON_OFF[0])) {
             binding.layoutChangeGrade.switchGrade.setChecked(true);
             for( int i=0; i < 3; i++) {
                 pm10_grade[i].setText(pref.getValue(Const.SELF_GRADE_PM10[i], ""));
@@ -129,19 +129,19 @@ public class SettingFragment extends Fragment implements Views.SettingFragmentVi
         super.onActivityResult(requestCode, resultCode, data);
 
         if (resultCode == Activity.RESULT_OK && requestCode == 1) {
-            mainView.saveAddrInPreferences(requestCode, data, SharedPreferences.MEMORIZED_LOCATIONS[requestCode]);
+            mainView.saveAddrInPreferences(requestCode, data, AppSharedPreferences.MEMORIZED_LOCATIONS[requestCode]);
             setDeleteButtonVisibility(true, requestCode, data.getStringExtra("Addr"));
         }
         else if (resultCode == Activity.RESULT_OK && requestCode == 2) {
-            mainView.saveAddrInPreferences(requestCode, data, SharedPreferences.MEMORIZED_LOCATIONS[requestCode]);
+            mainView.saveAddrInPreferences(requestCode, data, AppSharedPreferences.MEMORIZED_LOCATIONS[requestCode]);
             setDeleteButtonVisibility(true, requestCode, data.getStringExtra("Addr"));
         }
         else if (resultCode == Activity.RESULT_OK && requestCode == 3) {
-            mainView.saveAddrInPreferences(requestCode, data, SharedPreferences.MEMORIZED_LOCATIONS[requestCode]);
+            mainView.saveAddrInPreferences(requestCode, data, AppSharedPreferences.MEMORIZED_LOCATIONS[requestCode]);
             setDeleteButtonVisibility(true, requestCode, data.getStringExtra("Addr"));
         }
         else if (resultCode == Activity.RESULT_OK && requestCode == 5) {
-            pref.put(SharedPreferences.GRADE_MODE, data.getStringExtra(SharedPreferences.GRADE_MODE));
+            pref.put(AppSharedPreferences.GRADE_MODE, data.getStringExtra(AppSharedPreferences.GRADE_MODE));
             for (int i = 0; i < 3; i++) {
                 pref.put(Const.SELF_GRADE_PM10[i], data.getStringExtra(Const.SELF_GRADE_PM10[i]));
                 pref.put(Const.SELF_GRADE_PM25[i], data.getStringExtra(Const.SELF_GRADE_PM25[i]));
@@ -152,7 +152,7 @@ public class SettingFragment extends Fragment implements Views.SettingFragmentVi
             binding.layoutChangeGrade.switchGrade.setChecked(true);
         }
         else if(resultCode == Activity.RESULT_CANCELED && requestCode == 5) {
-            pref.put(SharedPreferences.GRADE_MODE, Const.ON_OFF[1]);
+            pref.put(AppSharedPreferences.GRADE_MODE, Const.ON_OFF[1]);
             binding.layoutChangeGrade.switchGrade.setChecked(false);
         }
     }
@@ -177,20 +177,23 @@ public class SettingFragment extends Fragment implements Views.SettingFragmentVi
     public void onMinusButtonClick(View view) {
         switch (view.getId()) {
             case R.id.img_button_minus1:
-                pref.removeValue(SharedPreferences.MEMORIZED_LOCATIONS[1]);
-                pref.removeValue(SharedPreferences.RECENT_DATA[1]);
+                pref.removeValue(AppSharedPreferences.MEMORIZED_LOCATIONS[1]);
+                pref.removeValue(AppSharedPreferences.RECENT_DATA[1]);
+                pref.put(AppSharedPreferences.CURRENT_MODE, Const.MODE[0]);
                 setDeleteButtonVisibility(false, 1, Const.EMPTY_STRING);
                 mainView.setNavigationTitle(Const.EMPTY_STRING, 1, Const.NAVI_ICON_LOCATION_NOT_SAVED);
                 break;
             case R.id.img_button_minus2:
-                pref.removeValue(SharedPreferences.MEMORIZED_LOCATIONS[2]);
-                pref.removeValue(SharedPreferences.RECENT_DATA[2]);
+                pref.removeValue(AppSharedPreferences.MEMORIZED_LOCATIONS[2]);
+                pref.removeValue(AppSharedPreferences.RECENT_DATA[2]);
+                pref.put(AppSharedPreferences.CURRENT_MODE, Const.MODE[0]);
                 setDeleteButtonVisibility(false, 2, Const.EMPTY_STRING);
                 mainView.setNavigationTitle(Const.EMPTY_STRING, 2, Const.NAVI_ICON_LOCATION_NOT_SAVED);
                 break;
             case R.id.img_button_minus3:
-                pref.removeValue(SharedPreferences.MEMORIZED_LOCATIONS[3]);
-                pref.removeValue(SharedPreferences.RECENT_DATA[3]);
+                pref.removeValue(AppSharedPreferences.MEMORIZED_LOCATIONS[3]);
+                pref.removeValue(AppSharedPreferences.RECENT_DATA[3]);
+                pref.put(AppSharedPreferences.CURRENT_MODE, Const.MODE[0]);
                 setDeleteButtonVisibility(false, 3, Const.EMPTY_STRING);
                 mainView.setNavigationTitle(Const.EMPTY_STRING, 3, Const.NAVI_ICON_LOCATION_NOT_SAVED);
                 break;
@@ -203,7 +206,7 @@ public class SettingFragment extends Fragment implements Views.SettingFragmentVi
             startActivityForResult(intent, 5);
         }
         else {
-            pref.put(SharedPreferences.GRADE_MODE, Const.ON_OFF[1]);
+            pref.put(AppSharedPreferences.GRADE_MODE, Const.ON_OFF[1]);
             for (int i = 0; i < 3; i++) {
                 pm10_grade[i].setText(Const.EMPTY_STRING);
                 pm25_grade[i].setText(Const.EMPTY_STRING);
