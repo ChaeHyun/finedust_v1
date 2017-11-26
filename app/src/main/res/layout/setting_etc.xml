@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+    <data>
+        <variable
+            name="etc"
+            type="com.finedust.view.SettingFragment"/>
+    </data>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="@dimen/aircondition_layout_padding">
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/linearLayout5"
+        android:paddingEnd="5dp"
+        android:paddingStart="10dp" >
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.8"
+            android:gravity="center_vertical" >
+
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:contentDescription="@string/missing_img"
+                android:src="@drawable/marker"
+                android:layout_marginStart="0dp"
+                android:id="@+id/imageView21" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="@string/setting_etc"
+                android:id="@+id/textView21"
+                android:textStyle="bold"
+                android:textIsSelectable="false"
+                android:layout_marginStart="10dp" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/linearLayout5"
+        android:background="@drawable/border"
+        android:orientation="vertical"
+        android:padding="10dp"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="10dp" >
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/layout_mail"
+            android:padding="10dp"
+            android:onClick="@{etc::onEtcLayoutButtonsClick}"
+            android:gravity="start|center_vertical"
+            android:layout_marginTop="5dp">
+
+            <ImageView
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:contentDescription="@string/missing_img"
+                android:id="@+id/imageView31"
+                android:src="@drawable/mail"
+                android:layout_marginRight="10dp"
+                android:layout_marginLeft="10dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/setting_etc_askquestions"
+                android:id="@+id/textView37"
+                android:textSize="15sp"
+                android:textColor="#212121" />
+        </LinearLayout>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/missing_img"
+            android:id="@+id/imageView33"
+            android:src="@drawable/horizontal_line"
+            android:layout_gravity="center"
+            android:padding="10dp" />
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/layout_like"
+            android:padding="10dp"
+            android:onClick="@{etc::onEtcLayoutButtonsClick}"
+            android:gravity="start|center_vertical">
+
+            <ImageView
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:contentDescription="@string/missing_img"
+                android:id="@+id/imageView29"
+                android:src="@drawable/like"
+                android:layout_marginRight="10dp"
+                android:layout_marginLeft="10dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/setting_etc_recommend"
+                android:id="@+id/textView34"
+                android:textSize="15sp"
+                android:textColor="#212121" />
+
+        </LinearLayout>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/missing_img"
+            android:id="@+id/imageView32"
+            android:src="@drawable/horizontal_line"
+            android:layout_gravity="center"
+            android:padding="10dp"
+            android:visibility="gone"/>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/layout_faq"
+            android:padding="10dp"
+            android:gravity="start"
+            android:visibility="gone" >
+
+            <ImageView
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:contentDescription="@string/missing_img"
+                android:id="@+id/imageView34"
+                android:src="@drawable/faq"
+                android:layout_marginRight="10dp"
+                android:layout_marginLeft="10dp" />
+
+            <TextView
+                android:id="@+id/textView38"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/setting_etc_faq"
+                android:textSize="15sp" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+</RelativeLayout>
+</layout>

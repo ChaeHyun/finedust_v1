@@ -37,7 +37,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceLarge"
-                android:text="등급변경"
+                android:text="@string/setting_change_grade"
                 android:id="@+id/textView21"
                 android:textStyle="bold"
                 android:textIsSelectable="false"
@@ -102,7 +102,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="(PM10)"
+                    android:text="@string/setting_change_grade_pm10"
                     android:id="@+id/textView31"
                     android:textStyle="bold"
                     android:layout_gravity="center" />
@@ -238,7 +238,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="(PM2.5)"
+                    android:text="@string/setting_change_grade_pm25"
                     android:id="@+id/textView32"
                     android:textStyle="bold"
                     android:layout_gravity="center" />

@@ -3,6 +3,7 @@ package com.finedust.view;
 import android.app.Activity;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
+import android.net.Uri;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
@@ -48,6 +49,7 @@ public class SettingFragment extends Fragment implements Views.SettingFragmentVi
         binding.setMinus(this);
         binding.setPlus(this);
         binding.setGrade(this);
+        binding.setEtc(this);
 
         settingFragmentPresenter  = new SettingFragmentPresenter(this, getContext());
         pref = new AppSharedPreferences(getActivity());
@@ -199,6 +201,29 @@ public class SettingFragment extends Fragment implements Views.SettingFragmentVi
                 pref.put(AppSharedPreferences.CURRENT_MODE, Const.MODE[0]);
                 setDeleteButtonVisibility(false, 3, Const.EMPTY_STRING);
                 mainView.setNavigationTitle(Const.EMPTY_STRING, 3, Const.NAVI_ICON_LOCATION_NOT_SAVED);
+                break;
+        }
+    }
+
+    public void onEtcLayoutButtonsClick(View view) {
+        switch (view.getId()) {
+            case R.id.layout_mail:
+                Uri uri = Uri.parse("mailto:zephyrish9@gmail.com");
+                Intent email = new Intent(Intent.ACTION_SENDTO, uri);
+                email.putExtra(Intent.EXTRA_SUBJECT, "들숨날숨 앱 문의사항");
+                email.putExtra(Intent.EXTRA_TEXT, "문의사항을 입력해주세요.");
+                startActivity(email);
+
+                break;
+            case R.id.layout_like:
+                Intent shareIntent = new Intent(Intent.ACTION_SEND);
+                Uri marketUri = Uri.parse("https://play.google.com/store/apps/details?id=ch.breatheinandout");
+                shareIntent.addCategory(Intent.CATEGORY_DEFAULT);
+                shareIntent.setType("text/plain");
+                shareIntent.putExtra(Intent.EXTRA_SUBJECT, "[들숨날숨 - 대기환경/미세먼지/초미세먼지]\n");
+                shareIntent.putExtra(Intent.EXTRA_TEXT, "\n우리동네 실시간 대기환경 쉽게 확인하세요." + "\n" + marketUri.toString());
+                startActivity(Intent.createChooser(shareIntent, "들숨날숨 추천하기"));
+
                 break;
         }
     }

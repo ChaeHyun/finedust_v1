@@ -48,4 +48,15 @@
     <string name="appwidget_text">EXAMPLE</string>
     <string name="configure">Configure</string>
     <string name="add_widget">Add widget</string>
+
+    <string name="setting_change_grade">등급변경</string>
+    <string name="setting_change_grade_pm10">(PM10)</string>
+    <string name="setting_change_grade_pm25">(PM2.5)</string>
+
+    <string name="setting_etc">기타설정</string>
+    <string name="setting_etc_askquestions">문의하기 - 불편사항 문의하기</string>
+    <string name="setting_etc_recommend">추천하기 - 친구에게 추천하기</string>
+    <string name="setting_etc_faq">추천하기 - 친구에게 추천하기</string>
+
+
 </resources>
