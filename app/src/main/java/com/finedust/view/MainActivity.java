@@ -10,6 +10,7 @@ import android.databinding.DataBindingUtil;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.multidex.MultiDex;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
@@ -31,6 +32,7 @@ import com.finedust.model.Addresses;
 import com.finedust.model.Const;
 import com.finedust.presenter.MainActivityPresenter;
 import com.finedust.utils.AppSharedPreferences;
+import com.finedust.utils.ChangeFont;
 import com.finedust.view.dialog.AppInfo;
 import com.finedust.view.dialog.FirstVisit;
 import com.finedust.view.webpages.WebPageAirKorea;
@@ -54,6 +56,8 @@ public class MainActivity extends AppCompatActivity
 
         mainBinding = DataBindingUtil.setContentView(this, R.layout.activity_main);
         mainBinding.setActivity(this);
+
+        ChangeFont.Typekit(this, Const.FONT_DEFAULT_NORMAL, Const.FONT_DEFAULT_BOLD);
 
         pref = new AppSharedPreferences(this);
 
@@ -102,7 +106,9 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     protected void attachBaseContext(Context newBase) {
-        super.attachBaseContext(newBase);
+        MultiDex.install(this);
+
+        super.attachBaseContext(ChangeFont.TypekitContextWrapper(newBase));
     }
 
     @Override

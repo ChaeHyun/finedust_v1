@@ -1,6 +1,7 @@
 package com.finedust.view;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.support.design.widget.Snackbar;
@@ -19,8 +20,10 @@ import android.widget.Toast;
 import com.finedust.R;
 import com.finedust.databinding.ActivitySearchAddressBinding;
 import com.finedust.model.Addresses;
+import com.finedust.model.Const;
 import com.finedust.model.adapter.AddressListAdapter;
 import com.finedust.presenter.SearchAddressActivityPresenter;
+import com.finedust.utils.ChangeFont;
 import com.finedust.utils.CheckConnectivity;
 
 import java.util.List;
@@ -35,6 +38,8 @@ public class SearchAddressActivity extends AppCompatActivity implements Views.Se
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        ChangeFont.Typekit(this, Const.FONT_DEFAULT_NORMAL, Const.FONT_DEFAULT_BOLD);
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_search_address);
         binding.setSearch(this);
@@ -175,5 +180,10 @@ public class SearchAddressActivity extends AppCompatActivity implements Views.Se
     protected void onDestroy() {
         searchAddressActivityPresenter.clearDisposable();
         super.onDestroy();
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(ChangeFont.TypekitContextWrapper(newBase));
     }
 }

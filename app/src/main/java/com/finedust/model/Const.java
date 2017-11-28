@@ -84,6 +84,9 @@ public class Const {
 
     public static final String WIDGET_DELETED = "DELETED";
 
+    public static final String FONT_DEFAULT_NORMAL = "BMJUA.ttf";
+    public static final String FONT_DEFAULT_BOLD = "BMDOHYEON.ttf";
+
 
 
 }

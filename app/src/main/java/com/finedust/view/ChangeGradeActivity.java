@@ -1,5 +1,6 @@
 package com.finedust.view;
 
+import android.content.Context;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
@@ -17,6 +18,7 @@ import com.finedust.R;
 import com.finedust.databinding.SettingChangeGradeBinding;
 import com.finedust.model.Const;
 import com.finedust.utils.AppSharedPreferences;
+import com.finedust.utils.ChangeFont;
 
 
 public class ChangeGradeActivity extends AppCompatActivity implements Views.ChangeGradeActivityView , View.OnClickListener {
@@ -37,6 +39,8 @@ public class ChangeGradeActivity extends AppCompatActivity implements Views.Chan
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        ChangeFont.Typekit(this, Const.FONT_DEFAULT_NORMAL, Const.FONT_DEFAULT_BOLD);
+
         pref = new AppSharedPreferences(this);
         binding = DataBindingUtil.setContentView(this, R.layout.setting_change_grade);
         binding.setButton(this);
@@ -44,6 +48,11 @@ public class ChangeGradeActivity extends AppCompatActivity implements Views.Chan
         bindingViews();
         setActionBarTitle("구간설정");
 
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(ChangeFont.TypekitContextWrapper(newBase));
     }
 
     @Override

@@ -20,6 +20,7 @@ import com.finedust.databinding.WidgetConfigureBinding;
 import com.finedust.model.Addresses;
 import com.finedust.model.Const;
 import com.finedust.utils.AppSharedPreferences;
+import com.finedust.utils.ChangeFont;
 
 
 public class WidgetDarkConfigureActivity extends AppCompatActivity {
@@ -43,6 +44,8 @@ public class WidgetDarkConfigureActivity extends AppCompatActivity {
     @Override
     public void onCreate(Bundle icicle) {
         super.onCreate(icicle);
+        ChangeFont.Typekit(this, Const.FONT_DEFAULT_NORMAL);
+
         binding = DataBindingUtil.setContentView(this, R.layout.widget_configure);
 
         pref = new AppSharedPreferences(this);
@@ -68,6 +71,10 @@ public class WidgetDarkConfigureActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(ChangeFont.TypekitContextWrapper(newBase));
+    }
 
     private void getPreviousSettingValues(final int mAppWidgetId) {
         locationCheck[0] = binding.layoutSetLocation.locZero;

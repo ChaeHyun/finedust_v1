@@ -19,6 +19,7 @@ import com.finedust.databinding.WidgetConfigureBinding;
 import com.finedust.model.Addresses;
 import com.finedust.model.Const;
 import com.finedust.utils.AppSharedPreferences;
+import com.finedust.utils.ChangeFont;
 
 public class WidgetWhiteConfigureActivity extends AppCompatActivity {
     public static final String TAG = WidgetWhiteConfigureActivity.class.getSimpleName();
@@ -41,6 +42,8 @@ public class WidgetWhiteConfigureActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        ChangeFont.Typekit(this, Const.FONT_DEFAULT_NORMAL);
+
         binding = DataBindingUtil.setContentView(this, R.layout.widget_configure);
 
         pref = new AppSharedPreferences(this);
@@ -61,6 +64,11 @@ public class WidgetWhiteConfigureActivity extends AppCompatActivity {
 
         getPreviousSettingValues(mAppWidgetId);
 
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(ChangeFont.TypekitContextWrapper(newBase));
     }
 
     private void getPreviousSettingValues(final int mAppWidgetId) {
