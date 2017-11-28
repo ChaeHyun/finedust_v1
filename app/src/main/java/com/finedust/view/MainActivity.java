@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.databinding.DataBindingUtil;
 import android.net.Uri;
 import android.os.Build;
@@ -79,6 +80,12 @@ public class MainActivity extends AppCompatActivity
             fragmentReplace(new AirConditionFragment());
         }
 
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        Log.i(TAG, "onConfigurationChanged()..");
+        super.onConfigurationChanged(newConfig);
     }
 
     @Override
