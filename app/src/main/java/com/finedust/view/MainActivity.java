@@ -52,6 +52,10 @@ public class MainActivity extends AppCompatActivity
 
         pref = new AppSharedPreferences(this);
 
+        // Splash Activity
+        Intent splash = new Intent(this, Splash.class);
+        startActivity(splash);
+
         // ActionBar, DrawerLayout, Nav View
         setSupportActionBar(mainBinding.appBarMain.toolbar);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
