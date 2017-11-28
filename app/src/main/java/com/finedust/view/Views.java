@@ -56,4 +56,8 @@ public interface Views {
     interface SettingFragmentView {
 
     }
+
+    interface DialogButtonClick {
+        void dialogListViewItemClick(int position);
+    }
 }

@@ -50,7 +50,6 @@ public class SearchAddressActivity extends AppCompatActivity implements Views.Se
         setActionBarTitle("주소검색");
         binding.editSearch.setMaxLines(1);
         binding.editSearch.setOnKeyListener(onKeySearchEdit);
-        binding.editSearch.setText("중앙");
 
         binding.buttonSearch.setOnClickListener(onSearchButtonClick);
 
@@ -76,13 +75,14 @@ public class SearchAddressActivity extends AppCompatActivity implements Views.Se
             binding.listViewAddress.setVisibility(View.INVISIBLE);
             binding.listViewAddress.setOnItemClickListener(onClickListViewItem);
 
-            hideKeypadFromWindow(InputMethodManager.HIDE_IMPLICIT_ONLY);
+            InputMethodManager imm = (InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(binding.buttonSearch.getWindowToken(), 0);
 
             if (!binding.editSearch.getText().toString().equals("")) {
                 searchAddressActivityPresenter.getAddressData(getApplicationContext(), binding.editSearch.getText().toString());
             }
             else {
-                Snackbar.make(view, "검색어를 입력해주세요.", Snackbar.LENGTH_SHORT).show();
+                showSnackBarMessage("검색어를 입력해주세요.");
             }
         }
     };
@@ -114,7 +114,7 @@ public class SearchAddressActivity extends AppCompatActivity implements Views.Se
         public boolean onKey(View view, int i, KeyEvent keyEvent) {
             if (i == KeyEvent.KEYCODE_ENTER && keyEvent.getAction() == KeyEvent.ACTION_DOWN) {
                 // Hide keypad
-                hideKeypadFromWindow(0);
+                hideKeypadFromWindow(binding.editSearch , 0);
 
                 binding.buttonSearch.callOnClick();
                 return true;
@@ -123,12 +123,9 @@ public class SearchAddressActivity extends AppCompatActivity implements Views.Se
         }
     };
 
-    private void hideKeypadFromWindow(int INPUTMETHOD_FLAG) {
-        View view = this.getCurrentFocus();
-        if (view != null) {
-            InputMethodManager imm = (InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE);
-            imm.hideSoftInputFromInputMethod(view.getWindowToken(), INPUTMETHOD_FLAG);
-        }
+    private void hideKeypadFromWindow(View view, int INPUTMETHOD_FLAG) {
+        InputMethodManager imm = (InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromInputMethod(view.getWindowToken(), INPUTMETHOD_FLAG);
     }
 
 

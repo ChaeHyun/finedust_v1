@@ -3,6 +3,7 @@ package com.finedust.model.adapter;
 
 import android.content.Context;
 import android.databinding.DataBindingUtil;
+import android.graphics.Typeface;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -14,6 +15,8 @@ import android.widget.ArrayAdapter;
 import com.finedust.R;
 import com.finedust.databinding.ListviewAddressItemBinding;
 import com.finedust.model.Addresses;
+import com.finedust.model.Const;
+import com.finedust.utils.ChangeFont;
 
 import java.util.List;
 
@@ -59,8 +62,11 @@ public class AddressListAdapter extends ArrayAdapter<Addresses> {
         }
 
         Addresses addr = getItem(position);
+        Typeface tf = ChangeFont.getTypefaceFromAsset(getContext(), Const.FONT_DEFAULT_NORMAL);
+        binding.item.setTypeface(tf);
         binding.item.setText(addr.getSidoName() + " " + addr.getSggName() + " " + addr.getUmdName());
 
         return binding.getRoot();
     }
+
 }

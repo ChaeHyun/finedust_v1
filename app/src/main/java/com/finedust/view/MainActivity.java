@@ -365,7 +365,7 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    void checkNavigationForLocation() {
+    private void checkNavigationForLocation() {
         for(int i = 1; i < 4; i++) {
             Addresses saved = (Addresses) pref.getObject(AppSharedPreferences.MEMORIZED_LOCATIONS[i], "", new Addresses());
             if (saved != null) {

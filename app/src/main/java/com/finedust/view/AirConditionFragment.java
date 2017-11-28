@@ -34,9 +34,10 @@ import com.finedust.model.Station;
 import com.finedust.presenter.AirConditionFragmentPresenter;
 import com.finedust.utils.CheckConnectivity;
 import com.finedust.utils.AppSharedPreferences;
+import com.finedust.view.dialog.SavedLocationList;
 
 
-public class AirConditionFragment extends Fragment implements Views.AirConditionFragmentView {
+public class AirConditionFragment extends Fragment implements Views.AirConditionFragmentView , Views.DialogButtonClick {
     private static final String TAG = AirConditionFragment.class.getSimpleName();
 
     FragmentAirConditionBinding  binding;
@@ -141,6 +142,19 @@ public class AirConditionFragment extends Fragment implements Views.AirCondition
             e.printStackTrace();
             showSnackBarMessage(Const.STR_FAIL_UPDATE_DATA_TO_UI);
         }
+    }
+
+    public void onAddressLayoutClick(View view) {
+        Log.v(TAG, "onAddressLayoutClick() - pop up a list of saved locations.");
+        SavedLocationList savedLocationList = new SavedLocationList(getContext(), this);
+        savedLocationList.show();
+    }
+
+    @Override
+    public void dialogListViewItemClick(int position) {
+        // Dialog 내의 listView 아이템 클릭 시 Fragment 에서 역할 수행.
+        mainView.setNavigationChecked(position, true);
+        airConditionFragmentPresenter.checkCurrentMode(Const.MODE[position]);
     }
 
     private void setAllAirConditionData(AirCondition air) {
