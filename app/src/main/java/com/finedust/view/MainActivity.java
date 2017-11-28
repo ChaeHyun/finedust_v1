@@ -21,6 +21,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.finedust.R;
@@ -39,6 +40,9 @@ public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, Views.MainActivityView {
 
     private static final String TAG = MainActivity.class.getSimpleName();
+
+    private long backPressedTime = 0;
+    private final long FINISH_INTERVAL_TIME = 2000;
 
     AppSharedPreferences pref;
     ActivityMainBinding mainBinding;
@@ -103,11 +107,19 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onBackPressed() {
-
         if (mainBinding.drawerLayout.isDrawerOpen(GravityCompat.START)) {
             mainBinding.drawerLayout.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
+            long nowTime = System.currentTimeMillis();
+            long intervalTime = nowTime - backPressedTime;
+
+            if (intervalTime >= 0  && intervalTime <= FINISH_INTERVAL_TIME) {
+                super.onBackPressed();
+            }
+            else {
+                backPressedTime = nowTime;
+                Toast.makeText(this, "한번 더 뒤로가기를 누르면 종료됩니다.", Toast.LENGTH_SHORT).show();
+            }
         }
     }
 
