@@ -157,9 +157,13 @@ public class WidgetWhite extends AppWidgetProvider {
 
     public static RemoteViews getProperRemoteViews(Context context) {
         String strManufacturer = DeviceInfo.checkDeviceManufacturer();
+        Log.i(TAG, "DeviceInfo : " + strManufacturer);
 
         if (strManufacturer.equals(Const.DEVICE_CATEGORY_SAMSUNG)) {
             return new RemoteViews(context.getPackageName(), R.layout.widget_white);
+        }
+        else if (strManufacturer.equals(Const.DEVICE_CATEGORY_LG)) {
+            return new RemoteViews(context.getPackageName(), R.layout.widget_dark_lg);
         }
         else {
             return new RemoteViews(context.getPackageName(), R.layout.widget_white_others);

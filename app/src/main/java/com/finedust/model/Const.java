@@ -55,6 +55,7 @@ public class Const {
 
 
     public static final String DEVICE_CATEGORY_SAMSUNG = "samsung";
+    public static final String DEVICE_CATEGORY_LG = "LGE";
 
     public static final String WIDGET_DEFAULT_INTERVAL = "3";
     public static final String WIDGET_DEFAULT_TRANSPARENT = "170";
