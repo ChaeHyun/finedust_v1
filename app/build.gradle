@@ -6,7 +6,7 @@ android {
     buildToolsVersion "25.0.2"
 
     defaultConfig {
-        applicationId "com.finedust"
+        applicationId "ch.breatheinandout"
         minSdkVersion 18
         targetSdkVersion 26
         versionCode 12

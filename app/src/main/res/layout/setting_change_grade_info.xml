@@ -3,7 +3,7 @@
     <data>
         <variable
             name="button"
-            type="com.finedust.view.ChangeGradeActivity"/>
+            type="ch.breatheinandout.view.ChangeGradeActivity"/>
     </data>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"

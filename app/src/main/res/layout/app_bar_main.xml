@@ -3,14 +3,14 @@
     <data>
         <variable
             name="activity"
-            type="com.finedust.view.MainActivity" />
+            type="ch.breatheinandout.view.MainActivity" />
     </data>
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.finedust.view.MainActivity">
+    tools:context="com.finedust.ch.finedust.view.MainActivity">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"

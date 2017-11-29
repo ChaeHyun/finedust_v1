@@ -3,10 +3,10 @@
     <data>
         <variable
             name="minus"
-            type="com.finedust.view.SettingFragment" />
+            type="ch.breatheinandout.view.SettingFragment" />
         <variable
             name="plus"
-            type="com.finedust.view.SettingFragment" />
+            type="ch.breatheinandout.view.SettingFragment" />
     </data>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"

@@ -3,7 +3,7 @@
     <data>
         <variable
             name="aircondition"
-            type="com.finedust.view.AirConditionFragment" />
+            type="ch.breatheinandout.view.AirConditionFragment" />
     </data>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"

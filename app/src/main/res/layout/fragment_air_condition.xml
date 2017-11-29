@@ -2,13 +2,13 @@
     <data>
         <variable
             name="aircondition"
-            type="com.finedust.view.AirConditionFragment" />
+            type="ch.breatheinandout.view.AirConditionFragment" />
     </data>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.finedust.view.AirConditionFragment">
+    tools:context="com.finedust.ch.finedust.view.AirConditionFragment">
 
     <ScrollView
         android:layout_width="match_parent"
