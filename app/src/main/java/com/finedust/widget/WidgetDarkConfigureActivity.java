@@ -1,14 +1,13 @@
 package com.finedust.widget;
 
-
 import android.appwidget.AppWidgetManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.net.Uri;
-import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.RadioButton;
@@ -21,7 +20,6 @@ import com.finedust.model.Addresses;
 import com.finedust.model.Const;
 import com.finedust.utils.AppSharedPreferences;
 import com.finedust.utils.ChangeFont;
-
 
 public class WidgetDarkConfigureActivity extends AppCompatActivity {
     private static final String TAG = WidgetDarkConfigureActivity.class.getSimpleName();
@@ -42,20 +40,18 @@ public class WidgetDarkConfigureActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onCreate(Bundle icicle) {
-        super.onCreate(icicle);
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         ChangeFont.Typekit(this, Const.FONT_DEFAULT_NORMAL);
 
         binding = DataBindingUtil.setContentView(this, R.layout.widget_configure);
 
         pref = new AppSharedPreferences(this);
 
-        // Find the widget id from the intent.
         Intent intent = getIntent();
         Bundle extras = intent.getExtras();
         if (extras != null) {
-            mAppWidgetId = extras.getInt(
-                    AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
+            mAppWidgetId = extras.getInt(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
         }
 
         resultValue.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, mAppWidgetId);
@@ -119,7 +115,6 @@ public class WidgetDarkConfigureActivity extends AppCompatActivity {
             }
         }
 
-
         // progressbar값 불러오기
         String intervalValue = pref.getValue( AppSharedPreferences.INTERVAL + mAppWidgetId , Const.WIDGET_DEFAULT_INTERVAL);
         String transparentValue = pref.getValue( AppSharedPreferences.TRANSPARENT + mAppWidgetId , Const.WIDGET_DEFAULT_TRANSPARENT);
@@ -140,8 +135,8 @@ public class WidgetDarkConfigureActivity extends AppCompatActivity {
         for (int i = 1; i < locationCheck.length; i++) {
             if (locationCheck[i].isChecked()) {
                 selectedRadioButton = i;
-                selectedLocation  = locationCheck[i].getText().toString();
-                Log.i(TAG, "SELECTEDD LOCOATION : " + selectedLocation);
+                selectedLocation = locationCheck[i].getText().toString();
+                Log.i(TAG, "SELECTED LOCATION : " + selectedLocation);
                 checkRadioButtons = true;
                 break;
             }
@@ -156,11 +151,9 @@ public class WidgetDarkConfigureActivity extends AppCompatActivity {
         String interval = String.valueOf(binding.layoutUpdate.seekBarUpdate.getProgress());
         String transparent = String.valueOf(binding.layoutUpdate.seekBarTransparent.getProgress());
 
-
         // Save setting values to SharedPreferences.
         pref.put(AppSharedPreferences.INTERVAL + mAppWidgetId , interval);
         pref.put(AppSharedPreferences.TRANSPARENT + mAppWidgetId , transparent);
-        pref.put(AppSharedPreferences.WIDGET_SELECTED_LOCATION_INDEX + mAppWidgetId , String.valueOf(selectedRadioButton));
         pref.put(AppSharedPreferences.WIDGET_MODE + mAppWidgetId , Const.MODE[selectedRadioButton]);
 
         try {
@@ -179,8 +172,8 @@ public class WidgetDarkConfigureActivity extends AppCompatActivity {
         update.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
         update.setData(Uri.withAppendedPath(Uri.parse(Const.DARKWIDGET + "://widget/id/") , String.valueOf(mAppWidgetId)));
         update.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, mAppWidgetId);
-        sendBroadcast(update);
 
+        sendBroadcast(update);
     }
 
     static void deletePrefForWidgets(Context context, int appWidgetId) {
@@ -192,14 +185,15 @@ public class WidgetDarkConfigureActivity extends AppCompatActivity {
     }
 
     View.OnClickListener mOnClickListener = new View.OnClickListener() {
-        public void onClick(View v) {
-            switch (v.getId()) {
+        @Override
+        public void onClick(View view) {
+            switch (view.getId()) {
                 case  R.id.button_save:
                     // restrict the number of widget.
                     int[] appWidgetIds = AppWidgetManager.getInstance(getApplicationContext()).getAppWidgetIds(new ComponentName(getApplicationContext(), WidgetDark.class));
 
                     if (appWidgetIds.length > 3) {
-                        Toast.makeText(v.getContext(), "위젯은 총 3개까지 등록할 수 있습니다.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(view.getContext(), "위젯은 총 3개까지 등록할 수 있습니다.", Toast.LENGTH_SHORT).show();
                         setResult(RESULT_CANCELED, resultValue);
                         finish();
                     }
@@ -256,4 +250,3 @@ public class WidgetDarkConfigureActivity extends AppCompatActivity {
         }
     };
 }
-

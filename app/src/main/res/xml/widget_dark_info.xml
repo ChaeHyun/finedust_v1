@@ -4,7 +4,7 @@
     android:initialKeyguardLayout="@layout/widget_dark"
     android:initialLayout="@layout/widget_dark"
     android:minHeight="40dp"
-    android:minWidth="220dp"
+    android:minWidth="180dp"
     android:previewImage="@drawable/widget_exam_dark"
     android:resizeMode="horizontal|vertical"
     android:updatePeriodMillis="86400000"

@@ -29,18 +29,15 @@ public class WidgetDark extends AppWidgetProvider {
     static String widgetLocation;
     static String widgetTheme = Const.DARKWIDGET;
 
-
     static void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
                                 int appWidgetId) {
         Log.i(TAG, "## updateAppWidget() with " + appWidgetId);
         RemoteViews views = getProperRemoteViews(context);
         AppSharedPreferences pref = new AppSharedPreferences(context);
 
-
         transparentValue = pref.getValue(AppSharedPreferences.TRANSPARENT + appWidgetId , Const.WIDGET_DEFAULT_TRANSPARENT);
         widgetLocation = pref.getValue(AppSharedPreferences.WIDGET_LOCATION + appWidgetId , Const.EMPTY_STRING);
         widgetMode = pref.getValue(AppSharedPreferences.WIDGET_MODE + appWidgetId , Const.MODE[0]);
-
 
         views.setTextViewText(R.id.value_location, widgetLocation);
         views.setInt(R.id.layout_ground, "setBackgroundColor", Color.argb(Integer.parseInt(transparentValue), 0,0,0));
@@ -57,6 +54,7 @@ public class WidgetDark extends AppWidgetProvider {
 
         appWidgetManager.updateAppWidget(appWidgetId, views);
     }
+
 
     @Override
     public void onAppWidgetOptionsChanged(Context context, AppWidgetManager appWidgetManager, int appWidgetId, Bundle newOptions) {
@@ -76,10 +74,9 @@ public class WidgetDark extends AppWidgetProvider {
 
     @Override
     public void onDeleted(Context context, int[] appWidgetIds) {
-        Log.i(TAG, "## onDeleted() ");
-        // When the user deletes the widget, delete the preference associated with it.
+        super.onDeleted(context, appWidgetIds);
         for (int appWidgetId : appWidgetIds) {
-            Log.i(TAG, "  # widgetId : " + appWidgetId);
+            Log.i(TAG, "  # onDeleted() with  " + appWidgetId);
             WidgetDarkConfigureActivity.deletePrefForWidgets(context, appWidgetId);
             RequestWidgetData.cancelAlarmSchedule(context, appWidgetId, widgetTheme);
         }
@@ -102,15 +99,15 @@ public class WidgetDark extends AppWidgetProvider {
         AppSharedPreferences pref = new AppSharedPreferences(context);
         String action = intent.getAction();
         RemoteViews remoteViews = getProperRemoteViews(context);
-        AppWidgetManager manager  = AppWidgetManager.getInstance(context);
+        AppWidgetManager manager = AppWidgetManager.getInstance(context);
 
-        Log.i(TAG, "#onReceive() >> " + action);
+        Log.i(TAG, "#onReceive() >> action : " + action);
         if (AppWidgetManager.ACTION_APPWIDGET_UPDATE.equals(action)) {
             Log.i(TAG, "  #onReceive() - ACTION_APPWIDGET_UPDATE  ");
             int id = intent.getExtras().getInt(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
 
             if (id != AppWidgetManager.INVALID_APPWIDGET_ID) {
-                Log.i(TAG, "    Receive >>  ## id : " + id);
+                Log.i(TAG, "    Receive >> ## id : " + id);
                 updateAppWidget(context, manager, id);
             }
         }
@@ -135,6 +132,7 @@ public class WidgetDark extends AppWidgetProvider {
                 remoteViews.setTextViewText(R.id.value_date, BaseWidget.calculateCurrentTime());       // updated time
             }
 
+
             //  PendingIntent - Configuration Button clicked
             BaseWidget.setPendingIntentForConfiguration(context, remoteViews, appWidgetId, widgetTheme, new WidgetDarkConfigureActivity());
             remoteViews.setTextViewText(R.id.value_location, widgetLocation);
@@ -151,7 +149,6 @@ public class WidgetDark extends AppWidgetProvider {
 
         else if (Const.BOOT_COMPLETED.equals(action)) {
             Log.i(TAG, "  #onReceive() - BOOT COMPLETED.");
-            //onUpdate with all widgetIds[]..
             onUpdate(context, manager, manager.getAppWidgetIds(new ComponentName(context, WidgetDark.class)));
         }
         super.onReceive(context, intent);
@@ -160,7 +157,7 @@ public class WidgetDark extends AppWidgetProvider {
     public static RemoteViews getProperRemoteViews(Context context) {
         String strManufacturer = DeviceInfo.checkDeviceManufacturer();
 
-        if (strManufacturer.equals(Const.DEVICE_CATEGORY_SAMSUNG) ) {
+        if (strManufacturer.equals(Const.DEVICE_CATEGORY_SAMSUNG)) {
             return new RemoteViews(context.getPackageName(), R.layout.widget_dark);
         }
         else {

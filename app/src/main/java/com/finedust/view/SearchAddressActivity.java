@@ -50,6 +50,7 @@ public class SearchAddressActivity extends AppCompatActivity implements Views.Se
         setActionBarTitle("주소검색");
         binding.editSearch.setMaxLines(1);
         binding.editSearch.setOnKeyListener(onKeySearchEdit);
+        binding.editSearch.setText("중앙");
 
         binding.buttonSearch.setOnClickListener(onSearchButtonClick);
 

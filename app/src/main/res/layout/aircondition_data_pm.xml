@@ -12,26 +12,26 @@
         android:layout_alignParentEnd="false">
 
         <ImageView
+            android:id="@+id/icon_two"
             android:layout_width="30dp"
             android:layout_height="30dp"
-            android:contentDescription="@string/missing_img"
-            android:src="@drawable/icon_mask"
             android:layout_marginTop="5dp"
-            android:id="@+id/icon_two"/>
+            android:contentDescription="@string/missing_img"
+            android:src="@drawable/icon_mask" />
 
         <TextView
+            android:id="@+id/text_title_two"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="@string/air_data_title_pm10"
-            android:id="@+id/text_title_two"
             android:layout_alignParentTop="true"
-            android:layout_toEndOf="@+id/icon_two"
-            android:textStyle="bold"
-            android:textIsSelectable="false"
+            android:layout_marginBottom="5dp"
             android:layout_marginStart="5dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="5dp" />
+            android:layout_marginTop="10dp"
+            android:layout_toEndOf="@+id/icon_two"
+            android:text="@string/air_data_title_pm10"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textIsSelectable="false"
+            android:textStyle="bold" />
 
         <LinearLayout
             android:orientation="horizontal"
@@ -104,25 +104,25 @@
         android:id="@+id/layout_pm25">
 
         <ImageView
+            android:id="@+id/icon_three"
             android:layout_width="30dp"
             android:layout_height="30dp"
-            android:contentDescription="@string/missing_img"
-            android:src="@drawable/icon_mask"
             android:layout_marginTop="5dp"
-            android:id="@+id/icon_three"/>
+            android:contentDescription="@string/missing_img"
+            android:src="@drawable/icon_mask" />
 
         <TextView
+            android:id="@+id/text_title_three"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="@string/air_data_title_pm25"
-            android:id="@+id/text_title_three"
             android:layout_alignParentTop="true"
-            android:layout_toEndOf="@+id/icon_three"
-            android:textStyle="bold"
+            android:layout_marginBottom="5dp"
             android:layout_marginStart="5dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="5dp" />
+            android:layout_marginTop="10dp"
+            android:layout_toEndOf="@+id/icon_three"
+            android:text="@string/air_data_title_pm25"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textStyle="bold" />
 
         <LinearLayout
             android:orientation="horizontal"

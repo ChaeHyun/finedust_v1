@@ -291,20 +291,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onFloatingButtonClick(View view) {
         Log.v(TAG, "onFloaotingButtonClick()");
-        pref.removeValue(AppSharedPreferences.HAS_VISITED);
-        /*
-        for(int i = 0;  i < 4; i++) {
-            pref.put(SharedPreferences.CURRENT_MODE, Const.MODE[0]);
-            pref.removeValue(SharedPreferences.RECENT_DATA[i]);
-            pref.removeValue(SharedPreferences.MEMORIZED_LOCATIONS[i]);
-            if(i != 0)
-                setNavigationTitle(Const.EMPTY_STRING, i, Const.NAVI_ICON_LOCATION_NOT_SAVED);
-        }
-
-        checkNavigationForLocation();
-        Snackbar.make(view, "All of preference data deleted.", Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show();
-        */
+        //pref.removeValue(AppSharedPreferences.HAS_VISITED);
     }
 
     @Override

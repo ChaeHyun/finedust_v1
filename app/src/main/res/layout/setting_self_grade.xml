@@ -34,14 +34,15 @@
                 android:id="@+id/imageView21" />
 
             <TextView
+                android:id="@+id/textView21"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="2dp"
                 android:text="@string/setting_change_grade"
-                android:id="@+id/textView21"
-                android:textStyle="bold"
+                android:textAppearance="?android:attr/textAppearanceLarge"
                 android:textIsSelectable="false"
-                android:layout_marginStart="10dp" />
+                android:textStyle="bold" />
         </LinearLayout>
 
         <LinearLayout

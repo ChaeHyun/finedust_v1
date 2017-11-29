@@ -20,9 +20,7 @@ import com.finedust.utils.AppSharedPreferences;
 
 import java.util.ArrayList;
 
-/**
- * Implementation of App Widget functionality.
- */
+
 public class WidgetWhite extends AppWidgetProvider {
     public static final String TAG = WidgetWhite.class.getSimpleName();
 
