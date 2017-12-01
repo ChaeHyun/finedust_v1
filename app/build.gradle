@@ -9,7 +9,7 @@ android {
         applicationId "ch.breatheinandout"
         minSdkVersion 18
         targetSdkVersion 26
-        versionCode 12
+        versionCode 13
         versionName "1.2"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 

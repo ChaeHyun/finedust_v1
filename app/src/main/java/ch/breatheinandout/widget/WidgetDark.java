@@ -104,11 +104,16 @@ public class WidgetDark extends AppWidgetProvider {
         Log.i(TAG, "#onReceive() >> action : " + action);
         if (AppWidgetManager.ACTION_APPWIDGET_UPDATE.equals(action)) {
             Log.i(TAG, "  #onReceive() - ACTION_APPWIDGET_UPDATE  ");
-            int id = intent.getExtras().getInt(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
+            try {
+                int id = intent.getExtras().getInt(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
 
-            if (id != AppWidgetManager.INVALID_APPWIDGET_ID) {
-                Log.i(TAG, "    Receive >> ## id : " + id);
-                updateAppWidget(context, manager, id);
+                if (id != AppWidgetManager.INVALID_APPWIDGET_ID) {
+                    Log.i(TAG, "    Receive >> ## id : " + id);
+                    updateAppWidget(context, manager, id);
+                }
+            }
+            catch (NullPointerException e) {
+                Log.i(TAG, "### Null Pointer Exception.");
             }
         }
 
