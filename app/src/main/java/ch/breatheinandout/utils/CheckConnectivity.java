@@ -56,7 +56,6 @@ public class CheckConnectivity {
         LocationManager locationManager = (LocationManager) activity.getSystemService(Context.LOCATION_SERVICE);
         if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER))
             createGpsDisabledAlert(activity);
-
     }
 
     private static void createGpsDisabledAlert(final Activity activity) {
