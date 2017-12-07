@@ -67,7 +67,6 @@
             android:layout_height="wrap_content"
             android:id="@+id/listView_address"
             android:choiceMode="none"
-            app:font="custom1"
             android:touchscreenBlocksFocus="false"
             android:background="@drawable/border" />
     </LinearLayout>
