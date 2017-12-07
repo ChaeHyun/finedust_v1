@@ -266,10 +266,11 @@ public class AirConditionFragmentPresenter
         Log.v(TAG, "Location Services Connected ");
 
         final boolean isPermissionEnabled = view.checkPermission();
-        view.checkGpsEnabled();
 
         if(isPermissionEnabled)
         {
+            view.checkGpsEnabled();
+
             Location lastLocation = LocationServices.FusedLocationApi.getLastLocation(googleApiClient);
             LocationRequest locationRequest = LocationRequest.create()
                     .setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY)

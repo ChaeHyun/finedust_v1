@@ -9,8 +9,8 @@ android {
         applicationId "ch.breatheinandout"
         minSdkVersion 18
         targetSdkVersion 26
-        versionCode 13
-        versionName "1.2"
+        versionCode 14
+        versionName "1.2.1"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
         //Enabling multidex Support.
