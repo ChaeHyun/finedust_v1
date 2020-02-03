@@ -61,6 +61,13 @@ public class RetrofitClient {
                 + "&apikey=" + Const.DAUM_API_KEY ;
     }
 
+    public static String getCoordConvertUrl(String y, String x) {
+        return "https://dapi.kakao.com/v2/local/geo/transcoord.json?x="+ x
+                + "&y=" + y
+                + "&input_coord=WGS84"
+                + "&output_coord=TM";
+    }
+
     public static Map<String, String> setQueryParamsForForecast(String date) {
         Map<String, String> queryParams = new HashMap<>();
         queryParams.put("searchDate", date);

@@ -5,12 +5,14 @@ import ch.breatheinandout.model.Const;
 import ch.breatheinandout.model.AddressList;
 import ch.breatheinandout.model.ForecastList;
 import ch.breatheinandout.model.GpsData;
+import ch.breatheinandout.model.KakaoCoord;
 import ch.breatheinandout.model.StationList;
 
 import java.util.Map;
 
 import io.reactivex.Observable;
 import retrofit2.http.GET;
+import retrofit2.http.Headers;
 import retrofit2.http.Query;
 import retrofit2.http.QueryMap;
 import retrofit2.http.Url;
@@ -34,8 +36,13 @@ public interface ApiService {
             @QueryMap Map<String, String> params
     );
 
+    /** -- This Api Service is finished. -- */
     @GET
     Observable<GpsData> convertGpsData(@Url String url);
+
+    @Headers("Authorization: KakaoAK " + Const.KAKAO_RESTAPI_KEY)
+    @GET
+    Observable<KakaoCoord> convertCoordData(@Url String url);
 
     @GET("ArpltnInforInqireSvc/getMinuDustFrcstDspth?ServiceKey=" + Const.SERVICEKEY)
     Observable<ForecastList> getForecastData(

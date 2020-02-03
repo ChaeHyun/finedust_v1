@@ -17,6 +17,7 @@ import ch.breatheinandout.model.AirCondition;
 import ch.breatheinandout.model.AirConditionList;
 import ch.breatheinandout.model.Const;
 import ch.breatheinandout.model.GpsData;
+import ch.breatheinandout.model.KakaoCoord;
 import ch.breatheinandout.model.RecentData;
 import ch.breatheinandout.model.Station;
 import ch.breatheinandout.model.StationList;
@@ -317,14 +318,17 @@ public class AirConditionFragmentPresenter
 
     }
 
-
+//************************
     private void convertCoordinates(final Double y, final Double x) {
         Log.i(TAG, "#convertCoordinates( " + y + " , " + x + " )");
         if (!CheckConnectivity.checkNetworkConnection(context))
             view.showSnackBarMessage(Const.STR_NETWORK_NOT_AVAILABLE);
 
         else {
+
+/*
             Observable<GpsData> gpsDataObservable = apiService.convertGpsData(RetrofitClient.getGpsConvertUrl(String.valueOf(y) , String.valueOf(x)));
+
             addDisposable(
                 gpsDataObservable
                     .subscribeOn(Schedulers.io())
@@ -343,6 +347,32 @@ public class AirConditionFragmentPresenter
                         }
                     })
             );
+*/
+            Log.d(TAG, "$$KAKAO API START");
+            Observable<KakaoCoord> coordDataObservable = apiService.convertCoordData(RetrofitClient.getCoordConvertUrl(String.valueOf(y), String.valueOf(x)));
+
+            addDisposable(
+                coordDataObservable
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new Consumer<KakaoCoord>() {
+                           @Override
+                           public void accept(KakaoCoord kakaoCoord) throws Exception {
+                               if (kakaoCoord != null) {
+                                   final GpsData gpsData = kakaoCoord.getDocuments().get(0);
+                                   Log.d(TAG, "&& COORD DATA CHECK -> x: " + gpsData.getTm_x() + "  y: " + gpsData.getTm_y());
+                                   getAirConditionData(gpsData.getTm_x(), gpsData.getTm_y());
+                               }
+                           }
+                       }, new Consumer<Throwable>() {
+                            @Override
+                            public void accept(Throwable throwable) throws Exception {
+                                Log.i(TAG, "Fail to convert WGS84 Coordinates to TM Coordinates.");
+                            }
+                        })
+            );
+
+            Log.d(TAG, "$$ KAKAO API FINISHED");
         }
     }
 
