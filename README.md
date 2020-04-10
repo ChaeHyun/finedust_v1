@@ -46,27 +46,17 @@ View 이외의 로직을 전담합니다. **각 View마다 대응되는 Presente
 Fragment으로부터 호출을 받으면 로직을 수행한 후 View의 interface를 호출하여 결과값을 View로 전달합니다.
 
 
-
 ![Logic](https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fk.kakaocdn.net%2Fdn%2F4T6DJ%2FbtqDlOORKK3%2FECgRYpcPepO2UQJQKMTaN0%2Fimg.png)
-
-
 
 
 
 ## 실행화면
 
-
-
 ![전체 실행화면](https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fk.kakaocdn.net%2Fdn%2FbI6zLY%2FbtqDmmLky7s%2FXyHb5Htp2GT8GpcEit63aK%2Fimg.png)
-
-
 
 ![위치저장 및 선택의 접근방법 다양화](https://k.kakaocdn.net/dn/cu9WAT/btqDk5pZC7N/RVJn5x8i0CyyFgDa02Swhk/img.png)
 
 ![사용자 피드백을 통해 업데이트한 기능](https://k.kakaocdn.net/dn/cI2yCT/btqDmlTbVb7/rFJD7VJXzROaeZR9zV3pX1/img.png)
-
-
-
 
 
 ## 배운 점
@@ -85,9 +75,7 @@ Fragment으로부터 호출을 받으면 로직을 수행한 후 View의 interfa
 만약 서버개발자와 함께 협업할 수 있는 상황이었다면, 위 4단계의 파라미터를 복합적으로 전송하여 단 1회만에 원하는 정보를 얻을 수 있도록 개선할 수 있었을 것이라 생각합니다.
 
 
-
 그리고 사용자들의 피드백을 받아보면 다양한 요구사항을 충족시키기가 쉽지 않았다. 여러 사람들이 동시에 편하게 여기는 UI/UX를 지원하는것이 굉장히 어려운 일이라는 것을 배울수 있었습니다.
-
 
 
 그럼에도 서버와 통신해서 JSON값을 변환하고 사용하는 과정을 배울 수 있어서 너무 유익했고,
@@ -95,13 +83,11 @@ Fragment으로부터 호출을 받으면 로직을 수행한 후 View의 interfa
 또 평소에 사용하던 View 컴포넌트들을 벗어나 편리한 UI를 제공하기 위해 ViewPager, Dialog, Font 등 여러가지 컴포넌트를 사용할 수 있어서 배움에 큰 도움이 된 프로젝트였습니다.
 
 
-
 ## 아쉬운 점
 
 여러가지 기능이 추가될 수록 하나의 파일에 코드량이 너무 많아져서 유지보수하는데 어려움을 겪었습니다.
 
 그래서 **<u>디자인패턴의 필요성</u>**을 크게 체감했고, Dagger와 같은 <u>**DI 시스템**</u>을 사용하는 필요성에 대해 이해할 수 있었습니다.
-
 
 
 ## GitHub
