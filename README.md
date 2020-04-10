@@ -56,7 +56,7 @@ Fragment으로부터 호출을 받으면 로직을 수행한 후 View의 interfa
 
 ![위치저장 및 선택의 접근방법 다양화](https://k.kakaocdn.net/dn/cu9WAT/btqDk5pZC7N/RVJn5x8i0CyyFgDa02Swhk/img.png)
 
-![사용자 피드백을 통해 업데이트한 기능](https://k.kakaocdn.net/dn/cI2yCT/btqDmlTbVb7/rFJD7VJXzROaeZR9zV3pX1/img.png)
+![사용자 피드백을 통해 업데이트한 기능](https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fk.kakaocdn.net%2Fdn%2FA5ndy%2FbtqDlOO8TOA%2FElco0dMIQ4RScljj68AEI1%2Fimg.png)
 
 
 ## 배운 점
