@@ -1,6 +1,10 @@
 # 개인프로젝트 - 들숨날숨
 들숨날숨은 한국환경공단 OPEN API로부터 미세먼지 등 대기환경 정보를 받아서 표현해주는 애플리케이션입니다.
 
+[플레이스토어 링크](https://play.google.com/store/apps/details?id=ch.breatheinandout)
+
+[개인 블로그](https://saucecode.tistory.com/)
+
 ## 개발목적
 
 + REST API로부터 데이터를 받아서 사용하는 방법을 배웁니다.
