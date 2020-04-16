@@ -127,6 +127,7 @@ public class RequestWidgetData {
                             @Override
                             public void accept(@io.reactivex.annotations.NonNull AirConditionList airConditionList) throws Exception {
                                 List<AirCondition> air = airConditionList.getList();
+                                Log.i(TAG, "[WidgetService] 대기상태값 : " + air.get(0).getDataTime());
                                 if (air.isEmpty()) {
                                     AirCondition dummy = new AirCondition();
                                     air.add(dummy);
@@ -214,6 +215,7 @@ public class RequestWidgetData {
         response.putStringArrayListExtra(Const.ARRAY_GRADE, gradeList);
         response.putStringArrayListExtra(Const.ARRAY_VALUE, valueList);
 
+        // 여기가 문제
         context.sendBroadcast(response);
     }
 
