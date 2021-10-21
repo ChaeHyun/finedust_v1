@@ -3,7 +3,7 @@
     <data>
         <variable
             name="grade"
-            type="com.finedust.view.SettingFragment"/>
+            type="ch.breatheinandout.view.SettingFragment"/>
     </data>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
@@ -34,14 +34,15 @@
                 android:id="@+id/imageView21" />
 
             <TextView
+                android:id="@+id/textView21"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="2dp"
+                android:text="@string/setting_change_grade"
                 android:textAppearance="?android:attr/textAppearanceLarge"
-                android:text="등급변경"
-                android:id="@+id/textView21"
-                android:textStyle="bold"
                 android:textIsSelectable="false"
-                android:layout_marginStart="10dp" />
+                android:textStyle="bold" />
         </LinearLayout>
 
         <LinearLayout
@@ -102,7 +103,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="(PM10)"
+                    android:text="@string/setting_change_grade_pm10"
                     android:id="@+id/textView31"
                     android:textStyle="bold"
                     android:layout_gravity="center" />
@@ -238,7 +239,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="(PM2.5)"
+                    android:text="@string/setting_change_grade_pm25"
                     android:id="@+id/textView32"
                     android:textStyle="bold"
                     android:layout_gravity="center" />

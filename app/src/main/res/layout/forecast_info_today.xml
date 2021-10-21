@@ -7,26 +7,26 @@
     android:id="@+id/layout_info">
 
     <ImageView
+        android:id="@+id/icon_one"
         android:layout_width="30dp"
         android:layout_height="30dp"
-        android:contentDescription="@string/missing_img"
-        android:src="@drawable/yebo"
         android:layout_marginTop="5dp"
-        android:id="@+id/icon_one"/>
+        android:contentDescription="@string/missing_img"
+        android:src="@drawable/yebo" />
 
     <TextView
+        android:id="@+id/text_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="@string/forecast_title_today"
-        android:id="@+id/text_title"
         android:layout_alignParentTop="true"
-        android:layout_toEndOf="@+id/icon_one"
-        android:textStyle="bold"
-        android:textIsSelectable="false"
+        android:layout_marginBottom="5dp"
         android:layout_marginStart="5dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="5dp" />
+        android:layout_marginTop="10dp"
+        android:layout_toEndOf="@+id/icon_one"
+        android:text="@string/forecast_title_today"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textIsSelectable="false"
+        android:textStyle="bold" />
 
     <TextView
         android:id="@+id/text_date"

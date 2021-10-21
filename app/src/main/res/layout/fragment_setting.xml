@@ -3,20 +3,23 @@
     <data>
         <variable
             name="minus"
-            type="com.finedust.view.SettingFragment" />
+            type="ch.breatheinandout.view.SettingFragment" />
         <variable
             name="plus"
-            type="com.finedust.view.SettingFragment" />
+            type="ch.breatheinandout.view.SettingFragment" />
         <variable
             name="grade"
-            type="com.finedust.view.SettingFragment"/>
+            type="ch.breatheinandout.view.SettingFragment" />
+        <variable
+            name="etc"
+            type="ch.breatheinandout.view.SettingFragment" />
     </data>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.finedust.view.SettingFragment">
+    tools:context="com.finedust.ch.finedust.view.SettingFragment">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -46,6 +49,15 @@
                 layout="@layout/setting_self_grade"
                 app:grade="@{grade}" />
 
+            <include
+                android:id="@+id/layout_etc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/layout_change_grade"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="10dp"
+                layout="@layout/setting_etc"
+                app:etc="@{etc}" />
 
         </RelativeLayout>
 

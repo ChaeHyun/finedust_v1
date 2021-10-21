@@ -7,25 +7,25 @@
     android:id="@+id/layout_etc">
 
     <ImageView
+        android:id="@+id/icon_four"
         android:layout_width="30dp"
         android:layout_height="30dp"
-        android:contentDescription="@string/missing_img"
-        android:src="@drawable/icon_mask"
         android:layout_marginTop="5dp"
-        android:id="@+id/icon_four"/>
+        android:contentDescription="@string/missing_img"
+        android:src="@drawable/icon_mask" />
 
     <TextView
+        android:id="@+id/text_title_four"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="@string/air_data_title_extra_data"
-        android:id="@+id/text_title_four"
         android:layout_alignParentTop="true"
-        android:layout_toEndOf="@+id/icon_four"
-        android:textStyle="bold"
+        android:layout_marginBottom="5dp"
         android:layout_marginStart="5dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="5dp" />
+        android:layout_marginTop="10dp"
+        android:layout_toEndOf="@+id/icon_four"
+        android:text="@string/air_data_title_extra_data"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textStyle="bold" />
 
     <LinearLayout
         android:orientation="horizontal"
