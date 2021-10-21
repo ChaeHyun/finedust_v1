@@ -1,1 +1,1 @@
-include ':app', ':sample', ':typekit'
+include ':app'

@@ -1,70 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
 
-    <group
-        android:id="@+id/group1"
-        android:checkableBehavior="single">
+    <group android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_current"
-            android:icon="@drawable/push_pin"
-            android:title="현재위치" />
-
+            android:id="@+id/nav_home"
+            android:icon="@drawable/ic_current_location_24"
+            android:title="@string/menu_home" />
+        <item
+            android:id="@+id/nav_search"
+            android:icon="@drawable/ic_add_location_alt_24"
+            android:title="@string/menu_search" />
+        <item
+            android:id="@+id/nav_setting"
+            android:icon="@drawable/ic_settings_24"
+            android:title="@string/menu_setting" />
     </group>
-    <group
-        android:id="@+id/group2"
-        android:checkableBehavior="single">
-        <item
-            android:id="@+id/nav_set_location"
-            android:icon="@drawable/compass_128"
-            android:checkable="false"
-            android:title="저장위치" />
-
-        <item
-            android:id="@+id/nav_loc_one"
-            android:icon="@drawable/plus_circle_128"
-            android:title="" />
-        <item
-            android:id="@+id/nav_loc_two"
-            android:icon="@drawable/plus_circle_128"
-            android:title="" />
-        <item
-            android:id="@+id/nav_loc_three"
-            android:icon="@drawable/plus_circle_128"
-            android:title="" />
-    </group>
-
-    <item
-        android:id="@+id/nav_forecast"
-        android:icon="@drawable/yebo_128"
-        android:checkable="true"
-        android:title="예보정보" >
-    </item>
-    <item
-        android:id="@+id/nav_airkorea"
-        android:icon="@drawable/info"
-        android:visible="false"
-        android:checkable="true"
-        android:title="시도별대기질" >
-    </item>
-    <item
-        android:id="@+id/nav_kaq"
-        android:icon="@drawable/speech_bubble"
-        android:checkable="true"
-        android:title="유용한사이트" >
-    </item>
-    <item
-        android:id="@+id/nav_alarm"
-        android:icon="@drawable/alarm_clock_128"
-        android:enabled="false"
-        android:visible="false"
-        android:checkable="true"
-        android:title="알람" >
-    </item>
-    <item
-        android:id="@+id/nav_setting"
-        android:icon="@drawable/settings_128"
-        android:checkable="true"
-        android:title="설정" >
-    </item>
-
 </menu>
