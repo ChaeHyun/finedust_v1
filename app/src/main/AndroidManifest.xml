@@ -16,7 +16,7 @@
         android:theme="@style/Theme.Breatheinandoutkotlin"
         android:usesCleartextTraffic="true">
         <activity
-            android:name=".MainActivity"
+            android:name=".screen.MainActivity"
             android:label="@string/title_activity_main"
             android:theme="@style/Theme.Breatheinandoutkotlin.NoActionBar">
             <intent-filter>
