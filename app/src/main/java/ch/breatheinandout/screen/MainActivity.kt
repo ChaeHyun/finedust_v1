@@ -1,6 +1,8 @@
 package ch.breatheinandout.screen
 
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.widget.Toast
 import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
@@ -9,35 +11,62 @@ import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import ch.breatheinandout.R
 import ch.breatheinandout.databinding.ActivityMainBinding
+import ch.breatheinandout.screen.navdrawer.NavDrawerHelper
+import ch.breatheinandout.screen.navdrawer.NavDrawerWidgetView
+import ch.breatheinandout.screen.widgetview.WidgetViewFactory
+import com.orhanobut.logger.Logger
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 @AndroidEntryPoint
-class MainActivity : BaseActivity() {
+class MainActivity : BaseActivity(), NavDrawerHelper, NavDrawerWidgetView.Listener {
 
-    private lateinit var appBarConfiguration: AppBarConfiguration
-    private lateinit var binding: ActivityMainBinding
+    @Inject lateinit var widgetViewFactory: WidgetViewFactory
+
+    private lateinit var widgetView: NavDrawerWidgetView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+        widgetView = widgetViewFactory.createNavDrawerWidgetView(null)
+        setContentView(widgetView.getRootView())
+        Logger.i("Done -> MainActivity#onCreate()")
+    }
 
-        setSupportActionBar(binding.toolbar)
+    override fun onStart() {
+        super.onStart()
+        widgetView.registerListener(this)
+    }
 
-        val navController = findNavController(R.id.nav_host_fragment_content_main)
-        appBarConfiguration = AppBarConfiguration(navController.graph)
-        setupActionBarWithNavController(navController, appBarConfiguration)
+    override fun onStop() {
+        super.onStop()
+        widgetView.unregisterListener(this)
+    }
 
-        binding.fab.setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show()
+    override fun onNavItemClicked(item: NavDrawerWidgetView.DrawerItem) {
+        Logger.d(" # check -> $item")
+        when (item) {
+            NavDrawerWidgetView.DrawerItem.Home -> {
+                Toast.makeText(this, "[Home] clicked!", Toast.LENGTH_SHORT).show()
+            }
+            NavDrawerWidgetView.DrawerItem.Search -> {
+                Toast.makeText(this, "[Search] clicked!", Toast.LENGTH_SHORT).show()
+            }
+            NavDrawerWidgetView.DrawerItem.Setting -> {
+                Toast.makeText(this, "[Setting] clicked!", Toast.LENGTH_SHORT).show()
+            }
         }
     }
 
-    override fun onSupportNavigateUp(): Boolean {
-        val navController = findNavController(R.id.nav_host_fragment_content_main)
-        return navController.navigateUp(appBarConfiguration)
-                || super.onSupportNavigateUp()
+    override fun setToolbarTitle(title: String) {
+        TODO("Not yet implemented")
+    }
+
+    override fun setToolbarBackgroundColor(color: ColorDrawable) {
+        TODO("Not yet implemented")
+    }
+
+    override fun setToolbarVisibility(visible: Boolean) {
+        TODO("Not yet implemented")
     }
 }
