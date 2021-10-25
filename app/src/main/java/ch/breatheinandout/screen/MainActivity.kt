@@ -2,15 +2,10 @@ package ch.breatheinandout.screen
 
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import android.widget.Toast
-import com.google.android.material.snackbar.Snackbar
-import androidx.appcompat.app.AppCompatActivity
-import androidx.navigation.findNavController
+import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.navigateUp
-import androidx.navigation.ui.setupActionBarWithNavController
+import androidx.navigation.ui.setupWithNavController
 import ch.breatheinandout.R
-import ch.breatheinandout.databinding.ActivityMainBinding
 import ch.breatheinandout.screen.navdrawer.NavDrawerHelper
 import ch.breatheinandout.screen.navdrawer.NavDrawerWidgetView
 import ch.breatheinandout.screen.widgetview.WidgetViewFactory
@@ -31,6 +26,18 @@ class MainActivity : BaseActivity(), NavDrawerHelper, NavDrawerWidgetView.Listen
         widgetView = widgetViewFactory.createNavDrawerWidgetView(null)
         setContentView(widgetView.getRootView())
         Logger.i("Done -> MainActivity#onCreate()")
+
+        syncToolbarAndDrawer()
+    }
+
+    private fun syncToolbarAndDrawer() {
+        val navHostFragment = supportFragmentManager.findFragmentById(widgetView.getFrameLayout().id) as NavHostFragment
+        val navController = navHostFragment.navController
+        val appBarConfigWithDrawer = AppBarConfiguration(
+            setOf(R.id.AirQualityFragment),         // Top-level destinations
+            widgetView.getDrawerLayout())
+
+        widgetView.getToolbarWidgetView().apply { setupWithNavController(navController, appBarConfigWithDrawer) }
     }
 
     override fun onStart() {
@@ -47,26 +54,27 @@ class MainActivity : BaseActivity(), NavDrawerHelper, NavDrawerWidgetView.Listen
         Logger.d(" # check -> $item")
         when (item) {
             NavDrawerWidgetView.DrawerItem.Home -> {
-                Toast.makeText(this, "[Home] clicked!", Toast.LENGTH_SHORT).show()
+                // TODO: Something when `Home` menu item is clicked.
             }
             NavDrawerWidgetView.DrawerItem.Search -> {
-                Toast.makeText(this, "[Search] clicked!", Toast.LENGTH_SHORT).show()
+                // TODO: when `Search` menu item is clicked.
             }
             NavDrawerWidgetView.DrawerItem.Setting -> {
-                Toast.makeText(this, "[Setting] clicked!", Toast.LENGTH_SHORT).show()
+                // TODO: when `Setting` menu item is clicked.
             }
         }
     }
 
+    // ------- Features of Toolbar -------
     override fun setToolbarTitle(title: String) {
-        TODO("Not yet implemented")
+        widgetView.setToolbarTitle(title)
     }
 
     override fun setToolbarBackgroundColor(color: ColorDrawable) {
-        TODO("Not yet implemented")
+        widgetView.setToolbarBackgroundColor(color)
     }
 
     override fun setToolbarVisibility(visible: Boolean) {
-        TODO("Not yet implemented")
+        widgetView.setToolbarVisibility(visible)
     }
 }

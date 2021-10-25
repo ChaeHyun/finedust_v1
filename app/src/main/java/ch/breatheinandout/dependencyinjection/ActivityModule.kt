@@ -4,6 +4,7 @@ import android.app.Activity
 import android.view.LayoutInflater
 import androidx.appcompat.app.AppCompatActivity
 import ch.breatheinandout.screen.navdrawer.NavDrawerHelper
+import ch.breatheinandout.screen.toolbar.ToolbarHelper
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
