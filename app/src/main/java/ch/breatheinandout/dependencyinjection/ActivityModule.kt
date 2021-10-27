@@ -3,12 +3,13 @@ package ch.breatheinandout.dependencyinjection
 import android.app.Activity
 import android.view.LayoutInflater
 import androidx.appcompat.app.AppCompatActivity
+import ch.breatheinandout.common.permissions.PermissionRequester
 import ch.breatheinandout.screen.navdrawer.NavDrawerHelper
-import ch.breatheinandout.screen.toolbar.ToolbarHelper
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ActivityComponent
+import dagger.hilt.android.scopes.ActivityScoped
 
 @Module
 @InstallIn(ActivityComponent::class)
@@ -21,4 +22,8 @@ class ActivityModule {
 
     @Provides
     fun layoutInflater(activity: AppCompatActivity) : LayoutInflater = LayoutInflater.from(activity)
+
+    @ActivityScoped
+    @Provides
+    fun permissionProvider(activity: Activity) : PermissionRequester = PermissionRequester(activity)
 }

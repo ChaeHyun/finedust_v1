@@ -6,6 +6,7 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
 import ch.breatheinandout.R
+import ch.breatheinandout.common.permissions.PermissionRequester
 import ch.breatheinandout.screen.navdrawer.NavDrawerHelper
 import ch.breatheinandout.screen.navdrawer.NavDrawerWidgetView
 import ch.breatheinandout.screen.widgetview.WidgetViewFactory
@@ -16,9 +17,11 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class MainActivity : BaseActivity(), NavDrawerHelper, NavDrawerWidgetView.Listener {
 
+    @Inject lateinit var permissionRequester: PermissionRequester
     @Inject lateinit var widgetViewFactory: WidgetViewFactory
 
     private lateinit var widgetView: NavDrawerWidgetView
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,6 +51,18 @@ class MainActivity : BaseActivity(), NavDrawerHelper, NavDrawerWidgetView.Listen
     override fun onStop() {
         super.onStop()
         widgetView.unregisterListener(this)
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray,
+    ) {
+//        Logger.v("[PERMISSION] Delegate the result to the PermissionProvider.")
+        // It's inevitable since Activity is in charge of this job by the Android framework.
+        // This method call must be launched here to delegate permission granted results To [PermissionRequester].
+        permissionRequester.onRequestPermissionResult(requestCode, permissions, grantResults)
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
     }
 
     override fun onNavItemClicked(item: NavDrawerWidgetView.DrawerItem) {

@@ -13,7 +13,7 @@ class MyApplication : Application() {
         super.onCreate()
 
         val formatStrategy = PrettyFormatStrategy.newBuilder()
-            .methodCount(5)
+            .methodCount(2)
             .build()
         Logger.addLogAdapter(object: AndroidLogAdapter(formatStrategy) {
             override fun isLoggable(priority: Int, tag: String?): Boolean {
