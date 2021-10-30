@@ -4,7 +4,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.OnLifecycleEvent
 import androidx.lifecycle.ViewModel
-import ch.breatheinandout.location.LocationPoint
+import ch.breatheinandout.location.data.LocationPoint
 import ch.breatheinandout.location.UpdateLocationUseCase
 import com.orhanobut.logger.Logger
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -24,19 +24,18 @@ class AirQualityViewModel @Inject constructor(
     }
 
     fun getLocation() {
-        // TODO: 권한체크, GPS TurnOn check
         locationUseCase.update()
     }
 
     // ---- Callback from UpdateLocationUseCase -----
     override fun onSuccess(location: LocationPoint) {
-        Logger.v(" [updateLocation] -> check: ${location.longitudeX}, ${location.latitudeY}")
+        Logger.v(" [updateLocation] -> check: ${location.wgsCoords.longitudeX}, ${location.wgsCoords.latitudeY}")
+        Logger.v(" [findAddressLine] -> check: ${location.addressLine.addr}, ${location.addressLine.umdName}")
     }
 
-    override fun onFailure() {
-        Logger.v(" [updateLocationFailed - ]")
+    override fun onFailure(message: String, cause: Throwable) {
+        Logger.v(" [updateLocationFailed - $message]")
     }
-
 
     // -----  Lifecycle things  -----
     override fun onCleared() {

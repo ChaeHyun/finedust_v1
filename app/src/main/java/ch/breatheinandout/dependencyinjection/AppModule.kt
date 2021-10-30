@@ -4,7 +4,7 @@ import android.app.Application
 import android.content.Context
 import android.location.LocationManager
 import ch.breatheinandout.common.LocationHandler
-import ch.breatheinandout.location.LocationPointMapper
+import ch.breatheinandout.location.data.CoordinatesMapper
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import dagger.Module
@@ -23,7 +23,7 @@ class AppModule {
 
     @AppScoped
     @Provides
-    fun locationHandler(fusedLocationProvider: FusedLocationProviderClient, mapper: LocationPointMapper): LocationHandler = LocationHandler(fusedLocationProvider, mapper)
+    fun locationHandler(fusedLocationProvider: FusedLocationProviderClient, mapper: CoordinatesMapper): LocationHandler = LocationHandler(fusedLocationProvider, mapper)
 
     @AppScoped
     @Provides
@@ -35,5 +35,5 @@ class AppModule {
 
     @AppScoped
     @Provides
-    fun locationMapper(): LocationPointMapper = LocationPointMapper()
+    fun coordinatesMapper(): CoordinatesMapper = CoordinatesMapper()
 }

@@ -1,17 +1,17 @@
 package ch.breatheinandout.common
 
-import ch.breatheinandout.location.LocationPoint
-import ch.breatheinandout.location.LocationPointMapper
+import ch.breatheinandout.location.data.Coordinates
+import ch.breatheinandout.location.data.CoordinatesMapper
 import com.google.android.gms.location.*
 import com.orhanobut.logger.Logger
 import javax.inject.Inject
 
 class LocationHandler @Inject constructor(
     private val providerClient: FusedLocationProviderClient,
-    private val mapper: LocationPointMapper
+    private val mapper: CoordinatesMapper
 ) : BaseObservable<LocationHandler.Listener>() {
     interface Listener {
-        fun onUpdateLocationSuccess(location: LocationPoint)
+        fun onUpdateLocationSuccess(coordinates: Coordinates)
         fun onUpdateLocationFailed(message: String, cause: Throwable)
     }
 
@@ -70,8 +70,8 @@ class LocationHandler @Inject constructor(
         }
     }
 
-    private fun notifyLocationSuccess(location: LocationPoint) {
-        getListeners().map { it.onUpdateLocationSuccess(location) }
+    private fun notifyLocationSuccess(coordinates: Coordinates) {
+        getListeners().map { it.onUpdateLocationSuccess(coordinates) }
             .also { stopLocationUpdate(locationCallback) }
     }
 
