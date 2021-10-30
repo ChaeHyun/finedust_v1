@@ -7,7 +7,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.Toast
+import androidx.fragment.app.viewModels
 import ch.breatheinandout.R
+import ch.breatheinandout.common.FeatureAvailability
 import ch.breatheinandout.common.permissions.PermissionMember
 import ch.breatheinandout.common.permissions.PermissionRequester
 import com.orhanobut.logger.Logger
@@ -18,6 +20,10 @@ import javax.inject.Inject
 class AirQualityFragment : Fragment() , PermissionRequester.Listener{
 
     @Inject lateinit var permissionRequester: PermissionRequester
+    @Inject lateinit var feature: FeatureAvailability
+
+    private val viewModel : AirQualityViewModel by viewModels()
+
     private lateinit var button: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -35,9 +41,11 @@ class AirQualityFragment : Fragment() , PermissionRequester.Listener{
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         Logger.v("onViewCreated()")
+        lifecycle.addObserver(viewModel)
 
         // Testing for requesting permissions
         button = view.findViewById(R.id.button)
+        val buttonLocation = view.findViewById<Button>(R.id.button_location)
 
         // TestFragment.kt
         button.setOnClickListener {
@@ -47,6 +55,20 @@ class AirQualityFragment : Fragment() , PermissionRequester.Listener{
                 PermissionMember.FineLocation,
                 PermissionMember.REQUEST_CODE_PERMISSION
             )
+        }
+
+        // Test Location Update
+        buttonLocation.setOnClickListener {
+            if (permissionRequester.hasPermission(PermissionMember.FineLocation)) {
+                if (!feature.isGpsFeatureOn()) {
+                    Toast.makeText(context, "PLEASE TURN ON THE GPS.", Toast.LENGTH_SHORT).show()
+                    return@setOnClickListener
+                }
+                viewModel.getLocation()
+            } else {
+                // Request Location Permission
+                permissionRequester.requestPermission(PermissionMember.FineLocation, PermissionMember.REQUEST_CODE_PERMISSION)
+            }
         }
     }
 
