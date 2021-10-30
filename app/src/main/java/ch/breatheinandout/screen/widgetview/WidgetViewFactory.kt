@@ -2,6 +2,8 @@ package ch.breatheinandout.screen.widgetview
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import ch.breatheinandout.screen.airquality.AirQualityWidgetView
+import ch.breatheinandout.screen.airquality.AirQualityWidgetViewImpl
 import ch.breatheinandout.screen.toolbar.ToolbarWidgetView
 import ch.breatheinandout.screen.navdrawer.NavDrawerHelper
 import ch.breatheinandout.screen.navdrawer.NavDrawerWidgetView
@@ -22,5 +24,6 @@ class WidgetViewFactory @Inject constructor(
     fun getNavDrawerHelper(): NavDrawerHelper = navDrawerHelper
 
     fun getToolbarWidgetView(parent: ViewGroup?) : ToolbarWidgetView = ToolbarWidgetView(layoutInflater, parent)
+    fun createAirQualityWidgetView(parent: ViewGroup?): AirQualityWidgetView = AirQualityWidgetViewImpl(layoutInflater, parent, navDrawerHelper)
 
 }

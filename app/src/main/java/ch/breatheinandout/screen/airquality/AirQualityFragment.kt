@@ -5,89 +5,77 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.Toast
 import androidx.fragment.app.viewModels
-import ch.breatheinandout.R
 import ch.breatheinandout.common.FeatureAvailability
 import ch.breatheinandout.common.permissions.PermissionMember
 import ch.breatheinandout.common.permissions.PermissionRequester
+import ch.breatheinandout.screen.widgetview.WidgetViewFactory
 import com.orhanobut.logger.Logger
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class AirQualityFragment : Fragment() , PermissionRequester.Listener{
+class AirQualityFragment : Fragment(), AirQualityWidgetView.Listener ,PermissionRequester.Listener {
 
+    @Inject lateinit var widgetViewFactory: WidgetViewFactory
     @Inject lateinit var permissionRequester: PermissionRequester
-    @Inject lateinit var feature: FeatureAvailability
+    @Inject lateinit var featureAvailability: FeatureAvailability
 
     private val viewModel : AirQualityViewModel by viewModels()
-
-    private lateinit var button: Button
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
+    private lateinit var widgetView: AirQualityWidgetView
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
-    ): View? {
+    ): View {
+        widgetView = widgetViewFactory.createAirQualityWidgetView(container)
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_airquality, container, false)
+        return widgetView.getRootView()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         Logger.v("onViewCreated()")
+        widgetView.setToolbarVisibility(true)
+        widgetView.setToolbarTitle("공기질")
+
         lifecycle.addObserver(viewModel)
-
-        // Testing for requesting permissions
-        button = view.findViewById(R.id.button)
-        val buttonLocation = view.findViewById<Button>(R.id.button_location)
-
-        // TestFragment.kt
-        button.setOnClickListener {
-            Toast.makeText(context, "PERMISSION BUTTON CLICKED", Toast.LENGTH_SHORT).show()
-            // 권한 요청하기
-            permissionRequester.requestPermission(
-                PermissionMember.FineLocation,
-                PermissionMember.REQUEST_CODE_PERMISSION
-            )
-        }
-
-        // Test Location Update
-        buttonLocation.setOnClickListener {
-            if (permissionRequester.hasPermission(PermissionMember.FineLocation)) {
-                if (!feature.isGpsFeatureOn()) {
-                    Toast.makeText(context, "PLEASE TURN ON THE GPS.", Toast.LENGTH_SHORT).show()
-                    return@setOnClickListener
-                }
-                viewModel.getLocation()
-            } else {
-                // Request Location Permission
-                permissionRequester.requestPermission(PermissionMember.FineLocation, PermissionMember.REQUEST_CODE_PERMISSION)
-            }
-        }
     }
 
     override fun onStart() {
         super.onStart()
         permissionRequester.registerListener(this)
+        widgetView.registerListener(this)
     }
 
     override fun onStop() {
         super.onStop()
         permissionRequester.unregisterListener(this)
+        widgetView.unregisterListener(this)
     }
 
-    // TestFragment.kt
+    // when the Test button clicked
+    override fun onClickButton() {
+        getLastLocation()
+    }
+
+    private fun getLastLocation() {
+        if (permissionRequester.hasPermission(PermissionMember.FineLocation)) {
+            if (!featureAvailability.isGpsFeatureOn()) {
+                widgetView.showToastMessage("PLEASE TURN ON THE GPS.")
+                return
+            }
+            viewModel.getLocation()
+        } else {
+            // Request Location Permission
+            permissionRequester.requestPermission(PermissionMember.FineLocation, PermissionMember.REQUEST_CODE_PERMISSION)
+        }
+    }
+
     override fun onRequestPermissionResult(
         requestCode: Int,
         result: PermissionRequester.PermissionResult,
     ) {
-        // Check the received result in fragment
         result.granted.map { Logger.v("# GRANTED: ${it.getAndroidPermission()}") }
         result.denied.map { Logger.v("# DENIED: ${it.getAndroidPermission()}") }
         result.doNotAsk.map { Logger.v("# DoNotAsk: ${it.getAndroidPermission()}") }

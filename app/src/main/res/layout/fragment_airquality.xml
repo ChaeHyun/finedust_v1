@@ -12,19 +12,11 @@
         android:text="@string/hello_blank_fragment" />
 
     <androidx.appcompat.widget.AppCompatButton
-        android:layout_width="150dp"
-        android:layout_height="70dp"
-        android:id="@+id/button"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="200dp"
-        android:text="REQUEST PERMISSION" />
-
-    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/button_location"
         android:layout_width="150dp"
         android:layout_height="70dp"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="300dp"
+        android:layout_marginTop="200dp"
         android:text="LOCATION" />
 
 </FrameLayout>

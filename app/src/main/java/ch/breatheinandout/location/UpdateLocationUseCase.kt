@@ -34,4 +34,6 @@ class UpdateLocationUseCase @Inject constructor(
         getListeners().map { it.onFailure() }
             .also { locationHandler.unregisterListener(this) }
     }
+
+     /** 여기서 Fragment ON_START, ON_STOP 을 listen 할 수 있는 방법은? */
 }

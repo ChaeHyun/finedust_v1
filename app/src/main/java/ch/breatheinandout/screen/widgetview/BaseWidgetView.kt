@@ -1,5 +1,6 @@
 package ch.breatheinandout.screen.widgetview
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -24,6 +25,6 @@ abstract class BaseWidgetView(
         return rootView.findViewById<T>(id)
     }
 
-    protected fun getContext() = getRootView().context
+    protected fun getContext(): Context = getRootView().context
     protected fun getString(@StringRes resId: Int) = getContext().getString(resId)
 }
