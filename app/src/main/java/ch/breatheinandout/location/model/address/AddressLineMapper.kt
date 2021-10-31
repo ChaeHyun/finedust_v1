@@ -1,4 +1,4 @@
-package ch.breatheinandout.location.data
+package ch.breatheinandout.location.model.address
 
 import android.location.Address
 import ch.breatheinandout.common.mapper.DataMapper

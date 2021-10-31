@@ -1,7 +1,7 @@
 package ch.breatheinandout.network.transcoords
 
 import ch.breatheinandout.common.mapper.DataMapper
-import ch.breatheinandout.location.data.Coordinates
+import ch.breatheinandout.location.model.coordinates.Coordinates
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 import javax.inject.Inject

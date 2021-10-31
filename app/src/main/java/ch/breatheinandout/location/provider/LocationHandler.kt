@@ -1,7 +1,8 @@
-package ch.breatheinandout.common
+package ch.breatheinandout.location.provider
 
-import ch.breatheinandout.location.data.Coordinates
-import ch.breatheinandout.location.data.CoordinatesMapper
+import ch.breatheinandout.common.BaseObservable
+import ch.breatheinandout.location.model.coordinates.Coordinates
+import ch.breatheinandout.location.model.coordinates.CoordinatesMapper
 import com.google.android.gms.location.*
 import com.orhanobut.logger.Logger
 import javax.inject.Inject

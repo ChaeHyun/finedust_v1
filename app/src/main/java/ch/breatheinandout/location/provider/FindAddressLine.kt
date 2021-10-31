@@ -1,11 +1,11 @@
-package ch.breatheinandout.location
+package ch.breatheinandout.location.provider
 
 import android.content.Context
 import android.location.Address
 import android.location.Geocoder
-import ch.breatheinandout.location.data.AddressLine
-import ch.breatheinandout.location.data.AddressLineMapper
-import ch.breatheinandout.location.data.Coordinates
+import ch.breatheinandout.location.model.address.AddressLine
+import ch.breatheinandout.location.model.address.AddressLineMapper
+import ch.breatheinandout.location.model.coordinates.Coordinates
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.io.IOException

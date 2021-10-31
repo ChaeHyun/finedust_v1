@@ -6,7 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
-import ch.breatheinandout.common.FeatureAvailability
+import ch.breatheinandout.common.utils.FeatureAvailability
 import ch.breatheinandout.common.permissions.PermissionMember
 import ch.breatheinandout.common.permissions.PermissionRequester
 import ch.breatheinandout.screen.widgetview.WidgetViewFactory

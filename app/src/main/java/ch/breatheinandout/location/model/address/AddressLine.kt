@@ -1,4 +1,4 @@
-package ch.breatheinandout.location.data
+package ch.breatheinandout.location.model.address
 
 data class AddressLine(
     val addr: String,

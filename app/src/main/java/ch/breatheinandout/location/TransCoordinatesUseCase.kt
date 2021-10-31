@@ -1,6 +1,6 @@
 package ch.breatheinandout.location
 
-import ch.breatheinandout.location.data.Coordinates
+import ch.breatheinandout.location.model.coordinates.Coordinates
 import ch.breatheinandout.network.UrlProvider
 import ch.breatheinandout.network.transcoords.CoordsDtoMapper
 import ch.breatheinandout.network.transcoords.KakaoApi

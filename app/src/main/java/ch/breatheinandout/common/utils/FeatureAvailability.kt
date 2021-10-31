@@ -1,4 +1,4 @@
-package ch.breatheinandout.common
+package ch.breatheinandout.common.utils
 
 import android.location.LocationManager
 import androidx.core.location.LocationManagerCompat

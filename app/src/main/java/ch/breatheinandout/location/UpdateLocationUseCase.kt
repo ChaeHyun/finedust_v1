@@ -1,9 +1,11 @@
 package ch.breatheinandout.location
 
 import ch.breatheinandout.common.BaseObservable
-import ch.breatheinandout.common.LocationHandler
-import ch.breatheinandout.location.data.Coordinates
-import ch.breatheinandout.location.data.LocationPoint
+import ch.breatheinandout.location.provider.FindAddressLine
+import ch.breatheinandout.location.provider.LocationHandler
+import ch.breatheinandout.location.model.coordinates.Coordinates
+import ch.breatheinandout.location.model.LocationPoint
+import com.orhanobut.logger.Logger
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -13,7 +15,8 @@ import javax.inject.Inject
 
 class UpdateLocationUseCase @Inject constructor(
     private val locationHandler: LocationHandler,
-    private val findAddressLine: FindAddressLine
+    private val findAddressLine: FindAddressLine,
+    private val transCoordinatesUseCase: TransCoordinatesUseCase
 ) : BaseObservable<UpdateLocationUseCase.Listener>(), LocationHandler.Listener {
     interface Listener {
         fun onSuccess(location: LocationPoint)
@@ -27,9 +30,19 @@ class UpdateLocationUseCase @Inject constructor(
         locationHandler.getLastLocation()
     }
 
-    override fun onUpdateLocationSuccess(coordinates: Coordinates) {
+    override fun onUpdateLocationSuccess(wgsCoords: Coordinates) {
         coroutineScope.launch {
-            findAddress(coordinates)
+            try {
+                val addressLine = findAddressLine.findAddress(wgsCoords)
+
+                val transResult = handleTransCoordsResult(transCoordinatesUseCase.translateWgsToTmCoordinates(wgsCoords))
+
+                transResult?.let { notifySuccess(LocationPoint(addressLine, transResult, wgsCoords)) }
+                Logger.d("transResult -> $transResult")
+            } catch (exception: IOException) {
+                // Failed while GeoCoder translate Coordinates to the address name.
+                notifyFailure("GeoCoder failed.", exception)
+            }
         }
     }
 
@@ -47,13 +60,16 @@ class UpdateLocationUseCase @Inject constructor(
             .also { locationHandler.unregisterListener(this) }
     }
 
-    private suspend fun findAddress(wgsCoordinates: Coordinates) {
-        try {
-            val addressLine = findAddressLine.findAddress(wgsCoordinates)
-            notifySuccess(LocationPoint(addressLine, wgsCoordinates))
-        } catch (exception: IOException) {
-            // Failed while GeoCoder translate Coordinates to the address name.
-            notifyFailure("GeoCoder failed.", exception)
+    private fun handleTransCoordsResult(result: TransCoordinatesUseCase.Result) : Coordinates? {
+        return when (result) {
+            is TransCoordinatesUseCase.Result.Success -> {
+                result.tmCoords
+            }
+            is TransCoordinatesUseCase.Result.Failure -> {
+                notifyFailure("Failed to translate WGS coordinates to Tm coordinates.", NullPointerException())
+                null
+            }
         }
     }
+
 }

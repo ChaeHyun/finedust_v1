@@ -3,8 +3,8 @@ package ch.breatheinandout.dependencyinjection
 import android.app.Application
 import android.content.Context
 import android.location.LocationManager
-import ch.breatheinandout.common.LocationHandler
-import ch.breatheinandout.location.data.CoordinatesMapper
+import ch.breatheinandout.location.provider.LocationHandler
+import ch.breatheinandout.location.model.coordinates.CoordinatesMapper
 import ch.breatheinandout.network.transcoords.KakaoApi
 import ch.breatheinandout.network.UrlProvider
 import com.google.android.gms.location.FusedLocationProviderClient
