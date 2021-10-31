@@ -4,7 +4,7 @@ import android.location.Location
 import ch.breatheinandout.common.mapper.DataMapper
 import javax.inject.Inject
 
-class AndroidLocationMapper @Inject constructor() : DataMapper<Location, Coordinates> {
+class CoordinatesMapper @Inject constructor() : DataMapper<Location, Coordinates> {
     override fun mapToDomainModel(data: Location): Coordinates {
         return Coordinates(data.longitude.toString(), data.latitude.toString())
     }

@@ -4,7 +4,7 @@ import android.app.Application
 import android.content.Context
 import android.location.LocationManager
 import ch.breatheinandout.common.LocationHandler
-import ch.breatheinandout.location.data.AndroidLocationMapper
+import ch.breatheinandout.location.data.CoordinatesMapper
 import ch.breatheinandout.network.transcoords.KakaoApi
 import ch.breatheinandout.network.UrlProvider
 import com.google.android.gms.location.FusedLocationProviderClient
@@ -31,7 +31,7 @@ class AppModule {
 
     @AppScoped
     @Provides
-    fun locationHandler(fusedLocationProvider: FusedLocationProviderClient, mapper: AndroidLocationMapper): LocationHandler = LocationHandler(fusedLocationProvider, mapper)
+    fun locationHandler(fusedLocationProvider: FusedLocationProviderClient, mapper: CoordinatesMapper): LocationHandler = LocationHandler(fusedLocationProvider, mapper)
 
     @AppScoped
     @Provides
@@ -43,7 +43,7 @@ class AppModule {
 
     @AppScoped
     @Provides
-    fun coordinatesMapper(): AndroidLocationMapper = AndroidLocationMapper()
+    fun coordinatesMapper(): CoordinatesMapper = CoordinatesMapper()
 
     // ------ Network Module ------
     @AppScoped
