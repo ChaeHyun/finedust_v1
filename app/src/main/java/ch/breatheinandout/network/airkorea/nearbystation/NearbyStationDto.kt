@@ -1,7 +1,6 @@
-package ch.breatheinandout.network.airkorea
+package ch.breatheinandout.network.airkorea.nearbystation
 
-import ch.breatheinandout.NearbyStation
-import ch.breatheinandout.common.mapper.DataMapper
+import ch.breatheinandout.nearbystation.model.NearbyStation
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 

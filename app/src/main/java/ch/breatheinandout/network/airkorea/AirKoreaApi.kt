@@ -1,5 +1,6 @@
 package ch.breatheinandout.network.airkorea
 
+import ch.breatheinandout.network.airkorea.nearbystation.NearbyStationDto
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Query

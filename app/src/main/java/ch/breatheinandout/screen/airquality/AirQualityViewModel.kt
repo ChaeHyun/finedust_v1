@@ -3,7 +3,7 @@ package ch.breatheinandout.screen.airquality
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import ch.breatheinandout.NearbyStation
+import ch.breatheinandout.nearbystation.model.NearbyStation
 import ch.breatheinandout.location.UpdateLocationUseCase
 import ch.breatheinandout.location.model.LocationPoint
 import ch.breatheinandout.nearbystation.GetNearbyStationListUseCase
@@ -22,8 +22,8 @@ class AirQualityViewModel @Inject constructor(
 ): ViewModel(), LifecycleObserver {
     private val coroutineScope = CoroutineScope(SupervisorJob() + Dispatchers.Main.immediate)
 
-    private val locationLiveData = MutableLiveData<LocationPoint>()
-    private val nearbyStationLiveData = MutableLiveData<NearbyStation>()
+    private val locationPoint = MutableLiveData<LocationPoint>()
+    private val nearbyStation = MutableLiveData<NearbyStation>()
 
 
     init {
@@ -48,7 +48,7 @@ class AirQualityViewModel @Inject constructor(
         when (result) {
             is GetNearbyStationListUseCase.Result.Success -> {
                 // nearbyStationLiveData <- result
-                nearbyStationLiveData.value = result.nearbyStation
+                nearbyStation.value = result.nearbyStation
                 Logger.d("check(nearby) -> ${result.nearbyStation}")
             }
             is GetNearbyStationListUseCase.Result.Failure -> {
@@ -67,7 +67,7 @@ class AirQualityViewModel @Inject constructor(
                         "\n [findAddressLine] -> check: ${location.addressLine.addr}, ${location.addressLine.umdName}" +
                         "\n [transCoords] -> check: ${location.tmCoords.longitudeX}, ${location.tmCoords.latitudeY}"
                 )
-                locationLiveData.value = result.location
+                locationPoint.value = result.location
                 getNearbyStationList(result.location)
             }
             is UpdateLocationUseCase.Result.Failure -> {

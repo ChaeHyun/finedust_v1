@@ -11,6 +11,8 @@ import ch.breatheinandout.network.transcoords.KakaoApi
 import ch.breatheinandout.network.UrlProvider
 import ch.breatheinandout.network.airkorea.AirKoreaApi
 import ch.breatheinandout.network.airkorea.AirKoreaResponseFilteringInterceptor
+import ch.breatheinandout.network.airkorea.nearbystation.NearbyStationDataSource
+import ch.breatheinandout.network.airkorea.nearbystation.NearbyStationDataSourceImpl
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import dagger.Module
@@ -95,4 +97,7 @@ class AppModule {
     fun httpLoggingInterceptor() : Interceptor = HttpLoggingInterceptor().apply {
         level = HttpLoggingInterceptor.Level.BODY
     }
+
+    @Provides
+    fun nearbyStationDataSource(airKoreaApi: AirKoreaApi) : NearbyStationDataSource = NearbyStationDataSourceImpl(airKoreaApi)
 }
