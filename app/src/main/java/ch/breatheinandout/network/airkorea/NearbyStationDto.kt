@@ -15,12 +15,6 @@ data class NearbyStationDto(
     @SerializedName("stationName")
     @Expose
     val stationName: String
-) : DataMapper<NearbyStationDto, NearbyStation> {
-    override fun mapToDomainModel(data: NearbyStationDto): NearbyStation {
-        TODO("Not yet implemented")
-    }
-
-    override fun mapFromDomainModel(domain: NearbyStation): NearbyStationDto {
-        TODO("Not yet implemented")
-    }
+) {
+    fun mapToDomain() : NearbyStation = NearbyStation(stationName, stationAddr, tm)
 }

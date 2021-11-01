@@ -30,6 +30,7 @@ class AirKoreaResponseFilteringInterceptor: Interceptor {
                 .body(newBody.toResponseBody())
                 .build()
         } catch (e: IOException) {
+            Logger.e("Network failed: ${e.message}")
             throw IOException(e.message)
         }
     }

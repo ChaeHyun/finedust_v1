@@ -59,7 +59,7 @@ class AppModule {
         }.build()
 
         return Retrofit.Builder()
-            .baseUrl(urlProvider.baseUrl())
+            .baseUrl(urlProvider.baseKakaoUrl())
             .client(okHttp)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
@@ -75,7 +75,7 @@ class AppModule {
         }.build()
 
         return Retrofit.Builder()
-            .baseUrl(urlProvider.baseUrl())
+            .baseUrl(urlProvider.baseAirkoreaUrl())
             .client(okHttp)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
