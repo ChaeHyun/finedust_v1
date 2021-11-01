@@ -1,66 +1,61 @@
 package ch.breatheinandout.location.provider
 
-import ch.breatheinandout.common.BaseObservable
+import android.os.Looper
 import ch.breatheinandout.location.model.coordinates.Coordinates
 import ch.breatheinandout.location.model.coordinates.CoordinatesMapper
 import com.google.android.gms.location.*
 import com.orhanobut.logger.Logger
+import kotlinx.coroutines.*
+import java.util.concurrent.CountDownLatch
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
+/**  Synchronous -> return Result.Success / Result.Failure for LastLocation
+ *  Asynchronous -> send callback onUpdateLocationSuccess, onUpdateLocationFailed. */
 class LocationHandler @Inject constructor(
     private val providerClient: FusedLocationProviderClient,
     private val mapper: CoordinatesMapper
-) : BaseObservable<LocationHandler.Listener>() {
-    interface Listener {
-        fun onUpdateLocationSuccess(coordinates: Coordinates)
-        fun onUpdateLocationFailed(message: String, cause: Throwable)
+) {
+
+    sealed class Result {
+        data class Success(val wgsCoords: Coordinates) : Result()
+        data class Failure(val message: String, val cause: Throwable) : Result()
     }
+
+    private var deferredValue: Result = Result.Failure(MSG_FAILED, NullPointerException())
+    private val latch: CountDownLatch = CountDownLatch(1)
 
     private var hasLocationCallback = false
     private val locationCallback: LocationCallback = object: LocationCallback() {
         override fun onLocationResult(result: LocationResult) {
             super.onLocationResult(result)
-            Logger.d("callback - onLocationResult()")
-            notifyLocationSuccess(mapper.mapToDomainModel(result.lastLocation))
-        }
-
-        override fun onLocationAvailability(available: LocationAvailability) {
-            super.onLocationAvailability(available)
-            Logger.d(available.isLocationAvailable)
-            // (isLocationAvailable == false) -> GPS feature is currently OFF.
+            deferredValue = Result.Success(mapper.mapToDomainModel(result.lastLocation))
+            latch.countDown()
         }
     }
 
-    fun getLastLocation() {
+    suspend fun getLastLocation(): Result = withContext(Dispatchers.IO) {
         try {
-            providerClient.lastLocation.addOnSuccessListener { location ->
-                if (location != null) {
-                    notifyLocationSuccess(mapper.mapToDomainModel(location))
-                } else {
-                    startLocationUpdate(locationCallback)
-                }
-            }.addOnFailureListener {
-                notifyLocationFailed(MSG_FAILED, NullPointerException())
-            }
+            return@withContext startLocationUpdate(locationCallback)
         } catch (exception: SecurityException) {
-            notifyLocationFailed(MSG_PERMISSION_ERROR, exception)
+            return@withContext Result.Failure(MSG_PERMISSION_ERROR, exception).also { stopLocationUpdate(locationCallback) }
         }
     }
 
-    @Suppress("NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
-    private fun startLocationUpdate(locationCallback: LocationCallback) {
+    private fun startLocationUpdate(locationCallback: LocationCallback) : Result {
         Logger.v("[ startLocationUpdate() - isRunning ]")
-        try {
+        return try {
             hasLocationCallback = true
             providerClient.requestLocationUpdates(
                 provideLocationRequest(),
                 locationCallback,
-                null
-            ).addOnFailureListener {
-                notifyLocationFailed(MSG_FAILED, NullPointerException())
-            }
+                Looper.getMainLooper()
+            )
+
+            latch.await(500, TimeUnit.MILLISECONDS).also { stopLocationUpdate(locationCallback) }
+            deferredValue
         } catch (exception: SecurityException) {
-            notifyLocationFailed(MSG_PERMISSION_ERROR, exception)
+            Result.Failure(MSG_PERMISSION_ERROR, exception).also { stopLocationUpdate(locationCallback) }
         }
     }
 
@@ -71,15 +66,6 @@ class LocationHandler @Inject constructor(
         }
     }
 
-    private fun notifyLocationSuccess(coordinates: Coordinates) {
-        getListeners().map { it.onUpdateLocationSuccess(coordinates) }
-            .also { stopLocationUpdate(locationCallback) }
-    }
-
-    private fun notifyLocationFailed(message: String, cause: Throwable) {
-        getListeners().map { it.onUpdateLocationFailed(message, cause) }
-            .also { stopLocationUpdate(locationCallback) }
-    }
 
     /* The description using to request a LocationCallback. */
     private fun provideLocationRequest() : LocationRequest = LocationRequest.create().apply {
