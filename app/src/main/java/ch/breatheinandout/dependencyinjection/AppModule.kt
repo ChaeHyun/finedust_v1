@@ -70,10 +70,14 @@ class AppModule {
     @RetrofitForAirKorea
     @AppScoped
     @Provides
-    fun retrofitAirkorea(urlProvider: UrlProvider, @Named("LoggingInterceptor") loggingInterceptor: Interceptor) : Retrofit {
+    fun retrofitAirkorea(
+        urlProvider: UrlProvider,
+        @Named("LoggingInterceptor") loggingInterceptor: Interceptor,
+        @Named("AirKoreaInterceptor") airKoreaInterceptor: Interceptor
+    ) : Retrofit {
         val okHttp = OkHttpClient.Builder().apply {
             addInterceptor(loggingInterceptor)
-            addInterceptor(AirKoreaResponseFilteringInterceptor())
+            addInterceptor(airKoreaInterceptor)
         }.build()
 
         return Retrofit.Builder()
@@ -97,6 +101,11 @@ class AppModule {
     fun httpLoggingInterceptor() : Interceptor = HttpLoggingInterceptor().apply {
         level = HttpLoggingInterceptor.Level.BODY
     }
+
+    @AppScoped
+    @Provides
+    @Named("AirKoreaInterceptor")
+    fun airKoreaResponseInterceptor() : Interceptor = AirKoreaResponseFilteringInterceptor()
 
     @Provides
     fun nearbyStationDataSource(airKoreaApi: AirKoreaApi) : NearbyStationDataSource = NearbyStationDataSourceImpl(airKoreaApi)
