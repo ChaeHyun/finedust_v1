@@ -10,8 +10,7 @@ import java.util.concurrent.CountDownLatch
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
-/**  Synchronous -> return Result.Success / Result.Failure for LastLocation
- *  Asynchronous -> send callback onUpdateLocationSuccess, onUpdateLocationFailed. */
+
 class LocationHandler @Inject constructor(
     private val providerClient: FusedLocationProviderClient,
     private val mapper: CoordinatesMapper
@@ -67,7 +66,6 @@ class LocationHandler @Inject constructor(
     }
 
 
-    /* The description using to request a LocationCallback. */
     private fun provideLocationRequest() : LocationRequest = LocationRequest.create().apply {
         priority = LocationRequest.PRIORITY_HIGH_ACCURACY
         interval = 30 * 1000

@@ -3,10 +3,14 @@ package ch.breatheinandout.dependencyinjection
 import android.app.Application
 import android.content.Context
 import android.location.LocationManager
+import ch.breatheinandout.dependencyinjection.qualifier.RetrofitForAirKorea
+import ch.breatheinandout.dependencyinjection.qualifier.RetrofitForKakao
 import ch.breatheinandout.location.provider.LocationHandler
 import ch.breatheinandout.location.model.coordinates.CoordinatesMapper
 import ch.breatheinandout.network.transcoords.KakaoApi
 import ch.breatheinandout.network.UrlProvider
+import ch.breatheinandout.network.airkorea.AirKoreaApi
+import ch.breatheinandout.network.airkorea.AirKoreaResponseFilteringInterceptor
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import dagger.Module
@@ -46,9 +50,10 @@ class AppModule {
     fun coordinatesMapper(): CoordinatesMapper = CoordinatesMapper()
 
     // ------ Network Module ------
+    @RetrofitForKakao
     @AppScoped
     @Provides
-    fun retrofit(urlProvider: UrlProvider, @Named("LoggingInterceptor") loggingInterceptor: Interceptor): Retrofit {
+    fun retrofitKakao(urlProvider: UrlProvider, @Named("LoggingInterceptor") loggingInterceptor: Interceptor): Retrofit {
         val okHttp = OkHttpClient.Builder().apply {
             addInterceptor(loggingInterceptor)
         }.build()
@@ -60,9 +65,29 @@ class AppModule {
             .build()
     }
 
+    @RetrofitForAirKorea
     @AppScoped
     @Provides
-    fun kakaoApi(retrofit: Retrofit) : KakaoApi = retrofit.create(KakaoApi::class.java)
+    fun retrofitAirkorea(urlProvider: UrlProvider, @Named("LoggingInterceptor") loggingInterceptor: Interceptor) : Retrofit {
+        val okHttp = OkHttpClient.Builder().apply {
+            addInterceptor(loggingInterceptor)
+            addInterceptor(AirKoreaResponseFilteringInterceptor())
+        }.build()
+
+        return Retrofit.Builder()
+            .baseUrl(urlProvider.baseUrl())
+            .client(okHttp)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+    }
+
+    @AppScoped
+    @Provides
+    fun kakaoApi(@RetrofitForKakao retrofit: Retrofit) : KakaoApi = retrofit.create(KakaoApi::class.java)
+
+    @AppScoped
+    @Provides
+    fun airkoreaApi(@RetrofitForAirKorea retrofit: Retrofit) : AirKoreaApi = retrofit.create(AirKoreaApi::class.java)
 
     @AppScoped
     @Provides
