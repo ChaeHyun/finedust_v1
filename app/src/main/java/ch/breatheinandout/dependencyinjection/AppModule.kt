@@ -3,6 +3,8 @@ package ch.breatheinandout.dependencyinjection
 import android.app.Application
 import android.content.Context
 import android.location.LocationManager
+import androidx.room.Room
+import ch.breatheinandout.database.*
 import ch.breatheinandout.dependencyinjection.qualifier.RetrofitForAirKorea
 import ch.breatheinandout.dependencyinjection.qualifier.RetrofitForKakao
 import ch.breatheinandout.location.provider.LocationHandler
@@ -109,4 +111,22 @@ class AppModule {
 
     @Provides
     fun nearbyStationDataSource(airKoreaApi: AirKoreaApi) : NearbyStationDataSource = NearbyStationDataSourceImpl(airKoreaApi)
+
+    @Provides
+    fun locationLocalDataSource(dao: LocationAndStationDao, mapper: LocationAndStationEntityMapper) : LocationLocalDataSource = LocationLocalDataSourceImpl(dao, mapper)
+
+    // ------ Room database -----
+    @AppScoped
+    @Provides
+    fun createDatabase(context: Context) : Database {
+        return Room.databaseBuilder(
+            context,
+            Database::class.java,
+            Database.DB_NAME
+        ).build()
+    }
+
+    @AppScoped
+    @Provides
+    fun locationAndStationDao(database: Database): LocationAndStationDao = database.locationAndStationDao()
 }
