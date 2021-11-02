@@ -19,22 +19,19 @@ class UpdateLocationUseCase @Inject constructor(
         data class Failure(val message: String, val cause: Throwable) : Result()
     }
 
-
     suspend fun update() : Result = withContext(Dispatchers.IO) {
-        val coordsResult = locationHandler.getLastLocation()
-        Logger.d("check result : $coordsResult")
-        return@withContext when (coordsResult) {
-            is LocationHandler.Result.Success -> {
-                val addressLine = findAddressLine.findAddress(coordsResult.wgsCoords)
-                val tmCoords = handleTransCoordsResult(transCoordinatesUseCase.translateWgsToTmCoordinates(coordsResult.wgsCoords))
-                tmCoords?.let {
-                    val locPoint = LocationPoint(addressLine, tmCoords, coordsResult.wgsCoords)
-                    Result.Success(locPoint)
-                } ?: Result.Failure("Failed to translate coords", NullPointerException())
-            }
-            is LocationHandler.Result.Failure -> {
-                Result.Failure("Failed to find a coordinates", NullPointerException())
-            }
+        val wgsCoords = locationHandler.getLocationDeferred()
+
+        if (wgsCoords == null) {
+            Logger.e("wgsCoord is NULL.")
+            return@withContext Result.Failure("Failed to find a WGS coordinates.", NullPointerException())
+        } else {
+            val addressLine = findAddressLine.findAddress(wgsCoords)
+            val tmCoords = handleTransCoordsResult(transCoordinatesUseCase.translateWgsToTmCoordinates(wgsCoords))
+            return@withContext tmCoords?.let {
+                val lPoint = LocationPoint(addressLine, tmCoords, wgsCoords)
+                Result.Success(lPoint)
+            } ?: Result.Failure("Failed to translate coords", NullPointerException())
         }
     }
 
