@@ -13,8 +13,8 @@ import ch.breatheinandout.network.transcoords.KakaoApi
 import ch.breatheinandout.network.UrlProvider
 import ch.breatheinandout.network.airkorea.AirKoreaApi
 import ch.breatheinandout.network.airkorea.AirKoreaResponseFilteringInterceptor
-import ch.breatheinandout.network.airkorea.nearbystation.NearbyStationDataSource
-import ch.breatheinandout.network.airkorea.nearbystation.NearbyStationDataSourceImpl
+import ch.breatheinandout.network.airkorea.nearbystation.INearbyStationRemoteDataSource
+import ch.breatheinandout.network.airkorea.nearbystation.NearbyStationRemoteDataSource
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import dagger.Module
@@ -110,10 +110,10 @@ class AppModule {
     fun airKoreaResponseInterceptor() : Interceptor = AirKoreaResponseFilteringInterceptor()
 
     @Provides
-    fun nearbyStationDataSource(airKoreaApi: AirKoreaApi) : NearbyStationDataSource = NearbyStationDataSourceImpl(airKoreaApi)
+    fun nearbyStationDataSource(airKoreaApi: AirKoreaApi) : INearbyStationRemoteDataSource = NearbyStationRemoteDataSource(airKoreaApi)
 
     @Provides
-    fun locationLocalDataSource(dao: LocationAndStationDao, mapper: LocationAndStationEntityMapper) : LocationLocalDataSource = LocationLocalDataSourceImpl(dao, mapper)
+    fun locationLocalDataSource(dao: LocationAndStationDao, mapper: LocationAndStationEntityMapper) : ILocationLocalDataSource = LocationLocalDataSource(dao, mapper)
 
     // ------ Room database -----
     @AppScoped

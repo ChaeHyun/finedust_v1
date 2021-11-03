@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel
 import ch.breatheinandout.nearbystation.model.NearbyStation
 import ch.breatheinandout.location.UpdateLocationUseCase
 import ch.breatheinandout.location.model.LocationPoint
-import ch.breatheinandout.nearbystation.GetNearbyStationListUseCase
+import ch.breatheinandout.nearbystation.GetNearbyStationUseCase
 import com.orhanobut.logger.Logger
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
@@ -17,8 +17,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AirQualityViewModel @Inject constructor(
-    private val locationUseCase: UpdateLocationUseCase,
-    private val nearbyStationUseCase: GetNearbyStationListUseCase
+    private val updateLocationUseCase: UpdateLocationUseCase,
+    private val getNearbyStationUseCase: GetNearbyStationUseCase
 ): ViewModel(), LifecycleObserver {
     private val coroutineScope = CoroutineScope(SupervisorJob() + Dispatchers.Main.immediate)
 
@@ -32,26 +32,26 @@ class AirQualityViewModel @Inject constructor(
 
     fun getLocation() {
         coroutineScope.launch {
-            val resultLocation = locationUseCase.update()
+            val resultLocation = updateLocationUseCase.update()
             printResult(resultLocation)
         }
     }
 
     private fun getNearbyStationList(location: LocationPoint) {
         coroutineScope.launch {
-            val stationResult = nearbyStationUseCase.getNearbyStation(location)
+            val stationResult = getNearbyStationUseCase.getNearbyStation(location)
             handleResultNearbyStation(stationResult)
         }
     }
 
-    private fun handleResultNearbyStation(result: GetNearbyStationListUseCase.Result) {
+    private fun handleResultNearbyStation(result: GetNearbyStationUseCase.Result) {
         when (result) {
-            is GetNearbyStationListUseCase.Result.Success -> {
+            is GetNearbyStationUseCase.Result.Success -> {
                 // nearbyStationLiveData <- result
                 nearbyStation.value = result.nearbyStation
                 Logger.d("check(nearby) -> ${result.nearbyStation}")
             }
-            is GetNearbyStationListUseCase.Result.Failure -> {
+            is GetNearbyStationUseCase.Result.Failure -> {
                 Logger.e(result.message.plus("-> ${result.cause.message}"))
                 // Network Failed
             }

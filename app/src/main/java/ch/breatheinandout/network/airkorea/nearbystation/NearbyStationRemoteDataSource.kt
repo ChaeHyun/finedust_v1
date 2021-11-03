@@ -5,9 +5,9 @@ import ch.breatheinandout.location.model.LocationPoint
 import ch.breatheinandout.network.airkorea.AirKoreaApi
 import javax.inject.Inject
 
-class NearbyStationDataSourceImpl @Inject constructor(
+class NearbyStationRemoteDataSource @Inject constructor(
     private val airKoreaApi: AirKoreaApi
-) : NearbyStationDataSource {
+) : INearbyStationRemoteDataSource {
 
     override suspend fun getNearbyStation(location: LocationPoint) : NearbyStation? {
         val tmCoords = location.tmCoords

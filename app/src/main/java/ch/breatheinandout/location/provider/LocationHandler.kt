@@ -21,14 +21,14 @@ class LocationHandler @Inject constructor(
             override fun onLocationResult(location: LocationResult) {
                 super.onLocationResult(location)
                 deferred.complete(location)
-                Logger.d(">> onLocationResult -> set deferred.complete(location)")
+                Logger.v(">> onLocationResult -> set deferred.complete(location)")
             }
 
             override fun onLocationAvailability(avail: LocationAvailability) {
                 super.onLocationAvailability(avail)
                 if (!avail.isLocationAvailable) {
                     deferred.complete(null)
-                    Logger.d(">> onLocationAvailability is false -> set deferred.complete(null)")
+                    Logger.v(">> onLocationAvailability is false -> set deferred.complete(null)")
                 }
             }
         }
