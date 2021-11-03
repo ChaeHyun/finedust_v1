@@ -7,4 +7,7 @@ http://developer.android.com/guide/topics/appwidgets/index.html#CreatingLayout
     -->
     <dimen name="widget_margin">0dp</dimen>
 
+    <dimen name="airquality_layout_padding">15dp</dimen>
+    <dimen name="airquality_layout_inner_padding">18dp</dimen>
+
 </resources>

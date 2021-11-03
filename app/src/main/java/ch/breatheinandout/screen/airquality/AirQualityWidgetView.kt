@@ -13,10 +13,13 @@ abstract class AirQualityWidgetView(
 ) : BaseObservableWidgetView<AirQualityWidgetView.Listener>(layoutInflater, parent, layoutId), ToolbarHelper {
     interface Listener {
         fun onClickButton()
+        fun onTriggerSwipeRefresh()
     }
 
+    abstract fun bindViewData(content: Content)
     abstract fun showProgressIndication()
     abstract fun hideProgressIndication()
 
     abstract fun showToastMessage(message: String)
+    abstract fun render(viewState: AirQualityViewState)
 }

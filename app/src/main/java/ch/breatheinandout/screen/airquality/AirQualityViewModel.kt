@@ -1,6 +1,7 @@
 package ch.breatheinandout.screen.airquality
 
 import androidx.lifecycle.LifecycleObserver
+import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import ch.breatheinandout.nearbystation.model.NearbyStation
@@ -25,15 +26,40 @@ class AirQualityViewModel @Inject constructor(
     private val locationPoint = MutableLiveData<LocationPoint>()
     private val nearbyStation = MutableLiveData<NearbyStation>()
 
+    val viewState = MediatorLiveData<AirQualityViewState>()
 
     init {
         Logger.v(" [INIT - AirQualityViewModel]")
+        viewState.apply {
+            addSource(locationPoint) {
+                viewState.value = mergeMultipleSources(locationPoint, nearbyStation)
+                getNearbyStationList(it)
+            }
+            addSource(nearbyStation) {
+                viewState.value = mergeMultipleSources(locationPoint, nearbyStation)
+            }
+        }
+    }
+
+    private fun mergeMultipleSources(
+        locationPointLiveData: MutableLiveData<LocationPoint>,
+        nearbyStationLiveData: MutableLiveData<NearbyStation>,
+    ): AirQualityViewState {
+        val locationPoint = locationPointLiveData.value
+        val nearbyStation = nearbyStationLiveData.value
+
+        // Do not notify content until each LiveData parameters get a value.
+        if (locationPoint == null || nearbyStation == null) {
+            return Loading
+        }
+
+        return Content(locationPoint, nearbyStation)
     }
 
     fun getLocation() {
         coroutineScope.launch {
-            val resultLocation = updateLocationUseCase.update()
-            printResult(resultLocation)
+            val resultLocation: UpdateLocationUseCase.Result = updateLocationUseCase.update()
+            handleResultLocation(resultLocation)
         }
     }
 
@@ -47,31 +73,31 @@ class AirQualityViewModel @Inject constructor(
     private fun handleResultNearbyStation(result: GetNearbyStationUseCase.Result) {
         when (result) {
             is GetNearbyStationUseCase.Result.Success -> {
-                // nearbyStationLiveData <- result
                 nearbyStation.value = result.nearbyStation
-                Logger.d("check(nearby) -> ${result.nearbyStation}")
+//                Logger.d("check(nearby) -> ${result.nearbyStation}")
             }
             is GetNearbyStationUseCase.Result.Failure -> {
                 Logger.e(result.message.plus("-> ${result.cause.message}"))
-                // Network Failed
+                viewState.value = Error
             }
         }
     }
 
 
-    private fun printResult(result: UpdateLocationUseCase.Result) {
+    private fun handleResultLocation(result: UpdateLocationUseCase.Result) {
         when (result) {
             is UpdateLocationUseCase.Result.Success -> {
-                val location = result.location
-                Logger.v(" [updateLocation] -> check: ${location.wgsCoords?.longitudeX}, ${location.wgsCoords?.latitudeY}" +
-                        "\n [findAddressLine] -> check: ${location.addressLine.addr}, ${location.addressLine.umdName}" +
-                        "\n [transCoords] -> check: ${location.tmCoords.longitudeX}, ${location.tmCoords.latitudeY}"
-                )
+                // Printing values at log.
+//                val location = result.location
+//                Logger.v(" [updateLocation] -> check: ${location.wgsCoords?.longitudeX}, ${location.wgsCoords?.latitudeY}" +
+//                        "\n [findAddressLine] -> check: ${location.addressLine.addr}, ${location.addressLine.umdName}" +
+//                        "\n [transCoords] -> check: ${location.tmCoords.longitudeX}, ${location.tmCoords.latitudeY}"
+//                )
                 locationPoint.value = result.location
-                getNearbyStationList(result.location)
             }
             is UpdateLocationUseCase.Result.Failure -> {
                 Logger.v("Update Location failed -> ${result.message}")
+                viewState.value = Error
             }
         }
     }

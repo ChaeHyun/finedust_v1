@@ -40,6 +40,11 @@ class AirQualityFragment : Fragment(), AirQualityWidgetView.Listener ,Permission
         widgetView.setToolbarTitle("공기질")
 
         lifecycle.addObserver(viewModel)
+
+        viewModel.viewState.observe(viewLifecycleOwner, { state ->
+            render(state)
+            Logger.i(" > render.viewState -> $state")
+        })
     }
 
     override fun onStart() {
@@ -54,10 +59,19 @@ class AirQualityFragment : Fragment(), AirQualityWidgetView.Listener ,Permission
         widgetView.unregisterListener(this)
     }
 
+    private fun render(viewState: AirQualityViewState) {
+        widgetView.render(viewState)
+    }
+
     // when the Test button clicked
     override fun onClickButton() {
         getLastLocation()
     }
+
+    override fun onTriggerSwipeRefresh() {
+        Logger.d("[Refresh] triggered")
+    }
+
 
     private fun getLastLocation() {
         if (permissionRequester.hasPermission(PermissionMember.FineLocation)) {
