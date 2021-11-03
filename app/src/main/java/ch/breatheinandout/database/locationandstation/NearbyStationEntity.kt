@@ -1,4 +1,4 @@
-package ch.breatheinandout.database
+package ch.breatheinandout.database.locationandstation
 
 import ch.breatheinandout.common.mapper.DataMapper
 import ch.breatheinandout.nearbystation.model.NearbyStation
@@ -11,19 +11,19 @@ data class NearbyStationEntity(
 )
 
 class NearbyStationEntityMapper @Inject constructor(): DataMapper<NearbyStationEntity, NearbyStation> {
-    override fun mapToDomainModel(inputModel: NearbyStationEntity): NearbyStation {
+    override fun mapToDomainModel(data: NearbyStationEntity): NearbyStation {
         return NearbyStation(
-            inputModel.stationName,
-            inputModel.stationAddr,
-            inputModel.distanceKm
+            data.stationName,
+            data.stationAddr,
+            data.distanceKm
         )
     }
 
-    override fun mapFromDomainModel(domainModel: NearbyStation): NearbyStationEntity {
+    override fun mapFromDomainModel(domain: NearbyStation): NearbyStationEntity {
         return NearbyStationEntity(
-            domainModel.stationName,
-            domainModel.stationAddressLine,
-            domainModel.distance
+            domain.stationName,
+            domain.stationAddressLine,
+            domain.distance
         )
     }
 }

@@ -1,4 +1,4 @@
-package ch.breatheinandout.database
+package ch.breatheinandout.database.locationandstation
 
 import androidx.room.Embedded
 import androidx.room.Entity

@@ -1,8 +1,7 @@
 package ch.breatheinandout.nearbystation
 
-import ch.breatheinandout.database.ILocationLocalDataSource
+import ch.breatheinandout.database.locationandstation.ILocationLocalDataSource
 import ch.breatheinandout.location.model.LocationPoint
-import ch.breatheinandout.location.model.coordinates.Coordinates
 import ch.breatheinandout.nearbystation.model.NearbyStation
 import ch.breatheinandout.network.airkorea.nearbystation.INearbyStationRemoteDataSource
 import com.orhanobut.logger.Logger
@@ -40,11 +39,5 @@ class GetNearbyStationUseCase @Inject constructor(
 
     private suspend fun saveInLocal(location: LocationPoint, station: NearbyStation) {
         locationLocalSource.save(location, station)
-    }
-
-    fun testDummyInput(): Coordinates {
-        val tmLongitudeX = "338248.0970869"
-        val tmLatitudeY = "258791.92136988"
-        return Coordinates(tmLongitudeX, tmLatitudeY)
     }
 }

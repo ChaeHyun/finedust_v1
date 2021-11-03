@@ -1,4 +1,4 @@
-package ch.breatheinandout.database
+package ch.breatheinandout.database.locationandstation
 
 import ch.breatheinandout.location.model.LocationPoint
 import ch.breatheinandout.location.model.LocationWithNearbyStation
@@ -6,8 +6,9 @@ import ch.breatheinandout.nearbystation.model.NearbyStation
 import com.orhanobut.logger.Logger
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import javax.inject.Inject
 
-class LocationLocalDataSource(
+class LocationLocalDataSource @Inject constructor(
     val dao: LocationAndStationDao,
     val mapper: LocationAndStationEntityMapper
 ) : ILocationLocalDataSource {

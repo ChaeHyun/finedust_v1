@@ -19,8 +19,9 @@ class FindAddressLine @Inject constructor(
 ) {
     @Throws(IOException::class)
     suspend fun findAddress(wgsCoords: Coordinates): AddressLine = withContext(Dispatchers.IO) {
-        val geocoder: Geocoder = Geocoder(context, Locale.KOREA)
+        val geocoder = Geocoder(context, Locale.KOREA)
         try {
+            @Suppress("BlockingMethodInNonBlockingContext")
             val addresses: List<Address> = geocoder.getFromLocation(
                 wgsCoords.latitudeY.toDouble(),
                 wgsCoords.longitudeX.toDouble(),

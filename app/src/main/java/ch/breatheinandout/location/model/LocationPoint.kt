@@ -8,6 +8,4 @@ data class LocationPoint constructor(
     val addressLine: AddressLine,
     val tmCoords: Coordinates,
     val wgsCoords: Coordinates?
-) {
-}
-
+)

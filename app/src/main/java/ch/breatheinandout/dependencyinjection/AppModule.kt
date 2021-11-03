@@ -3,34 +3,23 @@ package ch.breatheinandout.dependencyinjection
 import android.app.Application
 import android.content.Context
 import android.location.LocationManager
-import androidx.room.Room
-import ch.breatheinandout.database.*
-import ch.breatheinandout.dependencyinjection.qualifier.RetrofitForAirKorea
-import ch.breatheinandout.dependencyinjection.qualifier.RetrofitForKakao
+import ch.breatheinandout.database.locationandstation.ILocationLocalDataSource
+import ch.breatheinandout.database.locationandstation.LocationLocalDataSource
 import ch.breatheinandout.location.provider.LocationHandler
 import ch.breatheinandout.location.model.coordinates.CoordinatesMapper
-import ch.breatheinandout.network.transcoords.KakaoApi
-import ch.breatheinandout.network.UrlProvider
-import ch.breatheinandout.network.airkorea.AirKoreaApi
-import ch.breatheinandout.network.airkorea.AirKoreaResponseFilteringInterceptor
 import ch.breatheinandout.network.airkorea.nearbystation.INearbyStationRemoteDataSource
 import ch.breatheinandout.network.airkorea.nearbystation.NearbyStationRemoteDataSource
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
+import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import okhttp3.Interceptor
-import okhttp3.OkHttpClient
-import okhttp3.logging.HttpLoggingInterceptor
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
-import javax.inject.Named
 
 @Module
 @InstallIn(SingletonComponent::class)
-class AppModule {
+object AppModule {
 
     @Provides
     fun context(application: Application): Context {
@@ -52,81 +41,15 @@ class AppModule {
     @AppScoped
     @Provides
     fun coordinatesMapper(): CoordinatesMapper = CoordinatesMapper()
+}
 
-    // ------ Network Module ------
-    @RetrofitForKakao
-    @AppScoped
-    @Provides
-    fun retrofitKakao(urlProvider: UrlProvider, @Named("LoggingInterceptor") loggingInterceptor: Interceptor): Retrofit {
-        val okHttp = OkHttpClient.Builder().apply {
-            addInterceptor(loggingInterceptor)
-        }.build()
+@Module
+@InstallIn(SingletonComponent::class)
+@SuppressWarnings()
+abstract class DataSourceModule {
+    @Binds
+    abstract fun bindNearbyStationRemoteDataSource(sourceImpl: NearbyStationRemoteDataSource) : INearbyStationRemoteDataSource
 
-        return Retrofit.Builder()
-            .baseUrl(urlProvider.baseKakaoUrl())
-            .client(okHttp)
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-    }
-
-    @RetrofitForAirKorea
-    @AppScoped
-    @Provides
-    fun retrofitAirkorea(
-        urlProvider: UrlProvider,
-        @Named("LoggingInterceptor") loggingInterceptor: Interceptor,
-        @Named("AirKoreaInterceptor") airKoreaInterceptor: Interceptor
-    ) : Retrofit {
-        val okHttp = OkHttpClient.Builder().apply {
-            addInterceptor(loggingInterceptor)
-            addInterceptor(airKoreaInterceptor)
-        }.build()
-
-        return Retrofit.Builder()
-            .baseUrl(urlProvider.baseAirkoreaUrl())
-            .client(okHttp)
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-    }
-
-    @AppScoped
-    @Provides
-    fun kakaoApi(@RetrofitForKakao retrofit: Retrofit) : KakaoApi = retrofit.create(KakaoApi::class.java)
-
-    @AppScoped
-    @Provides
-    fun airkoreaApi(@RetrofitForAirKorea retrofit: Retrofit) : AirKoreaApi = retrofit.create(AirKoreaApi::class.java)
-
-    @AppScoped
-    @Provides
-    @Named("LoggingInterceptor")
-    fun httpLoggingInterceptor() : Interceptor = HttpLoggingInterceptor().apply {
-        level = HttpLoggingInterceptor.Level.BODY
-    }
-
-    @AppScoped
-    @Provides
-    @Named("AirKoreaInterceptor")
-    fun airKoreaResponseInterceptor() : Interceptor = AirKoreaResponseFilteringInterceptor()
-
-    @Provides
-    fun nearbyStationDataSource(airKoreaApi: AirKoreaApi) : INearbyStationRemoteDataSource = NearbyStationRemoteDataSource(airKoreaApi)
-
-    @Provides
-    fun locationLocalDataSource(dao: LocationAndStationDao, mapper: LocationAndStationEntityMapper) : ILocationLocalDataSource = LocationLocalDataSource(dao, mapper)
-
-    // ------ Room database -----
-    @AppScoped
-    @Provides
-    fun createDatabase(context: Context) : Database {
-        return Room.databaseBuilder(
-            context,
-            Database::class.java,
-            Database.DB_NAME
-        ).build()
-    }
-
-    @AppScoped
-    @Provides
-    fun locationAndStationDao(database: Database): LocationAndStationDao = database.locationAndStationDao()
+    @Binds
+    abstract fun bindLocationLocalDataSource(sourceImpl: LocationLocalDataSource): ILocationLocalDataSource
 }

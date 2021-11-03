@@ -5,7 +5,7 @@ import java.util.concurrent.ConcurrentHashMap
 
 abstract class BaseObservable<LISTENER> {
     private val listeners: MutableSet<LISTENER> = Collections.newSetFromMap(
-        ConcurrentHashMap<LISTENER, Boolean>(1)
+        ConcurrentHashMap(1)
     )
 
     fun registerListener(listener: LISTENER) = listeners.add(listener)
