@@ -2,7 +2,6 @@ package ch.breatheinandout.screen
 
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
@@ -20,6 +19,7 @@ class MainActivity : BaseActivity(), NavDrawerHelper, NavDrawerWidgetView.Listen
 
     @Inject lateinit var permissionRequester: PermissionRequester
     @Inject lateinit var widgetViewFactory: WidgetViewFactory
+    @Inject lateinit var screenNavigator: ScreenNavigator
 
     private lateinit var widgetView: NavDrawerWidgetView
 
@@ -30,8 +30,8 @@ class MainActivity : BaseActivity(), NavDrawerHelper, NavDrawerWidgetView.Listen
         widgetView = widgetViewFactory.createNavDrawerWidgetView(null)
         setContentView(widgetView.getRootView())
         Logger.i("Done -> MainActivity#onCreate()")
-
         syncToolbarAndDrawer()
+        screenNavigator.initNavController(widgetView.getFrameLayout().id)
     }
 
     private fun syncToolbarAndDrawer() {
@@ -59,7 +59,6 @@ class MainActivity : BaseActivity(), NavDrawerHelper, NavDrawerWidgetView.Listen
         permissions: Array<out String>,
         grantResults: IntArray,
     ) {
-//        Logger.v("[PERMISSION] Delegate the result to the PermissionProvider.")
         // It's inevitable since Activity is in charge of this job by the Android framework.
         // This method call must be launched here to delegate permission granted results To [PermissionRequester].
         permissionRequester.onRequestPermissionResult(requestCode, permissions, grantResults)
@@ -70,10 +69,10 @@ class MainActivity : BaseActivity(), NavDrawerHelper, NavDrawerWidgetView.Listen
         Logger.d(" # check -> $item")
         when (item) {
             NavDrawerWidgetView.DrawerItem.Home -> {
-                // TODO: Something when `Home` menu item is clicked.
+                screenNavigator.navigate(R.id.AirQualityFragment)
             }
             NavDrawerWidgetView.DrawerItem.Search -> {
-                findNavController(widgetView.getFrameLayout().id).navigate(R.id.searchAddressFragment)
+                screenNavigator.navigate(R.id.SearchAddressFragment)
             }
             NavDrawerWidgetView.DrawerItem.Setting -> {
                 // TODO: when `Setting` menu item is clicked.

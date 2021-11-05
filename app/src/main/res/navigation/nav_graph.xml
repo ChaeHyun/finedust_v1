@@ -11,12 +11,20 @@
         android:label="@string/airquality_fragment_label"
         tools:layout="@layout/fragment_airquality">
         <action
-            android:id="@+id/action_AirQualityFragment_to_searchAddressFragment"
-            app:destination="@id/searchAddressFragment" />
+            android:id="@+id/action_AirQualityFragment_to_SearchAddressFragment"
+            app:destination="@id/SearchAddressFragment" />
+
     </fragment>
     <fragment
-        android:id="@+id/searchAddressFragment"
+        android:id="@+id/SearchAddressFragment"
         android:name="ch.breatheinandout.screen.searchaddress.SearchAddressFragment"
         android:label="SearchAddressFragment"
-        tools:layout="@layout/fragment_search_address"/>
+        tools:layout="@layout/fragment_search_address">
+        <action
+            android:id="@+id/action_SearchAddressFragment_to_AirQualityFragment"
+            app:destination="@id/AirQualityFragment"
+            app:popUpTo="@id/AirQualityFragment"
+            app:popUpToInclusive="true" />
+
+    </fragment>
 </navigation>

@@ -6,9 +6,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
+import ch.breatheinandout.common.Constants
 import ch.breatheinandout.common.utils.FeatureAvailability
 import ch.breatheinandout.common.permissions.PermissionMember
 import ch.breatheinandout.common.permissions.PermissionRequester
+import ch.breatheinandout.domain.searchaddress.SearchedAddress
+import ch.breatheinandout.screen.ScreenNavigator
 import ch.breatheinandout.screen.widgetview.WidgetViewFactory
 import com.orhanobut.logger.Logger
 import dagger.hilt.android.AndroidEntryPoint
@@ -20,6 +23,7 @@ class AirQualityFragment : Fragment(), AirQualityWidgetView.Listener ,Permission
     @Inject lateinit var widgetViewFactory: WidgetViewFactory
     @Inject lateinit var permissionRequester: PermissionRequester
     @Inject lateinit var featureAvailability: FeatureAvailability
+    @Inject lateinit var screenNavigator: ScreenNavigator
 
     private val viewModel : AirQualityViewModel by viewModels()
     private lateinit var widgetView: AirQualityWidgetView
@@ -45,6 +49,16 @@ class AirQualityFragment : Fragment(), AirQualityWidgetView.Listener ,Permission
             render(state)
             Logger.i(" > render.viewState -> $state")
         })
+
+        val argAddress: SearchedAddress? = getAddressFromBundle(Constants.KEY_SELECTED_ADDRESS)
+        Logger.i("check(SearchedAddress) -> $argAddress")
+    }
+
+    private fun getAddressFromBundle(key: String): SearchedAddress? {
+        if (arguments != null && requireArguments().containsKey(key)) {
+            return requireArguments().getSerializable(key) as SearchedAddress
+        }
+        return null
     }
 
     override fun onStart() {

@@ -6,9 +6,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.findNavController
+import ch.breatheinandout.R
+import ch.breatheinandout.common.Constants
 import ch.breatheinandout.screen.widgetview.WidgetViewFactory
 import ch.breatheinandout.domain.searchaddress.SearchedAddress
+import ch.breatheinandout.screen.ScreenNavigator
 import com.orhanobut.logger.Logger
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -17,6 +19,7 @@ import javax.inject.Inject
 class SearchAddressFragment : Fragment(), SearchAddressWidgetView.Listener {
 
     @Inject lateinit var widgetViewFactory: WidgetViewFactory
+    @Inject lateinit var screenNavigator: ScreenNavigator
 
     private lateinit var widgetView: SearchAddressWidgetView
     private val viewModel: SearchAddressViewModel by viewModels()
@@ -53,7 +56,7 @@ class SearchAddressFragment : Fragment(), SearchAddressWidgetView.Listener {
 
     override fun onClickAsUp() {
         Logger.v("[AS UP] Event clicked.")
-        findNavController().navigateUp()
+        screenNavigator.navigateUp()
     }
 
     override fun onClickAddressItem(item: SearchedAddress) {
@@ -62,5 +65,7 @@ class SearchAddressFragment : Fragment(), SearchAddressWidgetView.Listener {
         viewModel.save(item)
 
         // TODO : add to bundle, then navigate back to the airqualityFragment with it.
+        val bundle = Bundle().apply { putSerializable(Constants.KEY_SELECTED_ADDRESS, item) }
+        screenNavigator.navigateWithBundle(R.id.AirQualityFragment, bundle)
     }
 }
