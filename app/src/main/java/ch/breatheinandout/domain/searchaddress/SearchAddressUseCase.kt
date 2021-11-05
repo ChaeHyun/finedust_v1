@@ -1,4 +1,4 @@
-package ch.breatheinandout.searchaddress
+package ch.breatheinandout.domain.searchaddress
 
 import ch.breatheinandout.network.airkorea.searchaddress.ISearchedAddressRemoteDataSource
 import com.orhanobut.logger.Logger

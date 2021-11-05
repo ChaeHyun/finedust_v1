@@ -8,7 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import ch.breatheinandout.screen.widgetview.WidgetViewFactory
-import ch.breatheinandout.searchaddress.SearchedAddress
+import ch.breatheinandout.domain.searchaddress.SearchedAddress
 import com.orhanobut.logger.Logger
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -36,7 +36,6 @@ class SearchAddressFragment : Fragment(), SearchAddressWidgetView.Listener {
         viewModel.viewState.observe(viewLifecycleOwner, { widgetView.render(it) })
     }
 
-
     override fun onStart() {
         super.onStart()
         widgetView.registerListener(this)
@@ -61,6 +60,7 @@ class SearchAddressFragment : Fragment(), SearchAddressWidgetView.Listener {
         Logger.v("[Recycler Item Clicked] ${item.addressLine.addr}")
         // TODO : Before navigate to the other screen, save it in the local database.
         viewModel.save(item)
+
         // TODO : add to bundle, then navigate back to the airqualityFragment with it.
     }
 }

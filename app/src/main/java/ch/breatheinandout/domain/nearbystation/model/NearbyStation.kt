@@ -1,4 +1,4 @@
-package ch.breatheinandout.nearbystation.model
+package ch.breatheinandout.domain.nearbystation.model
 
 data class NearbyStation(
     val stationName: String,

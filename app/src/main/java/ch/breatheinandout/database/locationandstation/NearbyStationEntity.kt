@@ -1,7 +1,7 @@
 package ch.breatheinandout.database.locationandstation
 
 import ch.breatheinandout.common.mapper.DataMapper
-import ch.breatheinandout.nearbystation.model.NearbyStation
+import ch.breatheinandout.domain.nearbystation.model.NearbyStation
 import javax.inject.Inject
 
 data class NearbyStationEntity(

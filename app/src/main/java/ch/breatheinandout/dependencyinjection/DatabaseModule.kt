@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.room.Room
 import ch.breatheinandout.database.Database
 import ch.breatheinandout.database.locationandstation.LocationAndStationDao
+import ch.breatheinandout.database.searchedaddress.SearchedAddressDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -26,4 +27,7 @@ object DatabaseModule {
     @Provides
     fun locationAndStationDao(database: Database): LocationAndStationDao = database.locationAndStationDao()
 
+    @AppScoped
+    @Provides
+    fun searchedAddressDao(database: Database) : SearchedAddressDao = database.searchedAddressDao()
 }

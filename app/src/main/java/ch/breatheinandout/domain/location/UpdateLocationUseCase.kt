@@ -1,9 +1,9 @@
-package ch.breatheinandout.location
+package ch.breatheinandout.domain.location
 
-import ch.breatheinandout.location.provider.FindAddressLine
-import ch.breatheinandout.location.provider.LocationHandler
-import ch.breatheinandout.location.model.coordinates.Coordinates
-import ch.breatheinandout.location.model.LocationPoint
+import ch.breatheinandout.domain.location.provider.FindAddressLine
+import ch.breatheinandout.domain.location.provider.LocationHandler
+import ch.breatheinandout.domain.location.model.coordinates.Coordinates
+import ch.breatheinandout.domain.location.model.LocationPoint
 import com.orhanobut.logger.Logger
 import kotlinx.coroutines.*
 import javax.inject.Inject

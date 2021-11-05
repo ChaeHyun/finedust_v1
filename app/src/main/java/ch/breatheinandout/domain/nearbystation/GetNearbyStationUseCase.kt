@@ -1,8 +1,8 @@
-package ch.breatheinandout.nearbystation
+package ch.breatheinandout.domain.nearbystation
 
 import ch.breatheinandout.database.locationandstation.ILocationLocalDataSource
-import ch.breatheinandout.location.model.LocationPoint
-import ch.breatheinandout.nearbystation.model.NearbyStation
+import ch.breatheinandout.domain.location.model.LocationPoint
+import ch.breatheinandout.domain.nearbystation.model.NearbyStation
 import ch.breatheinandout.network.airkorea.nearbystation.INearbyStationRemoteDataSource
 import com.orhanobut.logger.Logger
 import javax.inject.Inject

@@ -1,8 +1,8 @@
-package ch.breatheinandout.location.provider
+package ch.breatheinandout.domain.location.provider
 
 import android.os.Looper
-import ch.breatheinandout.location.model.coordinates.Coordinates
-import ch.breatheinandout.location.model.coordinates.CoordinatesMapper
+import ch.breatheinandout.domain.location.model.coordinates.Coordinates
+import ch.breatheinandout.domain.location.model.coordinates.CoordinatesMapper
 import com.google.android.gms.location.*
 import com.orhanobut.logger.Logger
 import kotlinx.coroutines.*

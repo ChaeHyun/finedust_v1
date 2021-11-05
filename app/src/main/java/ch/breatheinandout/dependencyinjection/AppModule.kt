@@ -5,8 +5,10 @@ import android.content.Context
 import android.location.LocationManager
 import ch.breatheinandout.database.locationandstation.ILocationLocalDataSource
 import ch.breatheinandout.database.locationandstation.LocationLocalDataSource
-import ch.breatheinandout.location.provider.LocationHandler
-import ch.breatheinandout.location.model.coordinates.CoordinatesMapper
+import ch.breatheinandout.database.searchedaddress.ISearchedAddressLocalDataSource
+import ch.breatheinandout.database.searchedaddress.SearchedAddressLocalDataSource
+import ch.breatheinandout.domain.location.provider.LocationHandler
+import ch.breatheinandout.domain.location.model.coordinates.CoordinatesMapper
 import ch.breatheinandout.network.airkorea.nearbystation.INearbyStationRemoteDataSource
 import ch.breatheinandout.network.airkorea.nearbystation.NearbyStationRemoteDataSource
 import ch.breatheinandout.network.airkorea.searchaddress.ISearchedAddressRemoteDataSource
@@ -57,4 +59,7 @@ abstract class DataSourceModule {
 
     @Binds
     abstract fun bindSearchedAddressRemoteDataSource(sourceImpl: SearchedAddressRemoteDataSource) : ISearchedAddressRemoteDataSource
+
+    @Binds
+    abstract fun bindSearchedAddressLocalDataSource(sourceImpl: SearchedAddressLocalDataSource) : ISearchedAddressLocalDataSource
 }

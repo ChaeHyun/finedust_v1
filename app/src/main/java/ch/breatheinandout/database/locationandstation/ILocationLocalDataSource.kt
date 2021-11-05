@@ -1,8 +1,8 @@
 package ch.breatheinandout.database.locationandstation
 
-import ch.breatheinandout.location.model.LocationPoint
-import ch.breatheinandout.location.model.LocationWithNearbyStation
-import ch.breatheinandout.nearbystation.model.NearbyStation
+import ch.breatheinandout.domain.location.model.LocationPoint
+import ch.breatheinandout.domain.location.model.LocationWithNearbyStation
+import ch.breatheinandout.domain.nearbystation.model.NearbyStation
 
 interface ILocationLocalDataSource {
     suspend fun save(location: LocationPoint, nearbyStation: NearbyStation)

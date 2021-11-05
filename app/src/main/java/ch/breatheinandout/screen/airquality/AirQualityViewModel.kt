@@ -4,10 +4,10 @@ import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import ch.breatheinandout.nearbystation.model.NearbyStation
-import ch.breatheinandout.location.UpdateLocationUseCase
-import ch.breatheinandout.location.model.LocationPoint
-import ch.breatheinandout.nearbystation.GetNearbyStationUseCase
+import ch.breatheinandout.domain.nearbystation.model.NearbyStation
+import ch.breatheinandout.domain.location.UpdateLocationUseCase
+import ch.breatheinandout.domain.location.model.LocationPoint
+import ch.breatheinandout.domain.nearbystation.GetNearbyStationUseCase
 import com.orhanobut.logger.Logger
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope

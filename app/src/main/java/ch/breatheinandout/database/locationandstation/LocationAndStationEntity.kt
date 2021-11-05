@@ -3,11 +3,11 @@ package ch.breatheinandout.database.locationandstation
 import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import ch.breatheinandout.location.model.LocationWithNearbyStation
+import ch.breatheinandout.domain.location.model.LocationWithNearbyStation
 import ch.breatheinandout.common.mapper.DataMapper
-import ch.breatheinandout.location.model.LocationPoint
-import ch.breatheinandout.location.model.address.AddressLine
-import ch.breatheinandout.location.model.coordinates.Coordinates
+import ch.breatheinandout.domain.location.model.LocationPoint
+import ch.breatheinandout.domain.location.model.address.AddressLine
+import ch.breatheinandout.domain.location.model.coordinates.Coordinates
 import javax.inject.Inject
 
 @Entity(tableName = "LocationAndStationEntity")

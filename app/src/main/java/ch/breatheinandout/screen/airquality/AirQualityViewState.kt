@@ -1,7 +1,7 @@
 package ch.breatheinandout.screen.airquality
 
-import ch.breatheinandout.location.model.LocationPoint
-import ch.breatheinandout.nearbystation.model.NearbyStation
+import ch.breatheinandout.domain.location.model.LocationPoint
+import ch.breatheinandout.domain.nearbystation.model.NearbyStation
 
 sealed class AirQualityViewState
 

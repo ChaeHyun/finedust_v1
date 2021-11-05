@@ -1,9 +1,9 @@
 package ch.breatheinandout.network.airkorea.searchaddress
 
 import ch.breatheinandout.common.mapper.DataMapper
-import ch.breatheinandout.location.model.address.AddressLine
-import ch.breatheinandout.location.model.coordinates.Coordinates
-import ch.breatheinandout.searchaddress.SearchedAddress
+import ch.breatheinandout.domain.location.model.address.AddressLine
+import ch.breatheinandout.domain.location.model.coordinates.Coordinates
+import ch.breatheinandout.domain.searchaddress.SearchedAddress
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 import javax.inject.Inject

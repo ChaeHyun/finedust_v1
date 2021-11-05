@@ -2,8 +2,9 @@ package ch.breatheinandout.screen.searchaddress
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import ch.breatheinandout.searchaddress.SearchAddressUseCase
-import ch.breatheinandout.searchaddress.SearchedAddress
+import ch.breatheinandout.domain.searchaddress.SaveSearchedAddressUseCase
+import ch.breatheinandout.domain.searchaddress.SearchAddressUseCase
+import ch.breatheinandout.domain.searchaddress.SearchedAddress
 import com.orhanobut.logger.Logger
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
@@ -14,7 +15,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SearchAddressViewModel @Inject constructor(
-    private val searchAddressUseCase: SearchAddressUseCase
+    private val searchAddressUseCase: SearchAddressUseCase,
+    private val saveSearchedAddressUseCase: SaveSearchedAddressUseCase
 ): ViewModel(){
     private val viewModelScope = CoroutineScope(SupervisorJob() + Dispatchers.Main.immediate)
 
@@ -35,6 +37,8 @@ class SearchAddressViewModel @Inject constructor(
 
     fun save(item: SearchedAddress) {
         // TODO : Save the item in the database.
-
+        viewModelScope.launch {
+            saveSearchedAddressUseCase.save(item)
+        }
     }
 }

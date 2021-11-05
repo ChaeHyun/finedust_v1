@@ -1,8 +1,8 @@
 package ch.breatheinandout.database.locationandstation
 
-import ch.breatheinandout.location.model.LocationPoint
-import ch.breatheinandout.location.model.LocationWithNearbyStation
-import ch.breatheinandout.nearbystation.model.NearbyStation
+import ch.breatheinandout.domain.location.model.LocationPoint
+import ch.breatheinandout.domain.location.model.LocationWithNearbyStation
+import ch.breatheinandout.domain.nearbystation.model.NearbyStation
 import com.orhanobut.logger.Logger
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext

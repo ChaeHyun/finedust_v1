@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import ch.breatheinandout.R
-import ch.breatheinandout.searchaddress.SearchedAddress
+import ch.breatheinandout.domain.searchaddress.SearchedAddress
 
 class SearchedAddressAdapter constructor(
     private val onItemClickListener: (SearchedAddress) -> Unit
