@@ -14,7 +14,7 @@ class NearbyStationRemoteDataSource @Inject constructor(
         try {
             val response = airKoreaApi.getNearbyStationListByTmCoordinates(tmCoords.longitudeX, tmCoords.latitudeY)
             if (response.isSuccessful) {
-                val nearbyStations: List<NearbyStationDto> = response.body()!!
+                val nearbyStations: List<NearbyStationDto> = response.body() ?: return null
                 if (nearbyStations.isNotEmpty())
                     return nearbyStations[0].mapToDomain()
             }

@@ -1,5 +1,6 @@
 package ch.breatheinandout.network.airkorea
 
+import ch.breatheinandout.network.airkorea.airquality.AirQualityDto
 import ch.breatheinandout.network.airkorea.nearbystation.NearbyStationDto
 import ch.breatheinandout.network.airkorea.searchaddress.SearchedAddressDto
 import retrofit2.Response
@@ -26,5 +27,15 @@ interface AirKoreaApi {
         @Query("numOfRows") numOfRows: String = "30",
         @Query("returnType") returnType: String = "json"
     ) : Response<List<SearchedAddressDto>>
+
+    @GET("ArpltnInforInqireSvc/getMsrstnAcctoRltmMesureDnsty?serviceKey=$AIRKOREA_API_KEY")
+    suspend fun getAirQualityInRealTime(
+        @Query("stationName") stationName: String,
+        @Query("dataTerm") dataTerm: String = "daily",
+        @Query("pageNo") pageNo: String = "1",
+        @Query("numOfRows") numOfRows: String = "3",
+        @Query("ver") version: String = "1.3",
+        @Query("returnType") returnType: String = "json"
+    ) : Response<List<AirQualityDto>>
 
 }

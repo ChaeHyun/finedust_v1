@@ -4,6 +4,8 @@ import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import ch.breatheinandout.domain.airquality.AirQuality
+import ch.breatheinandout.domain.airquality.GetAirQualityDataUseCase
 import ch.breatheinandout.domain.nearbystation.model.NearbyStation
 import ch.breatheinandout.domain.location.UpdateLocationUseCase
 import ch.breatheinandout.domain.location.model.LocationPoint
@@ -20,12 +22,14 @@ import javax.inject.Inject
 @HiltViewModel
 class AirQualityViewModel @Inject constructor(
     private val updateLocationUseCase: UpdateLocationUseCase,
-    private val getNearbyStationUseCase: GetNearbyStationUseCase
+    private val getNearbyStationUseCase: GetNearbyStationUseCase,
+    private val getAirQualityDataUseCase: GetAirQualityDataUseCase
 ): ViewModel(), LifecycleObserver {
     private val coroutineScope = CoroutineScope(SupervisorJob() + Dispatchers.Main.immediate)
 
     private val locationPoint = MutableLiveData<LocationPoint>()
     private val nearbyStation = MutableLiveData<NearbyStation>()
+    private val airQuality = MutableLiveData<AirQuality>()
 
     val viewState = MediatorLiveData<AirQualityViewState>()
 
@@ -33,28 +37,35 @@ class AirQualityViewModel @Inject constructor(
         Logger.v(" [INIT - AirQualityViewModel]")
         viewState.apply {
             addSource(locationPoint) {
-                viewState.value = mergeMultipleSources(locationPoint, nearbyStation)
+                viewState.value = mergeMultipleSources(locationPoint, nearbyStation, airQuality)
                 getNearbyStationList(it)
             }
             addSource(nearbyStation) {
-                viewState.value = mergeMultipleSources(locationPoint, nearbyStation)
+                viewState.value = mergeMultipleSources(locationPoint, nearbyStation, airQuality)
+                getAirQuality(it.stationName)
+            }
+            addSource(airQuality) {
+                viewState.value = mergeMultipleSources(locationPoint, nearbyStation, airQuality)
             }
         }
     }
 
+
     private fun mergeMultipleSources(
         locationPointLiveData: MutableLiveData<LocationPoint>,
         nearbyStationLiveData: MutableLiveData<NearbyStation>,
+        airQualityLiveData: MutableLiveData<AirQuality>
     ): AirQualityViewState {
         val locationPoint = locationPointLiveData.value
         val nearbyStation = nearbyStationLiveData.value
+        val airQuality = airQualityLiveData.value
 
         // Do not notify content until each LiveData parameters get a value.
-        if (locationPoint == null || nearbyStation == null) {
+        if (locationPoint == null || nearbyStation == null || airQuality == null) {
             return Loading
         }
 
-        return Content(locationPoint, nearbyStation)
+        return Content(locationPoint, nearbyStation, airQuality)
     }
 
     fun getLocation(address: SearchedAddress?) {
@@ -71,11 +82,31 @@ class AirQualityViewModel @Inject constructor(
         }
     }
 
+    private fun getAirQuality(stationName: String) {
+        coroutineScope.launch {
+            val airQualityResult = getAirQualityDataUseCase.get(stationName)
+            handleResultAirQuality(airQualityResult)
+        }
+    }
+
+    private fun handleResultAirQuality(result: GetAirQualityDataUseCase.Result) {
+        when (result) {
+            is GetAirQualityDataUseCase.Result.Success -> {
+                airQuality.value = result.airQuality
+                Logger.d("check(air) -> ${result.airQuality}")
+            }
+            is GetAirQualityDataUseCase.Result.Failure -> {
+                Logger.e(result.message.plus("-> ${result.cause.message}"))
+                viewState.value = Error
+            }
+        }
+    }
+
+
     private fun handleResultNearbyStation(result: GetNearbyStationUseCase.Result) {
         when (result) {
             is GetNearbyStationUseCase.Result.Success -> {
                 nearbyStation.value = result.nearbyStation
-//                Logger.d("check(nearby) -> ${result.nearbyStation}")
             }
             is GetNearbyStationUseCase.Result.Failure -> {
                 Logger.e(result.message.plus("-> ${result.cause.message}"))
@@ -84,16 +115,9 @@ class AirQualityViewModel @Inject constructor(
         }
     }
 
-
     private fun handleResultLocation(result: UpdateLocationUseCase.Result) {
         when (result) {
             is UpdateLocationUseCase.Result.Success -> {
-                // Printing values at log.
-//                val location = result.location
-//                Logger.v(" [updateLocation] -> check: ${location.wgsCoords?.longitudeX}, ${location.wgsCoords?.latitudeY}" +
-//                        "\n [findAddressLine] -> check: ${location.addressLine.addr}, ${location.addressLine.umdName}" +
-//                        "\n [transCoords] -> check: ${location.tmCoords.longitudeX}, ${location.tmCoords.latitudeY}"
-//                )
                 locationPoint.value = result.location
             }
             is UpdateLocationUseCase.Result.Failure -> {
