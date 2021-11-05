@@ -15,7 +15,6 @@ class GetStoredLocationUseCase @Inject constructor(
     suspend fun getStoredLocation(sidoName: String, umdName: String): LocationWithNearbyStation? = withContext(Dispatchers.IO) {
         try {
             return@withContext locationLocalSource.read(sidoName, umdName)
-                ?: return@withContext null
         } catch (e: Exception) {
             Logger.e("Failed to get data from database at $className")
             return@withContext null
