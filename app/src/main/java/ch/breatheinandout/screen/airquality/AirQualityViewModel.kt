@@ -8,6 +8,7 @@ import ch.breatheinandout.domain.nearbystation.model.NearbyStation
 import ch.breatheinandout.domain.location.UpdateLocationUseCase
 import ch.breatheinandout.domain.location.model.LocationPoint
 import ch.breatheinandout.domain.nearbystation.GetNearbyStationUseCase
+import ch.breatheinandout.domain.searchaddress.SearchedAddress
 import com.orhanobut.logger.Logger
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
@@ -56,9 +57,9 @@ class AirQualityViewModel @Inject constructor(
         return Content(locationPoint, nearbyStation)
     }
 
-    fun getLocation() {
+    fun getLocation(address: SearchedAddress?) {
         coroutineScope.launch {
-            val resultLocation: UpdateLocationUseCase.Result = updateLocationUseCase.update()
+            val resultLocation: UpdateLocationUseCase.Result = updateLocationUseCase.update(address)
             handleResultLocation(resultLocation)
         }
     }

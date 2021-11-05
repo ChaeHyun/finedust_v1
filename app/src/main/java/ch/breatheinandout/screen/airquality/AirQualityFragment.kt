@@ -52,6 +52,7 @@ class AirQualityFragment : Fragment(), AirQualityWidgetView.Listener ,Permission
 
         val argAddress: SearchedAddress? = getAddressFromBundle(Constants.KEY_SELECTED_ADDRESS)
         Logger.i("check(SearchedAddress) -> $argAddress")
+        viewModel.getLocation(argAddress)
     }
 
     private fun getAddressFromBundle(key: String): SearchedAddress? {
@@ -79,7 +80,7 @@ class AirQualityFragment : Fragment(), AirQualityWidgetView.Listener ,Permission
 
     // when the Test button clicked
     override fun onClickButton() {
-        getLastLocation()
+        getLastLocation(null)
     }
 
     override fun onTriggerSwipeRefresh() {
@@ -87,13 +88,13 @@ class AirQualityFragment : Fragment(), AirQualityWidgetView.Listener ,Permission
     }
 
 
-    private fun getLastLocation() {
+    private fun getLastLocation(address: SearchedAddress?) {
         if (permissionRequester.hasPermission(PermissionMember.FineLocation)) {
             if (!featureAvailability.isGpsFeatureOn()) {
                 widgetView.showToastMessage("PLEASE TURN ON THE GPS.")
                 return
             }
-            viewModel.getLocation()
+            viewModel.getLocation(address)
         } else {
             // Request Location Permission
             permissionRequester.requestPermission(PermissionMember.FineLocation, PermissionMember.REQUEST_CODE_PERMISSION)
