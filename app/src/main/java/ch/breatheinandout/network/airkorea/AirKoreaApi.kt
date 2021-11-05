@@ -1,6 +1,7 @@
 package ch.breatheinandout.network.airkorea
 
 import ch.breatheinandout.network.airkorea.nearbystation.NearbyStationDto
+import ch.breatheinandout.network.airkorea.searchaddress.SearchedAddressDto
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Query
@@ -17,5 +18,13 @@ interface AirKoreaApi {
         @Query("tmY") latitudeY: String,
         @Query("returnType") returnType: String = "json"
     ) : Response<List<NearbyStationDto>>
+
+    @GET("MsrstnInfoInqireSvc/getTMStdrCrdnt?serviceKey=$AIRKOREA_API_KEY")
+    suspend fun searchAddressByItsName(
+        @Query("umdName") umdName: String,
+        @Query("pageNo") pageNo: String = "1",
+        @Query("numOfRows") numOfRows: String = "30",
+        @Query("returnType") returnType: String = "json"
+    ) : Response<List<SearchedAddressDto>>
 
 }

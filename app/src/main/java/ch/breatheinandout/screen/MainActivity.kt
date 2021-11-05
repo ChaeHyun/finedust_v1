@@ -2,6 +2,7 @@ package ch.breatheinandout.screen
 
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
@@ -72,7 +73,7 @@ class MainActivity : BaseActivity(), NavDrawerHelper, NavDrawerWidgetView.Listen
                 // TODO: Something when `Home` menu item is clicked.
             }
             NavDrawerWidgetView.DrawerItem.Search -> {
-                // TODO: when `Search` menu item is clicked.
+                findNavController(widgetView.getFrameLayout().id).navigate(R.id.searchAddressFragment)
             }
             NavDrawerWidgetView.DrawerItem.Setting -> {
                 // TODO: when `Setting` menu item is clicked.

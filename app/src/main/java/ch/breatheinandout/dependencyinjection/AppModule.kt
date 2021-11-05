@@ -9,6 +9,8 @@ import ch.breatheinandout.location.provider.LocationHandler
 import ch.breatheinandout.location.model.coordinates.CoordinatesMapper
 import ch.breatheinandout.network.airkorea.nearbystation.INearbyStationRemoteDataSource
 import ch.breatheinandout.network.airkorea.nearbystation.NearbyStationRemoteDataSource
+import ch.breatheinandout.network.airkorea.searchaddress.ISearchedAddressRemoteDataSource
+import ch.breatheinandout.network.airkorea.searchaddress.SearchedAddressRemoteDataSource
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import dagger.Binds
@@ -52,4 +54,7 @@ abstract class DataSourceModule {
 
     @Binds
     abstract fun bindLocationLocalDataSource(sourceImpl: LocationLocalDataSource): ILocationLocalDataSource
+
+    @Binds
+    abstract fun bindSearchedAddressRemoteDataSource(sourceImpl: SearchedAddressRemoteDataSource) : ISearchedAddressRemoteDataSource
 }

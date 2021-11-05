@@ -9,5 +9,14 @@
         android:id="@+id/AirQualityFragment"
         android:name="ch.breatheinandout.screen.airquality.AirQualityFragment"
         android:label="@string/airquality_fragment_label"
-        tools:layout="@layout/fragment_airquality"/>
+        tools:layout="@layout/fragment_airquality">
+        <action
+            android:id="@+id/action_AirQualityFragment_to_searchAddressFragment"
+            app:destination="@id/searchAddressFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/searchAddressFragment"
+        android:name="ch.breatheinandout.screen.searchaddress.SearchAddressFragment"
+        android:label="SearchAddressFragment"
+        tools:layout="@layout/fragment_search_address"/>
 </navigation>
