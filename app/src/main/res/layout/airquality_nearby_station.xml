@@ -10,17 +10,18 @@
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:layout_marginTop="5dp"
+        android:padding="1dp"
         android:contentDescription="@string/missing_img"
         android:src="@drawable/icon_stations" />
 
     <TextView
         android:id="@+id/text_title"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="30dp"
         android:layout_alignParentTop="true"
         android:layout_marginBottom="5dp"
         android:layout_marginStart="5dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="5dp"
         android:layout_toEndOf="@+id/icon_one"
         android:text="@string/air_data_title_station_info"
         android:textAppearance="?android:attr/textAppearanceLarge"

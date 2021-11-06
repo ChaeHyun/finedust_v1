@@ -76,7 +76,17 @@ class AirQualityFragment : Fragment(), AirQualityWidgetView.Listener ,Permission
     }
 
     private fun render(viewState: AirQualityViewState) {
-        widgetView.render(viewState)
+        when (viewState) {
+            Loading -> { widgetView.showProgressIndication() }
+            Error -> {
+                Logger.e("render view state -> Error")
+                widgetView.hideProgressIndication()
+            }
+            Refresh -> { }
+            is Content -> {
+                widgetView.bindViewData(viewState)
+            }
+        }
     }
 
     // when the Test button clicked

@@ -29,11 +29,35 @@
                     android:layout_marginTop="5dp" />
 
                 <include
+                    android:id="@+id/layout_general"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_below="@+id/layout_location_info"
+                    layout="@layout/airquality_data_khai" />
+
+                <include
+                    android:id="@+id/layout_pm_info"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_below="@+id/layout_general"
+                    layout="@layout/airquality_data_pm" />
+
+                <include
+                    android:id="@+id/layout_others"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_below="@+id/layout_pm_info"
+                    layout="@layout/airquality_data_etc" />
+
+                <include
                     android:id="@+id/layout_stations"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"
-                    android:layout_below="@+id/layout_location_info"
+                    android:layout_below="@+id/layout_others"
                     layout="@layout/airquality_nearby_station" />
 
             </RelativeLayout>

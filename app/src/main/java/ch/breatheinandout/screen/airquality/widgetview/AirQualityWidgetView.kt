@@ -18,10 +18,9 @@ abstract class AirQualityWidgetView(
         fun onTriggerSwipeRefresh()
     }
 
-    abstract fun bindViewData(content: Content)
     abstract fun showProgressIndication()
     abstract fun hideProgressIndication()
 
+    abstract fun bindViewData(content: Content)
     abstract fun showToastMessage(message: String)
-    abstract fun render(viewState: AirQualityViewState)
 }
