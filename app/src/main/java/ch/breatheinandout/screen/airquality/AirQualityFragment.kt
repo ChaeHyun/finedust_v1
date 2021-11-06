@@ -10,8 +10,9 @@ import ch.breatheinandout.common.Constants
 import ch.breatheinandout.common.utils.FeatureAvailability
 import ch.breatheinandout.common.permissions.PermissionMember
 import ch.breatheinandout.common.permissions.PermissionRequester
-import ch.breatheinandout.domain.searchaddress.SearchedAddress
+import ch.breatheinandout.domain.searchaddress.model.SearchedAddress
 import ch.breatheinandout.screen.ScreenNavigator
+import ch.breatheinandout.screen.airquality.widgetview.AirQualityWidgetView
 import ch.breatheinandout.screen.widgetview.WidgetViewFactory
 import com.orhanobut.logger.Logger
 import dagger.hilt.android.AndroidEntryPoint

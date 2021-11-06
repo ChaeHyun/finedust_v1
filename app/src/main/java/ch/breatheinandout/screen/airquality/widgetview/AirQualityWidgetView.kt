@@ -1,8 +1,10 @@
-package ch.breatheinandout.screen.airquality
+package ch.breatheinandout.screen.airquality.widgetview
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.annotation.LayoutRes
+import ch.breatheinandout.screen.airquality.AirQualityViewState
+import ch.breatheinandout.screen.airquality.Content
 import ch.breatheinandout.screen.toolbar.ToolbarHelper
 import ch.breatheinandout.screen.widgetview.BaseObservableWidgetView
 

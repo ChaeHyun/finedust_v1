@@ -1,5 +1,6 @@
 package ch.breatheinandout.domain.searchaddress
 
+import ch.breatheinandout.domain.searchaddress.model.SearchedAddress
 import ch.breatheinandout.network.airkorea.searchaddress.ISearchedAddressRemoteDataSource
 import com.orhanobut.logger.Logger
 import javax.inject.Inject

@@ -1,5 +1,6 @@
 package ch.breatheinandout.domain.airquality
 
+import ch.breatheinandout.domain.airquality.model.AirQuality
 import ch.breatheinandout.network.airkorea.airquality.IAirQualityRemoteDataSource
 import com.orhanobut.logger.Logger
 import javax.inject.Inject

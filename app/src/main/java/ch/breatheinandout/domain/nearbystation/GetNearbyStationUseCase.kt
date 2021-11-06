@@ -4,7 +4,6 @@ import ch.breatheinandout.domain.location.GetStoredLocationUseCase
 import ch.breatheinandout.domain.location.model.LocationPoint
 import ch.breatheinandout.domain.nearbystation.model.NearbyStation
 import ch.breatheinandout.network.airkorea.nearbystation.INearbyStationRemoteDataSource
-import com.orhanobut.logger.Logger
 import javax.inject.Inject
 
 class GetNearbyStationUseCase @Inject constructor(
@@ -19,7 +18,6 @@ class GetNearbyStationUseCase @Inject constructor(
 
     suspend fun getNearbyStation(location: LocationPoint) : Result {
         val address = location.addressLine
-//        val fromDb = locationLocalSource.read(address.sidoName, address.umdName)
         val fromDb = getStoredLocationUseCase.getStoredLocation(address.sidoName, address.umdName)
         return fromDb?.let { Result.Success(it.nearbyStation) }
             ?: getNearbyStationFromServer(location)
@@ -30,7 +28,6 @@ class GetNearbyStationUseCase @Inject constructor(
             val result: NearbyStation? = stationRemoteSource.getNearbyStation(location)
 
             result?.let { station ->
-                Logger.d("Save in database -> $result")
                 saveInLocal(location, station)
                 Result.Success(station)
             } ?: Result.Failure("Response is empty", NullPointerException())

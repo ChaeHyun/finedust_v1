@@ -1,9 +1,6 @@
 package ch.breatheinandout.database.searchedaddress
 
-import ch.breatheinandout.domain.searchaddress.SearchedAddress
-import com.orhanobut.logger.Logger
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
+import ch.breatheinandout.domain.searchaddress.model.SearchedAddress
 import javax.inject.Inject
 
 class SearchedAddressLocalDataSource @Inject constructor(
@@ -11,7 +8,7 @@ class SearchedAddressLocalDataSource @Inject constructor(
     private val mapper: SearchedAddressEntityMapper
 ) : ISearchedAddressLocalDataSource {
 
-    override suspend fun save(item: SearchedAddress) = withContext(Dispatchers.IO) {
+    override suspend fun save(item: SearchedAddress) {
         try {
             dao.insert(mapper.mapFromDomainModel(item))
         } catch (e: Exception) {
@@ -19,25 +16,29 @@ class SearchedAddressLocalDataSource @Inject constructor(
         }
     }
 
-    override suspend fun read() : List<SearchedAddress> = withContext(Dispatchers.IO) {
+    override suspend fun read() : List<SearchedAddress> {
         try {
             val entities = dao.getAll()
-            return@withContext mapper.mapToDomainList(entities)
+            return mapper.mapToDomainList(entities)
         } catch (e: Exception) {
             throw e
         }
     }
 
-    override suspend fun delete(item: SearchedAddress) = withContext(Dispatchers.IO) {
+    override suspend fun delete(item: SearchedAddress) {
         try {
             val target = mapper.mapFromDomainModel(item)
             dao.delete(target)
-        } catch (e: java.lang.Exception) {
+        } catch (e: Exception) {
             throw e
         }
     }
 
-    override suspend fun dropTable() = withContext(Dispatchers.IO){
-        dao.dropTable()
+    override suspend fun dropTable() {
+        try {
+            dao.dropTable()
+        } catch (e: Exception) {
+            throw e
+        }
     }
 }

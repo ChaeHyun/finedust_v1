@@ -1,4 +1,4 @@
-package ch.breatheinandout.screen.searchaddress
+package ch.breatheinandout.screen.searchaddress.widgetview
 
 import android.graphics.drawable.ColorDrawable
 import android.view.LayoutInflater
@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import ch.breatheinandout.R
 import ch.breatheinandout.screen.navdrawer.NavDrawerHelper
+import ch.breatheinandout.screen.searchaddress.*
 import com.google.android.material.snackbar.Snackbar
 import com.orhanobut.logger.Logger
 import kotlinx.coroutines.CoroutineScope

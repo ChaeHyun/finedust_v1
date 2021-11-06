@@ -9,8 +9,9 @@ import androidx.fragment.app.viewModels
 import ch.breatheinandout.R
 import ch.breatheinandout.common.Constants
 import ch.breatheinandout.screen.widgetview.WidgetViewFactory
-import ch.breatheinandout.domain.searchaddress.SearchedAddress
+import ch.breatheinandout.domain.searchaddress.model.SearchedAddress
 import ch.breatheinandout.screen.ScreenNavigator
+import ch.breatheinandout.screen.searchaddress.widgetview.SearchAddressWidgetView
 import com.orhanobut.logger.Logger
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject

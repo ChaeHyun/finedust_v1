@@ -1,8 +1,7 @@
 package ch.breatheinandout.database.airquality
 
-import ch.breatheinandout.domain.airquality.AirQuality
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
+
+import ch.breatheinandout.domain.airquality.model.AirQuality
 import javax.inject.Inject
 
 class AirQualityLocalDataSource @Inject constructor(
@@ -13,8 +12,8 @@ class AirQualityLocalDataSource @Inject constructor(
         try {
             val mapper = AirQualityEntityMapper(stationName)
             val entity = dao.getAirQualityData(stationName)
-            entity?. let { return mapper.mapToDomainModel(entity) } ?: return null
-        } catch (e: Exception){
+            return entity?.let { mapper.mapToDomainModel(it) }
+        } catch (e: Exception) {
             throw e
         }
     }
@@ -24,7 +23,7 @@ class AirQualityLocalDataSource @Inject constructor(
             val mapper = AirQualityEntityMapper(stationName)
             val entity = mapper.mapFromDomainModel(data)
             dao.insert(entity)
-        } catch (e: Exception){
+        } catch (e: Exception) {
             throw e
         }
     }
@@ -34,7 +33,7 @@ class AirQualityLocalDataSource @Inject constructor(
             val mapper = AirQualityEntityMapper(stationName)
             val entities = mapper.mapToListEntity(list)
             dao.insert(entities)
-        } catch (e: Exception){
+        } catch (e: Exception) {
             throw e
         }
     }
@@ -52,7 +51,7 @@ class AirQualityLocalDataSource @Inject constructor(
     override suspend fun dropTable() {
         try {
             dao.dropTable()
-        } catch (e: Exception){
+        } catch (e: Exception) {
             throw e
         }
     }

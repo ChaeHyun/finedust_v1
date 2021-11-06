@@ -2,14 +2,14 @@ package ch.breatheinandout.screen.widgetview
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import ch.breatheinandout.screen.airquality.AirQualityWidgetView
-import ch.breatheinandout.screen.airquality.AirQualityWidgetViewImpl
+import ch.breatheinandout.screen.airquality.widgetview.AirQualityWidgetView
+import ch.breatheinandout.screen.airquality.widgetview.AirQualityWidgetViewImpl
 import ch.breatheinandout.screen.toolbar.ToolbarWidgetView
 import ch.breatheinandout.screen.navdrawer.NavDrawerHelper
 import ch.breatheinandout.screen.navdrawer.NavDrawerWidgetView
 import ch.breatheinandout.screen.navdrawer.NavDrawerWidgetViewImpl
-import ch.breatheinandout.screen.searchaddress.SearchAddressWidgetView
-import ch.breatheinandout.screen.searchaddress.SearchAddressWidgetViewImpl
+import ch.breatheinandout.screen.searchaddress.widgetview.SearchAddressWidgetView
+import ch.breatheinandout.screen.searchaddress.widgetview.SearchAddressWidgetViewImpl
 import javax.inject.Inject
 
 /* It creates WidgetView Instances and provide them. */

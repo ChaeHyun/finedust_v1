@@ -1,6 +1,6 @@
 package ch.breatheinandout.database.searchedaddress
 
-import ch.breatheinandout.domain.searchaddress.SearchedAddress
+import ch.breatheinandout.domain.searchaddress.model.SearchedAddress
 
 interface ISearchedAddressLocalDataSource {
     suspend fun save(item: SearchedAddress)

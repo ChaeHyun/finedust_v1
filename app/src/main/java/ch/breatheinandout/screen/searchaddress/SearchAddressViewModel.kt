@@ -4,7 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import ch.breatheinandout.domain.searchaddress.SaveSearchedAddressUseCase
 import ch.breatheinandout.domain.searchaddress.SearchAddressUseCase
-import ch.breatheinandout.domain.searchaddress.SearchedAddress
+import ch.breatheinandout.domain.searchaddress.model.SearchedAddress
 import com.orhanobut.logger.Logger
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope

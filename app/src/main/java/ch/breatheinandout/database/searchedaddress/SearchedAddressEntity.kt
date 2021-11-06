@@ -5,7 +5,7 @@ import androidx.room.PrimaryKey
 import ch.breatheinandout.common.mapper.DataMapper
 import ch.breatheinandout.domain.location.model.address.AddressLine
 import ch.breatheinandout.domain.location.model.coordinates.Coordinates
-import ch.breatheinandout.domain.searchaddress.SearchedAddress
+import ch.breatheinandout.domain.searchaddress.model.SearchedAddress
 import javax.inject.Inject
 
 @Entity(tableName = "SearchedAddressEntity")

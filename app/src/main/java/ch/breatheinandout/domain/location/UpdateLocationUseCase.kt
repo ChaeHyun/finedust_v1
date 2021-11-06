@@ -4,7 +4,7 @@ import ch.breatheinandout.domain.location.provider.FindAddressLine
 import ch.breatheinandout.domain.location.provider.LocationHandler
 import ch.breatheinandout.domain.location.model.coordinates.Coordinates
 import ch.breatheinandout.domain.location.model.LocationPoint
-import ch.breatheinandout.domain.searchaddress.SearchedAddress
+import ch.breatheinandout.domain.searchaddress.model.SearchedAddress
 import com.orhanobut.logger.Logger
 import kotlinx.coroutines.*
 import javax.inject.Inject

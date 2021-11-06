@@ -1,4 +1,4 @@
-package ch.breatheinandout.screen.airquality
+package ch.breatheinandout.screen.airquality.widgetview
 
 import android.graphics.drawable.ColorDrawable
 import android.view.LayoutInflater
@@ -8,6 +8,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import ch.breatheinandout.R
+import ch.breatheinandout.screen.airquality.*
 import ch.breatheinandout.screen.navdrawer.NavDrawerHelper
 import com.orhanobut.logger.Logger
 import kotlinx.coroutines.CoroutineScope

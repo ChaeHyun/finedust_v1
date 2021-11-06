@@ -1,6 +1,7 @@
 package ch.breatheinandout.screen.airquality
 
-import ch.breatheinandout.domain.airquality.AirQuality
+
+import ch.breatheinandout.domain.airquality.model.AirQuality
 import ch.breatheinandout.domain.location.model.LocationPoint
 import ch.breatheinandout.domain.nearbystation.model.NearbyStation
 

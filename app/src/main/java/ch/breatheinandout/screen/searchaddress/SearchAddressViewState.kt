@@ -1,6 +1,6 @@
 package ch.breatheinandout.screen.searchaddress
 
-import ch.breatheinandout.domain.searchaddress.SearchedAddress
+import ch.breatheinandout.domain.searchaddress.model.SearchedAddress
 
 sealed class SearchAddressViewState
 

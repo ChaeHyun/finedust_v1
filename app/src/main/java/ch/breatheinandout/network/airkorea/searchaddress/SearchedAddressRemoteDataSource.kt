@@ -1,7 +1,7 @@
 package ch.breatheinandout.network.airkorea.searchaddress
 
 import ch.breatheinandout.network.airkorea.AirKoreaApi
-import ch.breatheinandout.domain.searchaddress.SearchedAddress
+import ch.breatheinandout.domain.searchaddress.model.SearchedAddress
 import javax.inject.Inject
 
 class SearchedAddressRemoteDataSource @Inject constructor(

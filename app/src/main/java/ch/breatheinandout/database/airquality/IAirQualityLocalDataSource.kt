@@ -1,6 +1,7 @@
 package ch.breatheinandout.database.airquality
 
-import ch.breatheinandout.domain.airquality.AirQuality
+import ch.breatheinandout.domain.airquality.model.AirQuality
+
 
 interface IAirQualityLocalDataSource {
     suspend fun get(stationName: String) : AirQuality?

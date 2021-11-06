@@ -4,13 +4,13 @@ import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import ch.breatheinandout.domain.airquality.AirQuality
 import ch.breatheinandout.domain.airquality.GetAirQualityDataUseCase
+import ch.breatheinandout.domain.airquality.model.AirQuality
 import ch.breatheinandout.domain.nearbystation.model.NearbyStation
 import ch.breatheinandout.domain.location.UpdateLocationUseCase
 import ch.breatheinandout.domain.location.model.LocationPoint
 import ch.breatheinandout.domain.nearbystation.GetNearbyStationUseCase
-import ch.breatheinandout.domain.searchaddress.SearchedAddress
+import ch.breatheinandout.domain.searchaddress.model.SearchedAddress
 import com.orhanobut.logger.Logger
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
@@ -93,7 +93,7 @@ class AirQualityViewModel @Inject constructor(
         when (result) {
             is GetAirQualityDataUseCase.Result.Success -> {
                 airQuality.value = result.airQuality
-                Logger.d("check(air) -> ${result.airQuality}")
+                Logger.v("check(air) -> ${result.airQuality}")
             }
             is GetAirQualityDataUseCase.Result.Failure -> {
                 Logger.e(result.message.plus("-> ${result.cause.message}"))

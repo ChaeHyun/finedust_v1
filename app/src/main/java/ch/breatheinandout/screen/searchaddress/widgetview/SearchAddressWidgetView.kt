@@ -1,11 +1,12 @@
-package ch.breatheinandout.screen.searchaddress
+package ch.breatheinandout.screen.searchaddress.widgetview
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.annotation.LayoutRes
 import ch.breatheinandout.screen.toolbar.ToolbarHelper
 import ch.breatheinandout.screen.widgetview.BaseObservableWidgetView
-import ch.breatheinandout.domain.searchaddress.SearchedAddress
+import ch.breatheinandout.domain.searchaddress.model.SearchedAddress
+import ch.breatheinandout.screen.searchaddress.SearchAddressViewState
 
 abstract class SearchAddressWidgetView(
     layoutInflater: LayoutInflater,

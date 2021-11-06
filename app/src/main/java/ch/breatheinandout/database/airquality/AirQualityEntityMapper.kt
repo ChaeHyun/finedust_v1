@@ -1,7 +1,7 @@
 package ch.breatheinandout.database.airquality
 
 import ch.breatheinandout.common.mapper.DataMapper
-import ch.breatheinandout.domain.airquality.*
+import ch.breatheinandout.domain.airquality.model.*
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.HashMap
@@ -59,5 +59,4 @@ class AirQualityEntityMapper(val stationName: String) : DataMapper<AirQualityEnt
 
     private fun parseToDate(source: String): Date = dateFormat.parse(source)!!
     private fun parseToString(source: Date): String = dateFormat.format(source)
-    private fun retrieveValueFromMap(key: AirQualityType, domain: AirQuality) : AirQualityDetail = domain.detail[key]!!
 }

@@ -17,7 +17,6 @@ class SaveLocationAndNearbyStationUseCase @Inject constructor(
         Dispatchers.IO) {
         try {
             locationLocalSource.save(locationPoint, nearbyStation)
-
         } catch (e: Exception) {
             Logger.e("Failed to save data to database at $className")
         }

@@ -1,6 +1,7 @@
 package ch.breatheinandout.network.airkorea.airquality
 
-import ch.breatheinandout.domain.airquality.*
+
+import ch.breatheinandout.domain.airquality.model.*
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 
@@ -92,7 +93,8 @@ data class AirQualityDto(
         val details = HashMap<AirQualityType, AirQualityDetail>()
 
         details.apply {
-            put(PM10, AirQualityDetail(
+            put(
+                PM10, AirQualityDetail(
                 pm10Flag ?: "-",
                 pm10Grade ?: "-",
                 pm10Value,

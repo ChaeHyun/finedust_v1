@@ -1,6 +1,6 @@
 package ch.breatheinandout.network.airkorea.airquality
 
-import ch.breatheinandout.domain.airquality.AirQuality
+import ch.breatheinandout.domain.airquality.model.AirQuality
 import ch.breatheinandout.network.airkorea.AirKoreaApi
 import javax.inject.Inject
 

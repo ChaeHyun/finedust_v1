@@ -1,4 +1,4 @@
-package ch.breatheinandout.domain.searchaddress
+package ch.breatheinandout.domain.searchaddress.model
 
 import ch.breatheinandout.domain.location.model.address.AddressLine
 import ch.breatheinandout.domain.location.model.coordinates.Coordinates

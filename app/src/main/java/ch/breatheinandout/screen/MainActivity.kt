@@ -29,7 +29,6 @@ class MainActivity : BaseActivity(), NavDrawerHelper, NavDrawerWidgetView.Listen
 
         widgetView = widgetViewFactory.createNavDrawerWidgetView(null)
         setContentView(widgetView.getRootView())
-        Logger.i("Done -> MainActivity#onCreate()")
         syncToolbarAndDrawer()
         screenNavigator.initNavController(widgetView.getFrameLayout().id)
     }
