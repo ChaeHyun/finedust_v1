@@ -3,6 +3,8 @@ package ch.breatheinandout.dependencyinjection
 import android.app.Application
 import android.content.Context
 import android.location.LocationManager
+import ch.breatheinandout.database.airquality.AirQualityLocalDataSource
+import ch.breatheinandout.database.airquality.IAirQualityLocalDataSource
 import ch.breatheinandout.database.locationandstation.ILocationLocalDataSource
 import ch.breatheinandout.database.locationandstation.LocationLocalDataSource
 import ch.breatheinandout.database.searchedaddress.ISearchedAddressLocalDataSource
@@ -66,5 +68,8 @@ abstract class DataSourceModule {
     abstract fun bindSearchedAddressLocalDataSource(sourceImpl: SearchedAddressLocalDataSource) : ISearchedAddressLocalDataSource
 
     @Binds
-    abstract fun bindAirQualityAddressRemoteDataSource(sourceImpl: AirQualityRemoteDataSource) : IAirQualityRemoteDataSource
+    abstract fun bindAirQualityRemoteDataSource(sourceImpl: AirQualityRemoteDataSource) : IAirQualityRemoteDataSource
+
+    @Binds
+    abstract fun bindAirQualityLocalDataSource(sourceImpl: AirQualityLocalDataSource) : IAirQualityLocalDataSource
 }

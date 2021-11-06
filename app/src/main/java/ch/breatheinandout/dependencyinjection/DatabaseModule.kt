@@ -3,6 +3,7 @@ package ch.breatheinandout.dependencyinjection
 import android.content.Context
 import androidx.room.Room
 import ch.breatheinandout.database.Database
+import ch.breatheinandout.database.airquality.AirQualityDao
 import ch.breatheinandout.database.locationandstation.LocationAndStationDao
 import ch.breatheinandout.database.searchedaddress.SearchedAddressDao
 import dagger.Module
@@ -30,4 +31,8 @@ object DatabaseModule {
     @AppScoped
     @Provides
     fun searchedAddressDao(database: Database) : SearchedAddressDao = database.searchedAddressDao()
+
+    @AppScoped
+    @Provides
+    fun airQualityDao(database: Database) : AirQualityDao = database.airQualityDao()
 }

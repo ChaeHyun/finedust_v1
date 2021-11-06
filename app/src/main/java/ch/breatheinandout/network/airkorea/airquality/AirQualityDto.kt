@@ -1,8 +1,6 @@
 package ch.breatheinandout.network.airkorea.airquality
 
-import ch.breatheinandout.domain.airquality.AirQuality
-import ch.breatheinandout.domain.airquality.AirQualityDetail
-import ch.breatheinandout.domain.airquality.AirQualityType
+import ch.breatheinandout.domain.airquality.*
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 
@@ -94,7 +92,7 @@ data class AirQualityDto(
         val details = HashMap<AirQualityType, AirQualityDetail>()
 
         details.apply {
-            put(AirQualityType.PM10, AirQualityDetail(
+            put(PM10, AirQualityDetail(
                 pm10Flag ?: "-",
                 pm10Grade ?: "-",
                 pm10Value,
@@ -102,7 +100,8 @@ data class AirQualityDto(
                 pm10Grade1h ?: "-"
             ))
 
-            put(AirQualityType.PM25, AirQualityDetail(
+            put(
+                PM25, AirQualityDetail(
                 pm25Flag ?: "-",
                 pm25Grade ?: "-",
                 pm25Value,
@@ -110,10 +109,10 @@ data class AirQualityDto(
                 pm25Grade1h ?: "-"
             ))
 
-            put(AirQualityType.O3, AirQualityDetail(o3Flag ?: "-", o3Grade ?: "-", o3Value))
-            put(AirQualityType.CO, AirQualityDetail(coFlag ?: "-", coGrade ?: "-", coValue))
-            put(AirQualityType.NO2, AirQualityDetail(no2Flag ?: "-", no2Grade ?: "-", no2Value))
-            put(AirQualityType.SO2, AirQualityDetail(so2Flag ?: "-", so2Grade ?: "-", so2Value))
+            put(O3, AirQualityDetail(o3Flag ?: "-", o3Grade ?: "-", o3Value))
+            put(CO, AirQualityDetail(coFlag ?: "-", coGrade ?: "-", coValue))
+            put(NO2, AirQualityDetail(no2Flag ?: "-", no2Grade ?: "-", no2Value))
+            put(SO2, AirQualityDetail(so2Flag ?: "-", so2Grade ?: "-", so2Value))
         }
 
         return AirQuality(dataTime, khaiGrade ?: "-", khaiValue, details)
