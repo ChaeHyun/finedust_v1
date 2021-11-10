@@ -41,8 +41,6 @@ class SearchAddressWidgetViewImpl(
         progressIndicator.isEnabled = false
         homeAsUp.setOnClickListener { getListeners().forEach { it.onClickAsUp() } }
 
-        val testQuery = "서구"
-        searchView.setQuery(testQuery, false)
         searchView.apply {
             maxWidth = Int.MAX_VALUE
             isSubmitButtonEnabled = true
@@ -81,7 +79,7 @@ class SearchAddressWidgetViewImpl(
     override fun onQueryTextSubmit(query: String?): Boolean {
         query?.let {
             getListeners().forEach { it.onSearchQuerySubmit(query) }
-            Toast.makeText(getContext(), "search > \"$query\"", Toast.LENGTH_SHORT).show()
+//            Toast.makeText(getContext(), "search > \"$query\"", Toast.LENGTH_SHORT).show()
         }
         Logger.v("<onQueryTextSubmit> $query")
         return false

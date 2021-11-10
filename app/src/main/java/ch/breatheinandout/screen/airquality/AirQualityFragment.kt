@@ -42,8 +42,6 @@ class AirQualityFragment : Fragment(), AirQualityWidgetView.Listener ,Permission
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         Logger.v("onViewCreated()")
-        widgetView.setToolbarVisibility(true)
-        widgetView.setToolbarTitle("공기질")
 
         lifecycle.addObserver(viewModel)
 
@@ -66,6 +64,8 @@ class AirQualityFragment : Fragment(), AirQualityWidgetView.Listener ,Permission
 
     override fun onStart() {
         super.onStart()
+        widgetView.setToolbarVisibility(true)
+        widgetView.setToolbarTitle("공기질")
         permissionRequester.registerListener(this)
         widgetView.registerListener(this)
     }
@@ -97,9 +97,11 @@ class AirQualityFragment : Fragment(), AirQualityWidgetView.Listener ,Permission
 
     override fun onTriggerSwipeRefresh() {
         Logger.d("[Refresh] triggered")
+        viewModel.getLocation(getAddressFromBundle(Constants.KEY_SELECTED_ADDRESS))
     }
 
 
+    // TODO: checking GPS is ON or OFF.
     private fun getLastLocation(address: SearchedAddress?) {
         if (permissionRequester.hasPermission(PermissionMember.FineLocation)) {
             if (!featureAvailability.isGpsFeatureOn()) {

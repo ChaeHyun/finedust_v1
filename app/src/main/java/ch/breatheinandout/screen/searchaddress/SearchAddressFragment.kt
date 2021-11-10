@@ -50,6 +50,11 @@ class SearchAddressFragment : Fragment(), SearchAddressWidgetView.Listener {
         widgetView.unregisterListener(this)
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        widgetView.setToolbarVisibility(visible = true)
+    }
+
     override fun onSearchQuerySubmit(query: String) {
         Logger.v("query@Fragment -> $query")
         viewModel.search(query)
@@ -62,10 +67,8 @@ class SearchAddressFragment : Fragment(), SearchAddressWidgetView.Listener {
 
     override fun onClickAddressItem(item: SearchedAddress) {
         Logger.v("[Recycler Item Clicked] ${item.addressLine.addr}")
-        // TODO : Before navigate to the other screen, save it in the local database.
         viewModel.save(item)
 
-        // TODO : add to bundle, then navigate back to the airqualityFragment with it.
         val bundle = Bundle().apply { putSerializable(Constants.KEY_SELECTED_ADDRESS, item) }
         screenNavigator.navigateWithBundle(R.id.AirQualityFragment, bundle)
     }

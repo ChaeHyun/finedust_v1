@@ -65,7 +65,7 @@ class MainActivity : BaseActivity(), NavDrawerHelper, NavDrawerWidgetView.Listen
     }
 
     override fun onNavItemClicked(item: NavDrawerWidgetView.DrawerItem) {
-        Logger.d(" # check -> $item")
+        Logger.d(" # [NavDrawerItem.Click] check -> $item")
         when (item) {
             NavDrawerWidgetView.DrawerItem.Home -> {
                 screenNavigator.navigate(R.id.AirQualityFragment)
@@ -74,7 +74,7 @@ class MainActivity : BaseActivity(), NavDrawerHelper, NavDrawerWidgetView.Listen
                 screenNavigator.navigate(R.id.SearchAddressFragment)
             }
             NavDrawerWidgetView.DrawerItem.Setting -> {
-                // TODO: when `Setting` menu item is clicked.
+                screenNavigator.navigate(R.id.SettingsFragment)
             }
         }
     }

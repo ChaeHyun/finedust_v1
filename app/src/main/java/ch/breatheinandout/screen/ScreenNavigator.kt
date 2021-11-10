@@ -85,6 +85,9 @@ class ScreenNavigator constructor(
             R.id.SearchAddressFragment -> {
                 navController.navigate(R.id.action_AirQualityFragment_to_SearchAddressFragment)
             }
+            R.id.SettingsFragment -> {
+                navController.navigate(R.id.SettingsFragment)
+            }
             else -> throw IllegalAccessException("Not allowed to navigate to $target")
         }
     }

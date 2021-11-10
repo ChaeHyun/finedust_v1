@@ -1,12 +1,10 @@
 package ch.breatheinandout.screen.navdrawer
 
-import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
-import android.widget.Toast
 import androidx.appcompat.widget.Toolbar
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
@@ -34,20 +32,14 @@ class NavDrawerWidgetViewImpl(
 
         navigationView.setNavigationItemSelectedListener { menuItem ->
             drawerLayout.closeDrawers()
-            val drawerItem: DrawerItem = when (menuItem.itemId) {
+            val drawerItem = when (menuItem.itemId) {
                 R.id.nav_home -> {
-                    Toast.makeText(getContext(), "[Home] clicked!", Toast.LENGTH_SHORT).show()
-                    setToolbarBackgroundColor(ColorDrawable(Color.YELLOW))
                     DrawerItem.Home
                 }
                 R.id.nav_search -> {
-                    Toast.makeText(getContext(), "[Search] clicked!", Toast.LENGTH_SHORT).show()
-                    setToolbarBackgroundColor(ColorDrawable(Color.BLUE))
                     DrawerItem.Search
                 }
                 R.id.nav_setting -> {
-                    Toast.makeText(getContext(), "[Setting] clicked!", Toast.LENGTH_SHORT).show()
-                    setToolbarBackgroundColor(ColorDrawable(Color.DKGRAY))
                     DrawerItem.Setting
                 }
                 else -> {

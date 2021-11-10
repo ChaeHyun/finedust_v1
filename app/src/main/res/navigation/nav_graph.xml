@@ -8,7 +8,7 @@
     <fragment
         android:id="@+id/AirQualityFragment"
         android:name="ch.breatheinandout.screen.airquality.AirQualityFragment"
-        android:label="@string/airquality_fragment_label"
+        android:label="@string/label_screen_airquality"
         tools:layout="@layout/fragment_airquality">
         <action
             android:id="@+id/action_AirQualityFragment_to_SearchAddressFragment"
@@ -16,12 +16,15 @@
         <action
             android:id="@+id/action_AirQualityFragment_to_AddressListDialog"
             app:destination="@id/AddressListDialog" />
+        <action
+            android:id="@+id/action_AirQualityFragment_to_SettingsFragment"
+            app:destination="@id/SettingsFragment" />
 
     </fragment>
     <fragment
         android:id="@+id/SearchAddressFragment"
         android:name="ch.breatheinandout.screen.searchaddress.SearchAddressFragment"
-        android:label="SearchAddressFragment"
+        android:label="@string/label_screen_search_address"
         tools:layout="@layout/fragment_search_address">
         <action
             android:id="@+id/action_SearchAddressFragment_to_AirQualityFragment"
@@ -43,4 +46,14 @@
             app:popUpTo="@id/AirQualityFragment"
             app:popUpToInclusive="true" />
     </dialog>
+
+    <fragment
+        android:id="@+id/SettingsFragment"
+        android:name="ch.breatheinandout.screen.setting.SettingsFragment"
+        android:label="@string/label_screen_settings">
+
+        <action
+            android:id="@+id/action_SettingsFragment_to_AddressListDialog"
+            app:destination="@id/AddressListDialog" />
+    </fragment>
 </navigation>

@@ -80,7 +80,7 @@ class AddressListDialog : DialogFragment() {
         if (position == 0) {
             bundle.putSerializable(Constants.KEY_SELECTED_ADDRESS, dummyOnTop[0])
         } else {
-            Toast.makeText(context, "[SELECT] ${item.addressLine.umdName} .. ", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, "${item.addressLine.umdName}으로 변경", Toast.LENGTH_SHORT).show()
             bundle.putSerializable(Constants.KEY_SELECTED_ADDRESS, item)
         }
         screenNavigator.navigateWithBundle(R.id.AirQualityFragment, bundle)
@@ -88,7 +88,7 @@ class AddressListDialog : DialogFragment() {
 
     private fun deleteItem(position: Int, item: SearchedAddress) {
         if (position > 0) {
-            Toast.makeText(context, "[DELETE] ${item.addressLine.addr} .. ", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, "${item.addressLine.umdName} 등록해제 ", Toast.LENGTH_SHORT).show()
             viewModel.delete(data, item)
         }
     }

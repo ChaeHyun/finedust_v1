@@ -72,11 +72,7 @@
     <string name="menu_action_recommend">추천하기</string>
 
     <string name="title_activity_main">MainActivity</string>
-    <string name="menu_gallery">Gallery</string>
-    <string name="menu_slideshow">Slideshow</string>
     <!-- Strings used for fragments for navigation -->
-    <string name="airquality_fragment_label">AirQuality Fragment</string>
-    <string name="second_fragment_label">Second Fragment</string>
     <string name="next">Next</string>
     <string name="previous">Previous</string>
 
@@ -85,6 +81,18 @@
     <string name="as_up_arrow">asUpArrow</string>
     <string name="search_hint">동/면/읍을 입력하세요.</string>
     <string name="dialog_title_select_address">주소선택</string>
+    <string name="search_header">주소</string>
+
+    <!-- Screen labels -->
+    <string name="label_screen_airquality">공기질</string>
+    <string name="label_screen_search_address">주소검색</string>
+    <string name="label_screen_settings">설정</string>
+
+    <!-- Settings -->
+    <string name="setting_key_new_address">KEY_NEW_ADDRESS</string>
+    <string name="setting_title_add_address">새로운 주소 등록하기</string>
+    <string name="setting_key_list_address">KEY_LIST_ADDRESS</string>
+    <string name="setting_title_list_address">저장된 주소목록 보기</string>
 
 
 </resources>

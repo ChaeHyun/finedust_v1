@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <PreferenceCategory app:title="@string/search_header">
+        <Preference
+            app:key="@string/setting_key_new_address"
+            app:title="@string/setting_title_add_address"/>
+
+        <Preference
+            app:key="@string/setting_key_list_address"
+            app:title="@string/setting_title_list_address"/>
+    </PreferenceCategory>
+
+    <PreferenceCategory app:title="TEST"
+        app:isPreferenceVisible="false">
+        <SwitchPreferenceCompat
+            app:isPreferenceVisible="false"
+            app:key="click"
+            app:title="click test" />
+    </PreferenceCategory>
+
+</PreferenceScreen>

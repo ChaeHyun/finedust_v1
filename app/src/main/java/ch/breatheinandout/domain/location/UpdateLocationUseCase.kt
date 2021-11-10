@@ -67,6 +67,7 @@ class UpdateLocationUseCase @Inject constructor(
         val wgsCoords = locationHandler.getLocationDeferred()
         if (wgsCoords == null) {
             Logger.e("wgsCoord is NULL.")
+            // TODO: GPS is not available. Ask user to turn on the GPS.
             return Result.Failure("Failed to find a WGS coordinates.", NullPointerException())
         } else {
             val addressLine = findAddressLine.findAddress(wgsCoords)
