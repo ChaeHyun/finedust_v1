@@ -118,8 +118,8 @@ class AirQualityWidgetViewImpl constructor(
     private fun parseGradeStr(grade: String?): Int {
         return when (grade) {
             null -> 0
-            "", " " -> 0
-            else -> Integer.parseInt(grade)
+            "", " ", "-" -> 0
+            else -> Integer.parseInt(grade)         // parameter 가 "-" 일 때 runtime error
         }
     }
 }

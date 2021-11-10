@@ -2,6 +2,8 @@ package ch.breatheinandout.screen.searchaddress
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import ch.breatheinandout.domain.searchaddress.DeleteSearchedAddressUseCase
+import ch.breatheinandout.domain.searchaddress.ReadSearchedAddressUseCase
 import ch.breatheinandout.domain.searchaddress.SaveSearchedAddressUseCase
 import ch.breatheinandout.domain.searchaddress.SearchAddressUseCase
 import ch.breatheinandout.domain.searchaddress.model.SearchedAddress
@@ -16,7 +18,9 @@ import javax.inject.Inject
 @HiltViewModel
 class SearchAddressViewModel @Inject constructor(
     private val searchAddressUseCase: SearchAddressUseCase,
-    private val saveSearchedAddressUseCase: SaveSearchedAddressUseCase
+    private val saveSearchedAddressUseCase: SaveSearchedAddressUseCase,
+    private val readSearchedAddressUseCase: ReadSearchedAddressUseCase,
+    private val deleteSearchedAddressUseCase: DeleteSearchedAddressUseCase
 ): ViewModel(){
     private val viewModelScope = CoroutineScope(SupervisorJob() + Dispatchers.Main.immediate)
 
@@ -39,6 +43,21 @@ class SearchAddressViewModel @Inject constructor(
         // TODO : Save the item in the database.
         viewModelScope.launch {
             saveSearchedAddressUseCase.save(item)
+        }
+    }
+
+    fun delete(searchedAddresses: List<SearchedAddress>, target: SearchedAddress) {
+        viewModelScope.launch {
+            deleteSearchedAddressUseCase.delete(target)
+            val result: List<SearchedAddress> = searchedAddresses - listOf(target)
+            viewState.value = SearchAddressContent(result.reversed())
+        }
+    }
+
+    fun read() {
+        viewModelScope.launch {
+            val result = readSearchedAddressUseCase.read()
+            viewState.value = SearchAddressContent(result)
         }
     }
 }

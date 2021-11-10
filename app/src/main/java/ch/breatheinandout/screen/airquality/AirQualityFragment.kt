@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
+import ch.breatheinandout.R
 import ch.breatheinandout.common.Constants
 import ch.breatheinandout.common.utils.FeatureAvailability
 import ch.breatheinandout.common.permissions.PermissionMember
@@ -91,7 +92,7 @@ class AirQualityFragment : Fragment(), AirQualityWidgetView.Listener ,Permission
 
     // when the Test button clicked
     override fun onClickButton() {
-        getLastLocation(SearchedAddress(Constants.FORCE_GPS))
+        screenNavigator.showDialog(R.id.AddressListDialog)
     }
 
     override fun onTriggerSwipeRefresh() {

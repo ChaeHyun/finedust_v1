@@ -13,6 +13,9 @@
         <action
             android:id="@+id/action_AirQualityFragment_to_SearchAddressFragment"
             app:destination="@id/SearchAddressFragment" />
+        <action
+            android:id="@+id/action_AirQualityFragment_to_AddressListDialog"
+            app:destination="@id/AddressListDialog" />
 
     </fragment>
     <fragment
@@ -27,4 +30,17 @@
             app:popUpToInclusive="true" />
 
     </fragment>
+
+    <dialog
+        android:id="@+id/AddressListDialog"
+        android:name="ch.breatheinandout.screen.dialogs.AddressListDialog"
+        android:label="AddressListDialog"
+        tools:layout="@layout/dialog_address_list">
+
+        <action
+            android:id="@+id/action_AddressListDialog_to_AirQualityFragment"
+            app:destination="@id/AirQualityFragment"
+            app:popUpTo="@id/AirQualityFragment"
+            app:popUpToInclusive="true" />
+    </dialog>
 </navigation>

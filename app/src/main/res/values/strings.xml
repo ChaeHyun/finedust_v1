@@ -84,6 +84,7 @@
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
     <string name="as_up_arrow">asUpArrow</string>
     <string name="search_hint">동/면/읍을 입력하세요.</string>
+    <string name="dialog_title_select_address">주소선택</string>
 
 
 </resources>
