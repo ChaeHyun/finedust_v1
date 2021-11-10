@@ -91,7 +91,7 @@ class AirQualityFragment : Fragment(), AirQualityWidgetView.Listener ,Permission
 
     // when the Test button clicked
     override fun onClickButton() {
-        getLastLocation(null)
+        getLastLocation(SearchedAddress(Constants.FORCE_GPS))
     }
 
     override fun onTriggerSwipeRefresh() {

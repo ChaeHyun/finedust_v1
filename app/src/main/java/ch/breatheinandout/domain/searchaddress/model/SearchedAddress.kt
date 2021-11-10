@@ -7,4 +7,9 @@ import java.io.Serializable
 data class SearchedAddress(
     val addressLine: AddressLine,
     val tmCoords: Coordinates
-) : Serializable
+) : Serializable {
+    constructor(currentAddress: String) : this(
+        AddressLine(currentAddress, "-", "-", "-"),
+        Coordinates("-", "-")
+    )
+}

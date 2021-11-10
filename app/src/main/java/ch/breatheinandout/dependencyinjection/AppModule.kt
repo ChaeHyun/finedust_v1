@@ -3,6 +3,7 @@ package ch.breatheinandout.dependencyinjection
 import android.app.Application
 import android.content.Context
 import android.location.LocationManager
+import ch.breatheinandout.common.utils.PreferencesUtils
 import ch.breatheinandout.database.airquality.AirQualityLocalDataSource
 import ch.breatheinandout.database.airquality.IAirQualityLocalDataSource
 import ch.breatheinandout.database.locationandstation.ILocationLocalDataSource
@@ -19,6 +20,7 @@ import ch.breatheinandout.network.airkorea.searchaddress.ISearchedAddressRemoteD
 import ch.breatheinandout.network.airkorea.searchaddress.SearchedAddressRemoteDataSource
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
+import com.google.gson.Gson
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
@@ -49,6 +51,14 @@ object AppModule {
     @AppScoped
     @Provides
     fun coordinatesMapper(): CoordinatesMapper = CoordinatesMapper()
+
+    @AppScoped
+    @Provides
+    fun gson(): Gson = Gson().newBuilder().setPrettyPrinting().create()
+
+    @AppScoped
+    @Provides
+    fun preferencesUtils(context: Context, gson: Gson) : PreferencesUtils = PreferencesUtils(context, gson)
 }
 
 @Module

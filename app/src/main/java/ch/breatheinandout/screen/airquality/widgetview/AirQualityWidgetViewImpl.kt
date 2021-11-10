@@ -2,6 +2,7 @@ package ch.breatheinandout.screen.airquality.widgetview
 
 import android.graphics.drawable.ColorDrawable
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.core.content.res.ResourcesCompat
@@ -10,7 +11,6 @@ import ch.breatheinandout.R
 import ch.breatheinandout.domain.airquality.model.*
 import ch.breatheinandout.screen.airquality.*
 import ch.breatheinandout.screen.navdrawer.NavDrawerHelper
-import com.orhanobut.logger.Logger
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -78,10 +78,12 @@ class AirQualityWidgetViewImpl constructor(
     }
 
     override fun showProgressIndication() {
+        layoutContent.visibility = View.GONE
         swipeRefresh.isRefreshing = true
     }
 
     override fun hideProgressIndication() {
+        layoutContent.visibility = View.VISIBLE
         swipeRefresh.isRefreshing = false
     }
 
