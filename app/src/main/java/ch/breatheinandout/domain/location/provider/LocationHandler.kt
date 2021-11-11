@@ -37,7 +37,10 @@ class LocationHandler @Inject constructor(
         return try {
             providerClient.requestLocationUpdates(
                 provideLocationRequest(), locationCallback, Looper.getMainLooper()
-            )
+            ).addOnFailureListener {
+                Logger.v("[LocationHandler] request location failed.")
+                deferred.complete(null)
+            }
             hasLocationCallback = true
             val waitingResult = deferred.await().also { stopLocationUpdate(locationCallback) }
             waitingResult?.let { mapper.mapToDomainModel(waitingResult.lastLocation) }

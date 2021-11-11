@@ -15,9 +15,9 @@
 
         <ImageView
             android:id="@+id/img_as_up"
-            android:layout_width="28dp"
-            android:layout_height="28dp"
-            android:layout_margin="7dp"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_margin="16dp"
             android:layout_gravity="center"
             android:contentDescription="@string/as_up_arrow"
             android:theme="@style/ThemeOverlay.AppCompat.Dark"
@@ -25,8 +25,7 @@
 
         <androidx.appcompat.widget.SearchView
             android:id="@+id/searchView"
-            android:layout_weight="1"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:theme="@style/ThemeOverlay.AppCompat.Dark"
             android:layout_gravity="center"

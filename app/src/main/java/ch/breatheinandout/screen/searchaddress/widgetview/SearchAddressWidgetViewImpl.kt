@@ -66,6 +66,7 @@ class SearchAddressWidgetViewImpl(
             textDescription.visibility = View.VISIBLE
             recyclerView.visibility = View.INVISIBLE
             Snackbar.make(getRootView(), getString(R.string.no_search_result), Snackbar.LENGTH_LONG).show()
+            hideProgressIndication()
             return
         }
 

@@ -1,6 +1,7 @@
 package ch.breatheinandout.domain.location
 
 import ch.breatheinandout.common.Constants
+import ch.breatheinandout.common.utils.FeatureAvailability
 import ch.breatheinandout.domain.lastused.LastUsedLocation
 import ch.breatheinandout.domain.lastused.ReadLastUsedLocationUseCase
 import ch.breatheinandout.domain.lastused.SaveLastUsedLocationUseCase
@@ -17,6 +18,7 @@ import javax.inject.Inject
 class UpdateLocationUseCase @Inject constructor(
     private val locationHandler: LocationHandler,
     private val findAddressLine: FindAddressLine,
+    private val featureAvailability: FeatureAvailability,
     private val transCoordinatesUseCase: TransCoordinatesUseCase,
     private val getStoredLocationUseCase: GetStoredLocationUseCase,
     private val saveLastUsedLocationUseCase: SaveLastUsedLocationUseCase,
@@ -30,8 +32,11 @@ class UpdateLocationUseCase @Inject constructor(
     companion object {
         const val GPS = Constants.MODE_GPS
         const val ADDR = Constants.MODE_ADDR
-    }
 
+        // Fail Message
+        const val FAIL_LOCATION_HANDLER = "Failed to find a WGS coordinates."
+        const val FAIL_ACTIVATE_GPS = "Please turn on the gps."
+    }
 
     suspend fun update(address: SearchedAddress?) : Result = withContext(Dispatchers.IO) {
         if (address == null) {
@@ -45,6 +50,9 @@ class UpdateLocationUseCase @Inject constructor(
             saveLastUsedLocationUseCase.save(ADDR, lastAddr)
             return@withContext Result.Success(LocationPoint(address.addressLine, address.tmCoords, null))
         }
+
+        if (!featureAvailability.isGpsFeatureOn())
+            return@withContext Result.Failure(FAIL_ACTIVATE_GPS, NullPointerException())
 
         return@withContext calculateGpsCoordinates()
     }
@@ -68,7 +76,7 @@ class UpdateLocationUseCase @Inject constructor(
         if (wgsCoords == null) {
             Logger.e("wgsCoord is NULL.")
             // TODO: GPS is not available. Ask user to turn on the GPS.
-            return Result.Failure("Failed to find a WGS coordinates.", NullPointerException())
+            return Result.Failure(FAIL_LOCATION_HANDLER, NullPointerException())
         } else {
             val addressLine = findAddressLine.findAddress(wgsCoords)
             val retrieved = getStoredLocationUseCase.getStoredLocation(addressLine.sidoName, addressLine.umdName)

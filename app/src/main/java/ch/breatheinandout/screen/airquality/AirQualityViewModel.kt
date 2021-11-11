@@ -4,6 +4,9 @@ import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import ch.breatheinandout.common.event.Event
+import ch.breatheinandout.common.permissions.PermissionMember
+import ch.breatheinandout.common.utils.FeatureAvailability
 import ch.breatheinandout.domain.airquality.GetAirQualityDataUseCase
 import ch.breatheinandout.domain.airquality.model.AirQuality
 import ch.breatheinandout.domain.nearbystation.model.NearbyStation
@@ -31,7 +34,10 @@ class AirQualityViewModel @Inject constructor(
     private val nearbyStation = MutableLiveData<NearbyStation>()
     private val airQuality = MutableLiveData<AirQuality>()
 
+    @Inject lateinit var featureAvailability: FeatureAvailability
+
     val viewState = MediatorLiveData<AirQualityViewState>()
+    val viewEvent = MutableLiveData<Event<AirQualityEvent>>()
 
     init {
         Logger.v(" [INIT - AirQualityViewModel]")
@@ -122,9 +128,23 @@ class AirQualityViewModel @Inject constructor(
             }
             is UpdateLocationUseCase.Result.Failure -> {
                 Logger.v("Update Location failed -> ${result.message}")
+                when (result.message) {
+                    UpdateLocationUseCase.FAIL_ACTIVATE_GPS -> {
+                        // TODO: Ask the user to turn on the gps feature.
+                        postEvent(Toast("GPS 기능을 켜주세요."))
+                    }
+                    UpdateLocationUseCase.FAIL_LOCATION_HANDLER -> {
+                        postEvent(Toast("위치정보 권한허용이 필요합니다."))
+                        postEvent(Permission(PermissionMember.FineLocation))
+                    }
+                }
                 viewState.value = Error
             }
         }
+    }
+
+    private fun postEvent(event: AirQualityEvent) {
+        viewEvent.value = Event(event)
     }
 
 

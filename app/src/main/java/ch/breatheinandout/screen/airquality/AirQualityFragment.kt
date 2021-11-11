@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import ch.breatheinandout.R
 import ch.breatheinandout.common.Constants
+import ch.breatheinandout.common.event.EventObserver
 import ch.breatheinandout.common.utils.FeatureAvailability
 import ch.breatheinandout.common.permissions.PermissionMember
 import ch.breatheinandout.common.permissions.PermissionRequester
@@ -42,13 +43,10 @@ class AirQualityFragment : Fragment(), AirQualityWidgetView.Listener ,Permission
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         Logger.v("onViewCreated()")
-
         lifecycle.addObserver(viewModel)
 
-        viewModel.viewState.observe(viewLifecycleOwner, { state ->
-            render(state)
-            Logger.i(" > render.viewState -> $state")
-        })
+        viewModel.viewState.observe(viewLifecycleOwner, { state -> render(state) })
+        viewModel.viewEvent.observe(viewLifecycleOwner, EventObserver { consumeEvent(it) })
 
         val argAddress: SearchedAddress? = getAddressFromBundle(Constants.KEY_SELECTED_ADDRESS)
         Logger.i("check(SearchedAddress) -> $argAddress")
@@ -65,9 +63,8 @@ class AirQualityFragment : Fragment(), AirQualityWidgetView.Listener ,Permission
     override fun onStart() {
         super.onStart()
         widgetView.setToolbarVisibility(true)
-        widgetView.setToolbarTitle("공기질")
-        permissionRequester.registerListener(this)
         widgetView.registerListener(this)
+        permissionRequester.registerListener(this)
     }
 
     override fun onStop() {
@@ -86,6 +83,17 @@ class AirQualityFragment : Fragment(), AirQualityWidgetView.Listener ,Permission
             Refresh -> { }
             is Content -> {
                 widgetView.bindViewData(viewState)
+            }
+        }
+    }
+
+    private fun consumeEvent(event: AirQualityEvent) {
+        when (event) {
+            is Permission -> {
+                requestPermission(event.permission)
+            }
+            is Toast -> {
+                widgetView.showToastMessage(event.message)
             }
         }
     }
@@ -114,6 +122,11 @@ class AirQualityFragment : Fragment(), AirQualityWidgetView.Listener ,Permission
             permissionRequester.requestPermission(PermissionMember.FineLocation, PermissionMember.REQUEST_CODE_PERMISSION)
         }
     }
+    private fun requestPermission(permission: PermissionMember) {
+        if (!permissionRequester.hasPermission(permission)) {
+            permissionRequester.requestPermission(permission, PermissionMember.REQUEST_CODE_PERMISSION)
+        }
+    }
 
     override fun onRequestPermissionResult(
         requestCode: Int,
@@ -122,9 +135,18 @@ class AirQualityFragment : Fragment(), AirQualityWidgetView.Listener ,Permission
         result.granted.map { Logger.v("# GRANTED: ${it.getAndroidPermission()}") }
         result.denied.map { Logger.v("# DENIED: ${it.getAndroidPermission()}") }
         result.doNotAsk.map { Logger.v("# DoNotAsk: ${it.getAndroidPermission()}") }
+
+        if (result.granted.contains(PermissionMember.FineLocation)) {
+            Logger.d("권한이 허용 됐을 때, 바로 시작하기.")
+            viewModel.getLocation(null)
+        }
+        if (result.denied.contains(PermissionMember.FineLocation)) {
+            widgetView.showToastMessage("권한 허용을 하지 않으면 기능이 작동하지 않을 수 있습니다.")
+        }
     }
 
     override fun onPermissionRequestCancelled(requestCode: Int) {
         Logger.d(" Permission Cancelled -> requestCode: $requestCode")
+        widgetView.showToastMessage("권한 허용을 하지 않으면 기능이 작동하지 않을 수 있습니다.")
     }
 }
