@@ -1,9 +1,11 @@
 package ch.breatheinandout.screen.searchaddress.widgetview
 
+import android.content.Context
 import android.graphics.drawable.ColorDrawable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
@@ -37,14 +39,25 @@ class SearchAddressWidgetViewImpl(
         Toast.makeText(getContext(), item.addressLine.umdName, Toast.LENGTH_SHORT).show()
     }
 
+    private val popUpSoftKeyboard =  View.OnFocusChangeListener { _, hasFocus ->
+        val imm : InputMethodManager = getContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        if (hasFocus) {
+            imm.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT, InputMethodManager.HIDE_IMPLICIT_ONLY)
+        }
+    }
+
     init {
         progressIndicator.isEnabled = false
-        homeAsUp.setOnClickListener { getListeners().forEach { it.onClickAsUp() } }
+        homeAsUp.setOnClickListener {
+            getListeners().forEach { it.onClickAsUp() }
+            searchView.clearFocus()
+        }
 
         searchView.apply {
             maxWidth = Int.MAX_VALUE
             isSubmitButtonEnabled = true
             setOnQueryTextListener(this@SearchAddressWidgetViewImpl)
+            setOnQueryTextFocusChangeListener(popUpSoftKeyboard)
         }
 
         // RecyclerView
@@ -98,7 +111,7 @@ class SearchAddressWidgetViewImpl(
 
     override fun hideProgressIndication() {
         CoroutineScope(Dispatchers.IO).launch {
-            Thread.sleep(1500)              // Pretend there is a few loading time.
+            Thread.sleep(1000)              // Pretend there is a few loading time.
             progressIndicator.isRefreshing = false
         }
     }
