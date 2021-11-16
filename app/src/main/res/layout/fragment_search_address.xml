@@ -9,6 +9,8 @@
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="?attr/colorPrimary"
+        android:elevation="4dp"
+        android:fadingEdge="vertical"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:popupTheme="@style/Theme.Breatheinandoutkotlin.PopupOverlay">
@@ -20,14 +22,12 @@
             android:layout_margin="16dp"
             android:layout_gravity="center"
             android:contentDescription="@string/as_up_arrow"
-            android:theme="@style/ThemeOverlay.AppCompat.Dark"
             app:srcCompat="?homeAsUpIndicator" />
 
         <androidx.appcompat.widget.SearchView
             android:id="@+id/searchView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:theme="@style/ThemeOverlay.AppCompat.Dark"
             android:layout_gravity="center"
             app:goIcon="@drawable/ic_check_24"
             app:searchIcon="@null"

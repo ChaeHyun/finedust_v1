@@ -7,4 +7,5 @@ interface NavDrawerHelper {
     fun setToolbarBackgroundColor(color: ColorDrawable)
 
     fun setToolbarVisibility(visible: Boolean)
+    fun applyStatusBarColor(resId: Int)
 }

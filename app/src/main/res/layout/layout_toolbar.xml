@@ -11,8 +11,8 @@
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar_container"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:fadingEdge="vertical"
+        app:popupTheme="@style/Theme.Breatheinandoutkotlin.PopupOverlay" />
 
 </com.google.android.material.appbar.AppBarLayout>
-
-<!--    app:popupTheme="@style/Theme.Breatheinandoutkotlin.PopupOverlay"-->

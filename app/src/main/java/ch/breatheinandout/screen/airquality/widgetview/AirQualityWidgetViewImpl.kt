@@ -12,6 +12,7 @@ import ch.breatheinandout.R
 import ch.breatheinandout.domain.airquality.model.*
 import ch.breatheinandout.screen.airquality.*
 import ch.breatheinandout.screen.navdrawer.NavDrawerHelper
+import com.orhanobut.logger.Logger
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -109,6 +110,9 @@ class AirQualityWidgetViewImpl constructor(
         factor.value.setTextColor(TextColor.textColor[grade])
         factor.value.text = valueStr
         setGradeImageResource(factor.img, type, grade)
+
+        if (factor.value.id == R.id.text_value_khai)
+            changeToolbarColor(grade)
     }
 
     private fun setGradeImageResource(img: ImageView, type: ImgType, grade: Int) {
@@ -122,5 +126,11 @@ class AirQualityWidgetViewImpl constructor(
             "", " ", "-" -> 0
             else -> Integer.parseInt(grade)         // parameter 가 "-" 일 때 runtime error
         }
+    }
+
+    private fun changeToolbarColor(index: Int) {
+        Logger.d(" ### [Theme] index -> $index")
+        setToolbarBackgroundColor(ColorDrawable(ToolbarColor.toolbarColor[index]))
+        navDrawerHelper.applyStatusBarColor(StatusBarColor.statusBarColor[index])
     }
 }
