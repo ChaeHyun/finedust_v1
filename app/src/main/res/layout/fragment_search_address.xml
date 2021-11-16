@@ -13,7 +13,7 @@
         android:fadingEdge="vertical"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:popupTheme="@style/Theme.Breatheinandoutkotlin.PopupOverlay">
+        app:theme="@style/ThemeOverlay.CustomSearchLayout">
 
         <ImageView
             android:id="@+id/img_as_up"

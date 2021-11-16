@@ -1,45 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="colorPrimary">#009688</color>
-    <color name="colorPrimaryDark">#008373</color>
-    <color name="colorAccent">#FFAB00</color>
+    <color name="colorPrimaryVariant">#008373</color>
 
-    <color name="purple_200">#FFBB86FC</color>
-    <color name="purple_500">#FF6200EE</color>
-    <color name="purple_700">#FF3700B3</color>
-    <color name="teal_200">#FF03DAC5</color>
-    <color name="teal_500">#009688</color>
-    <color name="teal_700">#FF018786</color>
+    <color name="colorSecondary">#5E35B1</color>
+    <color name="colorSecondaryVariant">#4527A0</color>
+
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
 
-
-    <color name="lightgray">#eeeeee</color>
-    <color name="gray">#757575</color>
+    <color name="lightGray">#D8D8D8</color>
+    <color name="gray">#ACACAC</color>
     <color name="yellow">#F9A825</color>
 
     <color name="BEST">#0096fa</color>
     <color name="GOOD">#78be50</color>
     <color name="BAD">#ffdc50</color>
-    <color name="VERYBAD">#FBC02D</color>
+    <color name="VERY_BAD">#FBC02D</color>
 
 
     <color name="colorBackground">#c8eeeeee</color>
 
-    <color name="toolBar_DEFAULT">#009688</color>
-    <color name="toolBar_DEFAULT_Dark">#00695c</color>
+    <color name="toolbar_default">#009688</color>
+    <color name="toolbar_default_dark">#00695c</color>
 
-    <color name="toolBar_BLUE">#2196f3</color>
-    <color name="toolBar_BLUE_Dark">#1565C0</color>
-
-    <color name="toolBar_GREEN">#4caf50</color>
-    <color name="toolBar_GREEN_Dark">#2e7d32</color>
-
-    <color name="toolBar_YELLOW">#ffc107</color>
-    <color name="toolBar_YELLOW_Dark">#ff8f00</color>
-
-    <color name="toolBar_RED">#f44336</color>
-    <color name="toolBar_RED_Dark">#d32f2f</color>
-
+    <color name="toolbar_black">#292929</color>
+    <color name="toolbar_black_dark">#000000</color>
+    <color name="toolbar_blue">#2196f3</color>
+    <color name="toolbar_blue_dark">#1565C0</color>
+    <color name="toolbar_green">#4caf50</color>
+    <color name="toolbar_green_dark">#2e7d32</color>
+    <color name="toolbar_yellow">#ffc107</color>
+    <color name="toolbar_yellow_dark">#ff8f00</color>
+    <color name="toolbar_red">#f44336</color>
+    <color name="toolbar_red_dark">#d32f2f</color>
 
 </resources>
