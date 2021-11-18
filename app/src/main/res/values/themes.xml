@@ -12,6 +12,7 @@
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
+
     </style>
 
     <!-- This will be applied to application in the manifest.xml -->
@@ -25,5 +26,9 @@
 
     <style name="ThemeOverlay.AppBar" parent="ThemeOverlay.MaterialComponents.Dark.ActionBar" />
     <style name="ThemeOverlay.Toolbar" parent="ThemeOverlay.MaterialComponents.Light" />
+
+    <style name="Theme.SettingScreenColorTheme" parent="PreferenceThemeOverlay">
+        <item name="colorAccent">@color/darkGray</item>
+    </style>
 
 </resources>

@@ -1,7 +1,21 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <style name="ThemeOverlay.CustomSearchLayout" parent="ThemeOverlay.MaterialComponents.ActionBar">
         <item name="android:textColorPrimary">@color/black</item>
-        <item name="android:textColorHint">@color/white</item>
+        <item name="android:textColorHint">@color/lightGray</item>
+        <item name="iconifiedByDefault">false</item>
     </style>
 
+    <style name="scopeColorControlHighlight" parent="Theme.BreatheInAndOut.NoActionBar">
+        <item name="colorControlHighlight">@color/ripple_effect</item>
+    </style>
+
+    <style name="backgroundRippleEffect">
+        <item name="android:foreground">?attr/selectableItemBackgroundBorderless</item>
+    </style>
+
+    <style name="PreferenceCategoryTitle" parent="Widget.AppCompat.TextView">
+        <item name="android:textColor">?attr/colorOnBackground</item>
+        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Medium.Inverse</item>
+        <item name="android:textStyle">bold</item>
+    </style>
 </resources>

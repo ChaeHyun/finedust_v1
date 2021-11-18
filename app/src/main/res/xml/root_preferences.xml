@@ -1,13 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
+<PreferenceScreen xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <PreferenceCategory app:title="@string/search_header">
+    <PreferenceCategory
+        app:layout="@layout/layout_setting_title"
+        app:allowDividerBelow="true">
+
         <Preference
+            app:icon="@drawable/ic_add_location_alt_24"
             app:key="@string/setting_key_new_address"
-            app:title="@string/setting_title_add_address"/>
+            app:summary="@string/setting_title_add_address_summary"
+            app:title="@string/setting_title_add_address" />
 
         <Preference
+            app:icon="@drawable/ic_current_location_24"
             app:key="@string/setting_key_list_address"
+            app:summary="@string/setting_title_list_address_summary"
             app:title="@string/setting_title_list_address"/>
     </PreferenceCategory>
 

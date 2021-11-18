@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:padding="@dimen/airquality_layout_padding"
+    android:theme="@style/scopeColorControlHighlight"
     android:id="@+id/layout_location_info">
 
     <ImageView
@@ -48,6 +49,7 @@
         android:layout_marginTop="5dp"
         android:padding="@dimen/airquality_layout_inner_padding"
         android:background="@drawable/border_dark"
+        style="@style/backgroundRippleEffect"
         android:id="@+id/layout_click_addr">
 
         <ImageView

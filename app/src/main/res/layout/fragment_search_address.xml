@@ -32,7 +32,6 @@
             app:goIcon="@drawable/ic_check_24"
             app:searchIcon="@null"
             app:searchHintIcon="@null"
-            app:iconifiedByDefault="false"
             app:queryHint="@string/search_hint" />
     </LinearLayout>
 

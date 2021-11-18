@@ -5,9 +5,12 @@
     <string name="nav_header_subtitle">android.studio@android.com</string>
     <string name="nav_header_desc">Navigation header</string>
 
-    <string name="menu_home">Current</string>
-    <string name="menu_search">Search</string>
-    <string name="menu_setting">Setting</string>
+    <string name="menu_current">현재위치</string>
+    <string name="menu_search">주소검색</string>
+    <string name="menu_select_address">주소선택</string>
+    <string name="menu_yebo">예보정보</string>
+    <string name="menu_kaq">유용한사이트</string>
+    <string name="menu_setting">설정</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -18,7 +21,8 @@
     <string name="searching_address">주소검색 기능은 한국환경공단에서 제공하는 주소정보에 의해 동작합니다.</string>
     <string name="no_search_result">검색결과가 없습니다.</string>
 
-    <string name="nav_header_message">실시간 대기환경 확인\n깨끗한 공기를 들!숨!날!숨!</string>
+    <string name="nav_header_message">실시간 대기오염정보 확인하고</string>
+    <string name="nav_header_message2">깨끗한 공기를 들!숨!날!숨!</string>
 
 
     <string name="air_data_title_location">위치정보</string>
@@ -90,9 +94,11 @@
 
     <!-- Settings -->
     <string name="setting_key_new_address">KEY_NEW_ADDRESS</string>
-    <string name="setting_title_add_address">새로운 주소 등록하기</string>
+    <string name="setting_title_add_address">주소검색</string>
+    <string name="setting_title_add_address_summary">새로운 주소를 등록합니다.</string>
     <string name="setting_key_list_address">KEY_LIST_ADDRESS</string>
-    <string name="setting_title_list_address">저장된 주소목록 보기</string>
+    <string name="setting_title_list_address">주소목록</string>
+    <string name="setting_title_list_address_summary">저장된 주소 중 하나를 사용합니다.</string>
 
 
 </resources>

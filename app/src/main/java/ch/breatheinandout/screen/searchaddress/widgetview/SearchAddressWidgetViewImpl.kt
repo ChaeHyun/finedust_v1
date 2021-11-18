@@ -58,6 +58,7 @@ class SearchAddressWidgetViewImpl(
             isSubmitButtonEnabled = true
             setOnQueryTextListener(this@SearchAddressWidgetViewImpl)
             setOnQueryTextFocusChangeListener(popUpSoftKeyboard)
+            requestFocus()
         }
 
         // RecyclerView

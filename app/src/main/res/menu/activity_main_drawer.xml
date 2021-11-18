@@ -3,15 +3,42 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:showIn="navigation_view">
 
-    <group android:checkableBehavior="single">
+    <group
+        android:id="@+id/group_current"
+        android:checkableBehavior="single">
         <item
             android:id="@+id/nav_home"
-            android:icon="@drawable/ic_current_location_24"
-            android:title="@string/menu_home" />
+            android:checkable="true"
+            android:icon="@drawable/compass_128"
+            android:title="@string/menu_current" />
+    </group>
+    <group
+        android:id="@+id/group_address"
+        android:checkableBehavior="single">
         <item
             android:id="@+id/nav_search"
             android:icon="@drawable/ic_add_location_alt_24"
             android:title="@string/menu_search" />
+        <item
+            android:id="@+id/nav_select_address"
+            android:icon="@drawable/ic_current_location_24"
+            android:title="@string/menu_select_address" />
+    </group>
+    <group
+        android:id="@+id/group_etc"
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_yebo"
+            android:icon="@drawable/yebo_128"
+            android:title="@string/menu_yebo" />
+
+        <item
+            android:visible="false"
+            android:id="@+id/nav_kaq"
+            android:icon="@drawable/speech_bubble"
+            android:title="@string/menu_kaq" >
+        </item>
+
         <item
             android:id="@+id/nav_setting"
             android:icon="@drawable/ic_settings_24"
