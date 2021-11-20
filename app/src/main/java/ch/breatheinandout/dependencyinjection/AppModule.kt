@@ -14,6 +14,8 @@ import ch.breatheinandout.domain.location.provider.LocationHandler
 import ch.breatheinandout.domain.location.model.coordinates.CoordinatesMapper
 import ch.breatheinandout.network.airkorea.airquality.AirQualityRemoteDataSource
 import ch.breatheinandout.network.airkorea.airquality.IAirQualityRemoteDataSource
+import ch.breatheinandout.network.airkorea.forecast.ForecastRemoteDataSource
+import ch.breatheinandout.network.airkorea.forecast.IForecastRemoteDataSource
 import ch.breatheinandout.network.airkorea.nearbystation.INearbyStationRemoteDataSource
 import ch.breatheinandout.network.airkorea.nearbystation.NearbyStationRemoteDataSource
 import ch.breatheinandout.network.airkorea.searchaddress.ISearchedAddressRemoteDataSource
@@ -82,4 +84,7 @@ abstract class DataSourceModule {
 
     @Binds
     abstract fun bindAirQualityLocalDataSource(sourceImpl: AirQualityLocalDataSource) : IAirQualityLocalDataSource
+
+    @Binds
+    abstract fun bindForecastRemoteDataSource(sourceImpl: ForecastRemoteDataSource) : IForecastRemoteDataSource
 }

@@ -91,6 +91,7 @@
     <string name="label_screen_airquality">공기질</string>
     <string name="label_screen_search_address">주소검색</string>
     <string name="label_screen_settings">설정</string>
+    <string name="label_screen_forecast">예보정보</string>
 
     <!-- Settings -->
     <string name="setting_key_new_address">KEY_NEW_ADDRESS</string>
@@ -99,6 +100,10 @@
     <string name="setting_key_list_address">KEY_LIST_ADDRESS</string>
     <string name="setting_title_list_address">주소목록</string>
     <string name="setting_title_list_address_summary">저장된 주소 중 하나를 사용합니다.</string>
+
+    <string name="pager_button_fine_dust">미세먼지</string>
+    <string name="pager_button_ultra_fine_dust">초미세먼지</string>
+    <string name="pager_button_o3">오존</string>
 
 
 </resources>
