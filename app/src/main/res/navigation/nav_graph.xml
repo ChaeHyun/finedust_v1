@@ -14,11 +14,14 @@
             android:id="@+id/action_AirQualityFragment_to_SearchAddressFragment"
             app:destination="@id/SearchAddressFragment" />
         <action
-            android:id="@+id/action_AirQualityFragment_to_AddressListDialog"
-            app:destination="@id/AddressListDialog" />
-        <action
             android:id="@+id/action_AirQualityFragment_to_SettingsFragment"
             app:destination="@id/SettingsFragment" />
+        <action
+            android:id="@+id/action_AirQualityFragment_to_ForecastFragment"
+            app:destination="@id/ForecastFragment"
+            app:popUpTo="@id/AirQualityFragment"
+            app:popUpToInclusive="true" />
+
 
     </fragment>
     <fragment
@@ -31,7 +34,6 @@
             app:destination="@id/AirQualityFragment"
             app:popUpTo="@id/AirQualityFragment"
             app:popUpToInclusive="true" />
-
     </fragment>
 
     <dialog
@@ -39,7 +41,6 @@
         android:name="ch.breatheinandout.screen.dialogs.AddressListDialog"
         android:label="AddressListDialog"
         tools:layout="@layout/dialog_address_list">
-
         <action
             android:id="@+id/action_AddressListDialog_to_AirQualityFragment"
             app:destination="@id/AirQualityFragment"
@@ -51,9 +52,23 @@
         android:id="@+id/SettingsFragment"
         android:name="ch.breatheinandout.screen.setting.SettingsFragment"
         android:label="@string/label_screen_settings">
+    </fragment>
 
+    <fragment
+        android:id="@+id/ForecastFragment"
+        android:name="ch.breatheinandout.screen.forecast.ForecastFragment"
+        android:label="@string/label_screen_forecast"
+        tools:layout="@layout/fragment_forecast">
         <action
-            android:id="@+id/action_SettingsFragment_to_AddressListDialog"
-            app:destination="@id/AddressListDialog" />
+            android:id="@+id/action_ForecastFragment_to_AirQualityFragment"
+            app:destination="@id/AirQualityFragment"
+            app:popUpTo="@id/ForecastFragment"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_ForecastFragment_to_SearchAddressFragment"
+            app:destination="@id/SearchAddressFragment" />
+        <action
+            android:id="@+id/action_ForecastFragment_to_SettingsFragment"
+            app:destination="@id/SettingsFragment" />
     </fragment>
 </navigation>

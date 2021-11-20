@@ -33,15 +33,12 @@ class NavDrawerWidgetViewImpl(
         navigationView.setNavigationItemSelectedListener { menuItem ->
             drawerLayout.closeDrawers()
             val drawerItem = when (menuItem.itemId) {
-                R.id.nav_home -> {
-                    DrawerItem.Home
-                }
-                R.id.nav_search -> {
-                    DrawerItem.Search
-                }
-                R.id.nav_setting -> {
-                    DrawerItem.Setting
-                }
+                R.id.nav_home -> DrawerItem.Home
+                R.id.nav_search -> DrawerItem.Search
+                R.id.nav_select_address -> DrawerItem.SelectAddress
+                R.id.nav_yebo -> DrawerItem.Forecast
+                R.id.nav_setting -> DrawerItem.Setting
+
                 else -> {
                     throw IllegalStateException("This menu item is not supported yet.")
                 }

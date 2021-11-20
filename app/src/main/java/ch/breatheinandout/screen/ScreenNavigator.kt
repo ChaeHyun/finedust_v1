@@ -1,12 +1,17 @@
 package ch.breatheinandout.screen
 
 import android.os.Bundle
+import androidx.annotation.IdRes
 import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
+import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.get
 import ch.breatheinandout.R
+import ch.breatheinandout.screen.forecast.ForecastFragment
 import com.orhanobut.logger.Logger
 
 class ScreenNavigator constructor(
@@ -14,20 +19,23 @@ class ScreenNavigator constructor(
 ) {
     private val className = ScreenNavigator::class.simpleName
     private lateinit var navController: NavController
+    private lateinit var navHostFragment: NavHostFragment
 
     private val dialogs: List<Int> = listOf(R.id.AddressListDialog)
+    private val topLevelDestinations: List<Int> = listOf(R.id.AirQualityFragment, R.id.ForecastFragment)
 
     fun initNavController(navHostId: Int) {
-        val navHostFragment = activity.supportFragmentManager.findFragmentById(navHostId) as NavHostFragment
+        navHostFragment = activity.supportFragmentManager.findFragmentById(navHostId) as NavHostFragment
         navController = navHostFragment.navController
     }
 
     fun showDialog(target: Int) {
-        if (dialogs.contains(target)) {
-            navController.navigate(target)
-        } else {
+        if (!dialogs.contains(target)) {
             Logger.e("[THERE IS NO MATCHING TARGET DIALOG HERE.]")
+            return
         }
+        navController.navigate(target)
+
     }
 
     fun navigate(target: Int) {
@@ -43,11 +51,15 @@ class ScreenNavigator constructor(
             navController.graph[R.id.SearchAddressFragment] -> {
                 fromSearchAddressFragmentTo(target)
             }
+            navController.graph[R.id.ForecastFragment] -> {
+                fromForecastFragmentTo(target)
+            }
             else -> {
                 navController.navigate(target)
             }
         }
     }
+
 
     fun navigateWithBundle(target: Int, bundle: Bundle) {
         if (isCurrentDestination(target)) {
@@ -67,28 +79,41 @@ class ScreenNavigator constructor(
     }
 
     private fun fromAddressListDialogTo(target: Int, bundle: Bundle?) {
-        if (target == R.id.AirQualityFragment) {
-            navController.navigate(R.id.action_AddressListDialog_to_AirQualityFragment, bundle)
-        } else throw IllegalAccessException("Not allowed to navigate to $target")
+        popUpToTopLevelDestinations(target)
+        navController.navigate(target, bundle)
     }
 
-    private fun fromSearchAddressFragmentTo(@LayoutRes target: Int, bundle: Bundle? = null) {
-        if (target == R.id.AirQualityFragment) {
-            navController.navigate(R.id.action_SearchAddressFragment_to_AirQualityFragment, bundle)
-        } else {
-            throw IllegalAccessException("Not allowed to navigate to $target")
+    private fun fromForecastFragmentTo(target: Int) {
+        when (target) {
+            R.id.AirQualityFragment -> {
+                popUpToTopLevelDestinations(target)
+                navController.navigate(R.id.AirQualityFragment)
+            }
+            else -> navController.navigate(target)
         }
+    }
+
+    private fun fromSearchAddressFragmentTo(target: Int, bundle: Bundle? = null) {
+        popUpToTopLevelDestinations(target)
+        navController.navigate(target, bundle)
     }
 
     private fun fromAirQualityFragmentTo(target: Int) {
         when (target) {
             R.id.SearchAddressFragment -> {
-                navController.navigate(R.id.action_AirQualityFragment_to_SearchAddressFragment)
+                navController.navigate(R.id.SearchAddressFragment)
             }
-            R.id.SettingsFragment -> {
-                navController.navigate(R.id.SettingsFragment)
+            R.id.ForecastFragment -> {
+                popUpToTopLevelDestinations(target)
+                navController.navigate(R.id.ForecastFragment)
             }
-            else -> throw IllegalAccessException("Not allowed to navigate to $target")
+            else -> navController.navigate(target)
+        }
+    }
+
+    private fun popUpToTopLevelDestinations(@IdRes target: Int) {
+        if (topLevelDestinations.contains(target)) {
+            topLevelDestinations.forEach { dest -> navController.popBackStack(dest, true) }
         }
     }
 
@@ -101,5 +126,9 @@ class ScreenNavigator constructor(
 
     fun navigateUp() {
         navController.navigateUp()
+    }
+
+    private fun backStackEntryCount() : Int {
+        return navHostFragment.childFragmentManager.backStackEntryCount
     }
 }

@@ -10,13 +10,14 @@ import ch.breatheinandout.R
 import ch.breatheinandout.common.permissions.PermissionRequester
 import ch.breatheinandout.screen.navdrawer.NavDrawerHelper
 import ch.breatheinandout.screen.navdrawer.NavDrawerWidgetView
+import ch.breatheinandout.screen.navdrawer.NavDrawerWidgetView.*
 import ch.breatheinandout.screen.widgetview.WidgetViewFactory
 import com.orhanobut.logger.Logger
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class MainActivity : BaseActivity(), NavDrawerHelper, NavDrawerWidgetView.Listener {
+class MainActivity : BaseActivity(), NavDrawerHelper, Listener {
 
     @Inject lateinit var permissionRequester: PermissionRequester
     @Inject lateinit var widgetViewFactory: WidgetViewFactory
@@ -38,7 +39,10 @@ class MainActivity : BaseActivity(), NavDrawerHelper, NavDrawerWidgetView.Listen
         val navHostFragment = supportFragmentManager.findFragmentById(widgetView.getFrameLayout().id) as NavHostFragment
         val navController = navHostFragment.navController
         val appBarConfigWithDrawer = AppBarConfiguration(
-            setOf(R.id.AirQualityFragment),         // Top-level destinations
+            setOf(
+                R.id.AirQualityFragment,
+                R.id.ForecastFragment
+            ),         // Top-level destinations
             widgetView.getDrawerLayout())
 
         widgetView.getToolbarWidgetView().apply { setupWithNavController(navController, appBarConfigWithDrawer) }
@@ -65,18 +69,12 @@ class MainActivity : BaseActivity(), NavDrawerHelper, NavDrawerWidgetView.Listen
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
     }
 
-    override fun onNavItemClicked(item: NavDrawerWidgetView.DrawerItem) {
-        Logger.d(" # [NavDrawerItem.Click] check -> $item")
+    override fun onNavItemClicked(item: DrawerItem) {
+        Logger.d(" # [NavDrawerItem.Click] check -> ${item::class.simpleName}")
         when (item) {
-            NavDrawerWidgetView.DrawerItem.Home -> {
-                screenNavigator.navigate(R.id.AirQualityFragment)
-            }
-            NavDrawerWidgetView.DrawerItem.Search -> {
-                screenNavigator.navigate(R.id.SearchAddressFragment)
-            }
-            NavDrawerWidgetView.DrawerItem.Setting -> {
-                screenNavigator.navigate(R.id.SettingsFragment)
-            }
+            DrawerItem.SelectAddress -> { screenNavigator.showDialog(item.resId) }
+            DrawerItem.Forecast, DrawerItem.Home,
+            DrawerItem.Search, DrawerItem.Setting -> { screenNavigator.navigate(item.resId) }
         }
     }
 

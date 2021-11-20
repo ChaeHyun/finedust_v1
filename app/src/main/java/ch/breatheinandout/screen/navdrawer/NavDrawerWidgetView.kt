@@ -6,6 +6,7 @@ import android.widget.FrameLayout
 import androidx.annotation.LayoutRes
 import androidx.appcompat.widget.Toolbar
 import androidx.drawerlayout.widget.DrawerLayout
+import ch.breatheinandout.R
 import ch.breatheinandout.screen.toolbar.ToolbarHelper
 import ch.breatheinandout.screen.widgetview.BaseObservableWidgetView
 import com.google.android.material.navigation.NavigationView
@@ -21,10 +22,12 @@ abstract class NavDrawerWidgetView(
         fun onNavItemClicked(item: DrawerItem)
     }
 
-    sealed class DrawerItem {
-        object Home : DrawerItem()
-        object Search : DrawerItem()
-        object Setting : DrawerItem()
+    sealed class DrawerItem(val resId: Int) {
+        object Home : DrawerItem(R.id.AirQualityFragment)
+        object Search : DrawerItem(R.id.SearchAddressFragment)
+        object SelectAddress : DrawerItem(R.id.AddressListDialog)
+        object Forecast : DrawerItem(R.id.ForecastFragment)
+        object Setting : DrawerItem(R.id.SettingsFragment)
     }
 
     abstract fun isDrawerOpen(): Boolean
