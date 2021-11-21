@@ -4,14 +4,10 @@ import android.os.Bundle
 import androidx.annotation.IdRes
 import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
-import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.get
 import ch.breatheinandout.R
-import ch.breatheinandout.screen.forecast.ForecastFragment
 import com.orhanobut.logger.Logger
 
 class ScreenNavigator constructor(
@@ -19,19 +15,18 @@ class ScreenNavigator constructor(
 ) {
     private val className = ScreenNavigator::class.simpleName
     private lateinit var navController: NavController
-    private lateinit var navHostFragment: NavHostFragment
 
     private val dialogs: List<Int> = listOf(R.id.AddressListDialog)
     private val topLevelDestinations: List<Int> = listOf(R.id.AirQualityFragment, R.id.ForecastFragment)
 
     fun initNavController(navHostId: Int) {
-        navHostFragment = activity.supportFragmentManager.findFragmentById(navHostId) as NavHostFragment
+        val navHostFragment = activity.supportFragmentManager.findFragmentById(navHostId) as NavHostFragment
         navController = navHostFragment.navController
     }
 
     fun showDialog(target: Int) {
         if (!dialogs.contains(target)) {
-            Logger.e("[THERE IS NO MATCHING TARGET DIALOG HERE.]")
+            Logger.e("[THERE IS NO MATCHING TARGET DIALOG HERE. at $className]")
             return
         }
         navController.navigate(target)
@@ -40,7 +35,7 @@ class ScreenNavigator constructor(
 
     fun navigate(target: Int) {
         if (isCurrentDestination(target)) {
-            Logger.i("[ You are currently in the same destination as the target destination. ]")
+            Logger.i("[ You are currently in the same destination as the target destination. at $className]")
             return
         }
 
@@ -63,7 +58,7 @@ class ScreenNavigator constructor(
 
     fun navigateWithBundle(target: Int, bundle: Bundle) {
         if (isCurrentDestination(target)) {
-            Logger.i("[ You are currently in the same destination as the target destination. ]")
+            Logger.i("[ You are currently in the same destination as the target destination.  at $className]")
             return
         }
 
@@ -74,7 +69,7 @@ class ScreenNavigator constructor(
             navController.graph[R.id.AddressListDialog] -> {
                 fromAddressListDialogTo(target, bundle)
             }
-            else -> throw IllegalAccessException("Not allowed to navigate to $target")
+            else -> throw IllegalAccessException("[$className] Not allowed to navigate to $target")
         }
     }
 
@@ -126,9 +121,5 @@ class ScreenNavigator constructor(
 
     fun navigateUp() {
         navController.navigateUp()
-    }
-
-    private fun backStackEntryCount() : Int {
-        return navHostFragment.childFragmentManager.backStackEntryCount
     }
 }

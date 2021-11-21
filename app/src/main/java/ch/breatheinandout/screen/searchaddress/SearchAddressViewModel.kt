@@ -50,14 +50,14 @@ class SearchAddressViewModel @Inject constructor(
         viewModelScope.launch {
             deleteSearchedAddressUseCase.delete(target)
             val result: List<SearchedAddress> = searchedAddresses - listOf(target)
-            viewState.value = SearchAddressContent(result.reversed())
+            viewState.value = SearchAddressContent(result)
         }
     }
 
     fun read() {
         viewModelScope.launch {
             val result = readSearchedAddressUseCase.read()
-            viewState.value = SearchAddressContent(result)
+            viewState.value = SearchAddressContent(result.reversed())
         }
     }
 }

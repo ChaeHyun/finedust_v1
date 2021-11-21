@@ -33,8 +33,8 @@
     <string name="air_data_title_station_info">측정소정보</string>
     <string name="forecast_title_today">오늘개황</string>
     <string name="forecast_title_tomorrow">내일개황</string>
-    <string name="forecast_title_reason">대기정보</string>
-    <string name="forecast_title_states">시도별등급</string>
+    <string name="forecast_title_causes">대기정보</string>
+    <string name="forecast_title_grade">시도별등급</string>
 
     <string name="settings_title_search_address">주소검색</string>
     <string name="change_grade_airkorea_standard">에어코리아 기준</string>
@@ -105,5 +105,6 @@
     <string name="pager_button_ultra_fine_dust">초미세먼지</string>
     <string name="pager_button_o3">오존</string>
 
+    <string name="forecast_notification_o3">오존은 4월15일부터 10월15일 기간에만 제공됩니다.</string>
 
 </resources>

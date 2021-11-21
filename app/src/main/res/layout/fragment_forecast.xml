@@ -4,72 +4,19 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <LinearLayout
-        android:id="@+id/pager_buttons"
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tab_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:background="?attr/colorPrimary"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        app:layout_constraintStart_toStartOf="parent" />
 
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/btn_pm10"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_gravity="center"
-            android:background="@android:color/transparent"
-            android:textColor="@drawable/clicked_btn"
-            android:textColorHighlight="@drawable/clicked_btn"
-            android:text="@string/pager_button_fine_dust"
-            android:textSize="13sp" />
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="20dp"
-            android:contentDescription="@string/missing_img"
-            android:layout_gravity="center"
-            android:src="@drawable/line_black" />
-
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/btn_pm25"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_gravity="center"
-            android:background="@android:color/transparent"
-            android:textColor="@drawable/clicked_btn"
-            android:textColorHighlight="@drawable/clicked_btn"
-            android:text="@string/pager_button_ultra_fine_dust"
-            android:textSize="13sp" />
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="20dp"
-            android:contentDescription="@string/missing_img"
-            android:layout_gravity="center"
-            android:src="@drawable/line_black" />
-
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/btn_o3"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_gravity="center"
-            android:background="@android:color/transparent"
-            android:textColor="@drawable/clicked_btn"
-            android:textColorHighlight="@drawable/clicked_btn"
-            android:text="@string/pager_button_o3"
-            android:textSize="13sp" />
-    </LinearLayout>
-
-    <androidx.viewpager.widget.ViewPager
+    <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/pager"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/pager_buttons"
+        app:layout_constraintTop_toBottomOf="@id/tab_layout"
         app:layout_constraintBottom_toBottomOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
