@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import androidx.appcompat.app.AppCompatActivity
 import ch.breatheinandout.common.permissions.PermissionRequester
 import ch.breatheinandout.screen.ScreenNavigator
+import ch.breatheinandout.screen.imageloader.ImageLoader
 import ch.breatheinandout.screen.navdrawer.NavDrawerHelper
 import dagger.Module
 import dagger.Provides
@@ -31,4 +32,8 @@ class ActivityModule {
     @ActivityScoped
     @Provides
     fun screenNavigator(activity: AppCompatActivity) : ScreenNavigator = ScreenNavigator(activity)
+
+    @ActivityScoped
+    @Provides
+    fun imageLoader(activity: AppCompatActivity) : ImageLoader = ImageLoader(activity)
 }
