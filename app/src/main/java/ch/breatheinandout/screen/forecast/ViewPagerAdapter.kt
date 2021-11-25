@@ -5,8 +5,8 @@ import androidx.viewpager2.adapter.FragmentStateAdapter
 import ch.breatheinandout.domain.forecast.*
 
 class ViewPagerAdapter constructor(
-    private val parent: Fragment,
-    private val forecastInfoGroup: ForecastInfoGroup
+    parent: Fragment,
+    forecastInfoGroup: ForecastInfoGroup
 ) : FragmentStateAdapter(parent) {
 
     private val pages: ArrayList<Fragment> = arrayListOf(

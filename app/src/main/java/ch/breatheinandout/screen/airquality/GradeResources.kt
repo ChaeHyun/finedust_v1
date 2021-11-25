@@ -29,9 +29,16 @@ object TextColor {
     )
 }
 
+object DefaultColor {
+    val defaultColor = arrayOf(
+        Color.argb(235, 0, 150, 136),       // colorPrimary
+        Color.argb(235, 0, 131, 115)       // colorPrimaryVariant
+    )
+}
+
 object ToolbarColor {
     val toolbarColor = arrayOf(
-        Color.argb(235, 0,150,136),           // FAIL
+        Color.argb(235, 106,106,106),           // FAIL
         Color.argb(235, 33, 150, 243),     // BEST
         Color.argb(235, 76, 175, 80),    // GOOD
         Color.argb(235, 255, 193, 7),    // BAD
@@ -41,7 +48,7 @@ object ToolbarColor {
 
 object StatusBarColor {
     val statusBarColor = arrayOf(
-        Color.argb(200,1,135,134),           // FAIL
+        Color.argb(255,41,41,41),           // FAIL
         Color.argb(200,21, 101, 192),     // BEST
         Color.argb(200,46, 125, 50),    // GOOD
         Color.argb(200,255, 143, 0),    // BAD

@@ -28,7 +28,7 @@ class ForecastInfoPage : Fragment() {
             forecastCode = it.getString(ARG_FORECAST_INFORM_CODE)
             forecastInfo = it.getSerializable(ARG_FORECAST_INFO) as ForecastInfo?
         }
-        Logger.d("CODE:$forecastCode, INFO: $forecastInfo")
+        Logger.v("CODE:$forecastCode, INFO: $forecastInfo")
     }
 
     override fun onCreateView(

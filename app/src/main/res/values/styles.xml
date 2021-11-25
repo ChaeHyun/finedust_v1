@@ -18,4 +18,8 @@
         <item name="android:textAppearance">@style/TextAppearance.AppCompat.Medium.Inverse</item>
         <item name="android:textStyle">bold</item>
     </style>
+
+    <style name="ForecastLayoutStyle" parent="Theme.BreatheInAndOut.NoActionBar">
+        <item name="android:lineSpacingExtra">7dp</item>
+    </style>
 </resources>

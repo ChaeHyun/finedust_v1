@@ -70,7 +70,7 @@ class MainActivity : BaseActivity(), NavDrawerHelper, Listener {
     }
 
     override fun onNavItemClicked(item: DrawerItem) {
-        Logger.d(" # [NavDrawerItem.Click] check -> ${item::class.simpleName}")
+        Logger.v(" # [NavDrawerItem.Click] check -> ${item::class.simpleName}")
         when (item) {
             DrawerItem.SelectAddress -> { screenNavigator.showDialog(item.resId) }
             DrawerItem.Forecast, DrawerItem.Home,

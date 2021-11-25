@@ -12,7 +12,9 @@ abstract class ForecastPageWidgetView(
     @LayoutRes val layoutId: Int
 ) : BaseObservableWidgetView<ForecastPageWidgetView.Listener>(layoutInflater, parent, layoutId) {
 
-    interface Listener {    }
+    interface Listener {
+        // There is no action event for this page yet.
+    }
 
     abstract fun render(code: String, data: ForecastInfo?)
 }

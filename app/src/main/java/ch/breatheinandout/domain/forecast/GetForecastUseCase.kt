@@ -1,57 +1,62 @@
 package ch.breatheinandout.domain.forecast
 
 import ch.breatheinandout.network.airkorea.forecast.IForecastRemoteDataSource
+import ch.breatheinandout.screen.forecast.ForecastInfoGroupMapper
 import com.orhanobut.logger.Logger
+import java.text.SimpleDateFormat
+import java.util.*
 import javax.inject.Inject
 
 class GetForecastUseCase @Inject constructor(
-    private val remoteDataSource: IForecastRemoteDataSource
+    private val groupMapper: ForecastInfoGroupMapper,
+    private val remoteDataSource: IForecastRemoteDataSource,
+    private val saveForecastUseCase: SaveForecastInfoLocalUseCase,
+    private val readForecastUseCase: ReadForecastInfoLocalUseCase
 ) {
+    private val className = GetForecastUseCase::class.simpleName
 
-    suspend fun forecast(searchDate: String) : ForecastInfoGroup {
-        val result = remoteDataSource.getForecast(searchDate)
-        Logger.i("$result")
+    private val timeZoneKorea = TimeZone.getTimeZone("Asia/Seoul")
+    private val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.KOREA).apply { timeZone = timeZoneKorea }
 
-        return groupByInformCode(result)
-    }
+    suspend fun getForecastFromLocal() : ForecastInfoGroup? {
+        try {
+            val currentTimeString = currentTime()
+            val retrieved: List<ForecastInfo> = readForecastUseCase.read(currentTimeString)
 
-    private fun groupByInformCode(list: List<Forecast>): ForecastInfoGroup {
-        val pm10: MutableList<Forecast> = mutableListOf()
-        val pm25: MutableList<Forecast> = mutableListOf()
-        val o3: MutableList<Forecast> = mutableListOf()
-        var infoPm10: ForecastInfo? = null
-        var infoPm25: ForecastInfo? = null
-        var infoO3: ForecastInfo? = null
-
-        list.forEach {
-            when (it.informCode) {
-                PM10.code -> pm10.add(it)
-                PM25.code -> pm25.add(it)
-                O3.code -> o3.add(it)
+            return if (retrieved.isNotEmpty()) {
+                asForecastInfoGroup(retrieved)
+            } else {
+                val onlyCurrentDate = currentTimeString.substring(0,10)
+                getForecastFromServer(onlyCurrentDate)
             }
-        }
-        if (pm10.size >= 2) {
-            infoPm10 = mapToForecastInfo(pm10)
-        }
-        if (pm25.size >= 2) {
-            infoPm25 = mapToForecastInfo(pm25)
-        }
-        if (o3.size >= 2) {
-            infoO3 = mapToForecastInfo(o3)
+        } catch (e: Exception) {
+            Logger.e("Failed to get Forecast info at $className, $e")
+            return null
         }
 
-        return ForecastInfoGroup(infoPm10, infoPm25, infoO3)
     }
-    
-    private fun mapToForecastInfo(list: List<Forecast>) : ForecastInfo {
-        if (list.size < 2)
-            throw IllegalArgumentException()
 
-        return ForecastInfo(
-            list[0].dataTime, list[0].informCode,
-            list[0].informData, list[0].informCause,
-            list[0].informOverall, list[1].informOverall,
-            list[0].informGrade, list[0].imageUrl
-        )
+    private fun asForecastInfoGroup(retrieved: List<ForecastInfo>) : ForecastInfoGroup {
+        val data = arrayOfNulls<ForecastInfo>(3)
+        retrieved.mapIndexed { index, info -> data[index] = info }
+        return ForecastInfoGroup(data[0], data[1], data[2])
+    }
+
+    private suspend fun getForecastFromServer(searchDateForServer: String) : ForecastInfoGroup? {
+        return try {
+            val forecastList = remoteDataSource.getForecast(searchDateForServer)
+            val forecastGroup = groupMapper.toGroup(forecastList)
+            saveForecastUseCase.save(forecastGroup)
+            forecastGroup
+        } catch (e: Exception) {
+            Logger.e("Network failed at $className ,$e")
+            null
+        }
+    }
+
+    private fun currentTime(): String {
+        val nowWithZeroMinute: Calendar = Calendar.getInstance(timeZoneKorea)
+        nowWithZeroMinute.set(Calendar.MINUTE, 0)       // cuz "yyyy-MM-dd HH:00" is the format of the Database accepts
+        return dateFormat.format(nowWithZeroMinute.time)
     }
 }

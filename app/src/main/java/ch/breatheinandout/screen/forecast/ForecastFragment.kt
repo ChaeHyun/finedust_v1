@@ -17,7 +17,6 @@ import com.orhanobut.logger.Logger
 import dagger.hilt.android.AndroidEntryPoint
 
 
-
 @AndroidEntryPoint
 class ForecastFragment : Fragment() {
     private val viewModel: ForecastViewModel by viewModels()
@@ -36,7 +35,7 @@ class ForecastFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel.forecastLiveData.observe(viewLifecycleOwner, {
-            Logger.d("Check Group -> $it")
+            Logger.v("Check Group -> $it")
 
             // ViewPager2
             adapter = ViewPagerAdapter(this, it)
@@ -44,11 +43,16 @@ class ForecastFragment : Fragment() {
             viewPager.adapter = adapter
 
             val tabLayout: TabLayout = view.findViewById(R.id.tab_layout)
-            linkTabLayoutAndPager(tabLayout)
+            linkTabLayoutAndViewPager(tabLayout)
         })
     }
 
-    private fun linkTabLayoutAndPager(tabLayout: TabLayout) {
+    override fun onStart() {
+        super.onStart()
+        viewModel.getForecast()
+    }
+
+    private fun linkTabLayoutAndViewPager(tabLayout: TabLayout) {
         TabLayoutMediator(tabLayout, viewPager) { tab, pos ->
             tab.text = when (pos) {
                 0 -> PM10.code
@@ -58,13 +62,5 @@ class ForecastFragment : Fragment() {
         }.attach()
     }
 
-    override fun onStart() {
-        super.onStart()
-        // TODO: calculate the current date.
-        viewModel.getForecast("2021-11-20")
-    }
 
-    private fun currentDate() {
-
-    }
 }

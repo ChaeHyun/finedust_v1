@@ -13,7 +13,7 @@ class ForecastDtoMapper @Inject constructor(): DataMapper<ForecastDto, Forecast>
             else -> ""
         }
         return Forecast(
-            data.dataTime, data.informCode, data.informData,
+            data.dataTime.substring(0..12).plus(":00"), data.informCode, data.informData,
             data.informCause, data.informOverall, data.informGrade,
             imageUrl
         )

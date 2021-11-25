@@ -25,8 +25,8 @@
     <color name="toolbar_default">#009688</color>
     <color name="toolbar_default_dark">#00695c</color>
 
-    <color name="toolbar_black">#292929</color>
-    <color name="toolbar_black_dark">#000000</color>
+    <color name="toolbar_fail">#6A6A6A</color>
+    <color name="toolbar_fail_dark">#292929</color>
     <color name="toolbar_blue">#2196f3</color>
     <color name="toolbar_blue_dark">#1565C0</color>
     <color name="toolbar_green">#4caf50</color>

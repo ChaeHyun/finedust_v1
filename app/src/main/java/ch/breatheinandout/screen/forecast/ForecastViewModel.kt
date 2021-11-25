@@ -5,7 +5,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import ch.breatheinandout.domain.forecast.ForecastInfoGroup
 import ch.breatheinandout.domain.forecast.GetForecastUseCase
-import com.orhanobut.logger.Logger
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
@@ -17,10 +16,10 @@ class ForecastViewModel @Inject constructor(
 ) : ViewModel() {
     val forecastLiveData : MutableLiveData<ForecastInfoGroup> = MutableLiveData()
 
-    fun getForecast(searchDate: String) {
+    fun getForecast() {
         viewModelScope.launch {
-            val result = getForecastUseCase.forecast(searchDate)
-            forecastLiveData.value = result
+            val result = getForecastUseCase.getForecastFromLocal()
+            result?.let { forecastLiveData.value = result }
         }
     }
 

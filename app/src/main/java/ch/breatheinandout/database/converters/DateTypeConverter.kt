@@ -1,4 +1,4 @@
-package ch.breatheinandout.database
+package ch.breatheinandout.database.converters
 
 import androidx.room.TypeConverter
 import java.util.*

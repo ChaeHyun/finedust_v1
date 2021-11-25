@@ -23,4 +23,6 @@ abstract class AirQualityWidgetView(
 
     abstract fun bindViewData(content: Content)
     abstract fun showToastMessage(message: String)
+
+    abstract fun resetToolbarColor()
 }

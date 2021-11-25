@@ -101,6 +101,11 @@ class AirQualityWidgetViewImpl constructor(
         navDrawerHelper.setToolbarVisibility(visible)
     }
 
+    override fun resetToolbarColor() {
+        setToolbarBackgroundColor(ColorDrawable(DefaultColor.defaultColor[0]))
+        navDrawerHelper.applyStatusBarColor(DefaultColor.defaultColor[1])
+    }
+
     override fun showToastMessage(message: String) {
         Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show()
     }
@@ -129,8 +134,9 @@ class AirQualityWidgetViewImpl constructor(
     }
 
     private fun changeToolbarColor(index: Int) {
-        Logger.d(" ### [Theme] index -> $index")
         setToolbarBackgroundColor(ColorDrawable(ToolbarColor.toolbarColor[index]))
         navDrawerHelper.applyStatusBarColor(StatusBarColor.statusBarColor[index])
     }
+
+
 }

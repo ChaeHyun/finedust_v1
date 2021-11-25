@@ -5,14 +5,18 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import ch.breatheinandout.database.airquality.AirQualityDao
 import ch.breatheinandout.database.airquality.AirQualityEntity
+import ch.breatheinandout.database.converters.DateTypeConverter
+import ch.breatheinandout.database.converters.MapTypeConverter
+import ch.breatheinandout.database.forecast.ForecastDao
+import ch.breatheinandout.database.forecast.ForecastEntity
 import ch.breatheinandout.database.locationandstation.LocationAndStationDao
 import ch.breatheinandout.database.locationandstation.LocationAndStationEntity
 import ch.breatheinandout.database.searchedaddress.SearchedAddressDao
 import ch.breatheinandout.database.searchedaddress.SearchedAddressEntity
 
 
-@Database(entities = [LocationAndStationEntity::class, SearchedAddressEntity::class, AirQualityEntity::class], version = 1)
-@TypeConverters(DateTypeConverter::class)
+@Database(entities = [LocationAndStationEntity::class, SearchedAddressEntity::class, AirQualityEntity::class, ForecastEntity::class], version = 1)
+@TypeConverters(DateTypeConverter::class, MapTypeConverter::class)
 abstract class Database : RoomDatabase() {
     companion object {
         const val DB_NAME: String = "airquality.db"
@@ -21,4 +25,5 @@ abstract class Database : RoomDatabase() {
     abstract fun locationAndStationDao(): LocationAndStationDao
     abstract fun searchedAddressDao(): SearchedAddressDao
     abstract fun airQualityDao(): AirQualityDao
+    abstract fun forecastDao(): ForecastDao
 }

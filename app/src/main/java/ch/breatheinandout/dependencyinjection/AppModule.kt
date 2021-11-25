@@ -6,6 +6,8 @@ import android.location.LocationManager
 import ch.breatheinandout.common.utils.PreferencesUtils
 import ch.breatheinandout.database.airquality.AirQualityLocalDataSource
 import ch.breatheinandout.database.airquality.IAirQualityLocalDataSource
+import ch.breatheinandout.database.forecast.ForecastLocalDataSource
+import ch.breatheinandout.database.forecast.IForecastLocalDataSource
 import ch.breatheinandout.database.locationandstation.ILocationLocalDataSource
 import ch.breatheinandout.database.locationandstation.LocationLocalDataSource
 import ch.breatheinandout.database.searchedaddress.ISearchedAddressLocalDataSource
@@ -87,4 +89,7 @@ abstract class DataSourceModule {
 
     @Binds
     abstract fun bindForecastRemoteDataSource(sourceImpl: ForecastRemoteDataSource) : IForecastRemoteDataSource
+
+    @Binds
+    abstract fun bindForecastLocalDataSource(sourceImpl: ForecastLocalDataSource) : IForecastLocalDataSource
 }

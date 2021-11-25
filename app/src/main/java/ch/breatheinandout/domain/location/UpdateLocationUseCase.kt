@@ -11,7 +11,6 @@ import ch.breatheinandout.domain.location.model.coordinates.Coordinates
 import ch.breatheinandout.domain.location.model.LocationPoint
 import ch.breatheinandout.domain.searchaddress.model.SearchedAddress
 import com.orhanobut.logger.Logger
-import hilt_aggregated_deps._ch_breatheinandout_screen_airquality_AirQualityViewModel_HiltModules_KeyModule
 import kotlinx.coroutines.*
 import javax.inject.Inject
 
@@ -41,11 +40,11 @@ class UpdateLocationUseCase @Inject constructor(
     suspend fun update(address: SearchedAddress?) : Result = withContext(Dispatchers.IO) {
         if (address == null) {
             val lastUsedLocation = hasValidLastLocation()
-            Logger.d("[HasValidLastLocation()] -> $lastUsedLocation")
+            Logger.v("[HasValidLastLocation()] -> $lastUsedLocation")
             lastUsedLocation?.let { return@withContext Result.Success(lastUsedLocation.locationPoint) }
         }
         else if (address.addressLine.addr != Constants.FORCE_GPS) {
-            Logger.d("[Updates with selected address...] -> $address")
+            Logger.v("[Updates with selected address...] -> $address")
             val lastAddr = LocationPoint(address.addressLine, address.tmCoords, null)
             saveLastUsedLocationUseCase.save(ADDR, lastAddr)
             return@withContext Result.Success(LocationPoint(address.addressLine, address.tmCoords, null))
