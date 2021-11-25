@@ -22,6 +22,7 @@
     <style name="Theme.BreatheInAndOut.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+        <item name="android:screenOrientation">fullSensor</item>
     </style>
 
     <style name="ThemeOverlay.AppBar" parent="ThemeOverlay.MaterialComponents.Dark.ActionBar" />

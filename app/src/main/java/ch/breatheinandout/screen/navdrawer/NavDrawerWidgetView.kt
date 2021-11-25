@@ -27,6 +27,7 @@ abstract class NavDrawerWidgetView(
         object Search : DrawerItem(R.id.SearchAddressFragment)
         object SelectAddress : DrawerItem(R.id.AddressListDialog)
         object Forecast : DrawerItem(R.id.ForecastFragment)
+        object Informative : DrawerItem(R.id.InformativeFragment)
         object Setting : DrawerItem(R.id.SettingsFragment)
     }
 

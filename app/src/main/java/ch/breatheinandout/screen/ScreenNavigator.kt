@@ -49,12 +49,15 @@ class ScreenNavigator constructor(
             navController.graph[R.id.ForecastFragment] -> {
                 fromForecastFragmentTo(target)
             }
+            // TODO : fromInformativeFragment
+            navController.graph[R.id.InformativeFragment] -> {
+                fromInformativeFragmentTo(target)
+            }
             else -> {
                 navController.navigate(target)
             }
         }
     }
-
 
     fun navigateWithBundle(target: Int, bundle: Bundle) {
         if (isCurrentDestination(target)) {
@@ -76,6 +79,11 @@ class ScreenNavigator constructor(
     private fun fromAddressListDialogTo(target: Int, bundle: Bundle?) {
         popUpToTopLevelDestinations(target)
         navController.navigate(target, bundle)
+    }
+
+    private fun fromInformativeFragmentTo(target: Int) {
+        popUpToTopLevelDestinations(target)
+        navController.navigate(target)
     }
 
     private fun fromForecastFragmentTo(target: Int) {

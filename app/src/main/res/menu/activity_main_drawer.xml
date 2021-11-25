@@ -33,12 +33,13 @@
             android:title="@string/menu_yebo" />
 
         <item
-            android:visible="false"
-            android:id="@+id/nav_kaq"
+            android:id="@+id/nav_informative"
             android:icon="@drawable/speech_bubble"
             android:title="@string/menu_kaq" >
         </item>
-
+    </group>
+    <group
+        android:id="@+id/group_setting">
         <item
             android:id="@+id/nav_setting"
             android:icon="@drawable/ic_settings_24"

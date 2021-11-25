@@ -4,7 +4,7 @@ import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import ch.breatheinandout.domain.forecast.*
 
-class ViewPagerAdapter constructor(
+class ForecastPageAdapter constructor(
     parent: Fragment,
     forecastInfoGroup: ForecastInfoGroup
 ) : FragmentStateAdapter(parent) {

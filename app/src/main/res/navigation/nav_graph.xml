@@ -71,4 +71,10 @@
             android:id="@+id/action_ForecastFragment_to_SettingsFragment"
             app:destination="@id/SettingsFragment" />
     </fragment>
+
+    <fragment
+        android:id="@+id/InformativeFragment"
+        android:name="ch.breatheinandout.screen.informative.InformativeFragment"
+        android:label="@string/label_screen_informative">
+    </fragment>
 </navigation>

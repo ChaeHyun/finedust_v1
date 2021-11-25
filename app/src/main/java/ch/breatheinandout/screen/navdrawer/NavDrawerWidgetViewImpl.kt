@@ -37,6 +37,7 @@ class NavDrawerWidgetViewImpl(
                 R.id.nav_search -> DrawerItem.Search
                 R.id.nav_select_address -> DrawerItem.SelectAddress
                 R.id.nav_yebo -> DrawerItem.Forecast
+                R.id.nav_informative -> DrawerItem.Informative
                 R.id.nav_setting -> DrawerItem.Setting
 
                 else -> {

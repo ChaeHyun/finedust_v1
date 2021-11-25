@@ -73,8 +73,8 @@ class MainActivity : BaseActivity(), NavDrawerHelper, Listener {
         Logger.v(" # [NavDrawerItem.Click] check -> ${item::class.simpleName}")
         when (item) {
             DrawerItem.SelectAddress -> { screenNavigator.showDialog(item.resId) }
-            DrawerItem.Forecast, DrawerItem.Home,
-            DrawerItem.Search, DrawerItem.Setting -> { screenNavigator.navigate(item.resId) }
+            DrawerItem.Forecast, DrawerItem.Home, DrawerItem.Search,
+            DrawerItem.Informative, DrawerItem.Setting -> { screenNavigator.navigate(item.resId) }
         }
     }
 

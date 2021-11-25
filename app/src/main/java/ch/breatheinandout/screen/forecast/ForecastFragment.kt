@@ -21,8 +21,10 @@ import dagger.hilt.android.AndroidEntryPoint
 class ForecastFragment : Fragment() {
     private val viewModel: ForecastViewModel by viewModels()
 
-    private lateinit var adapter: ViewPagerAdapter
+    private lateinit var adapter: ForecastPageAdapter
     private lateinit var viewPager: ViewPager2
+
+    private val tabTitles = listOf(PM10.code, PM25.code, O3.code)
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -38,7 +40,7 @@ class ForecastFragment : Fragment() {
             Logger.v("Check Group -> $it")
 
             // ViewPager2
-            adapter = ViewPagerAdapter(this, it)
+            adapter = ForecastPageAdapter(this, it)
             viewPager = view.findViewById(R.id.pager)
             viewPager.adapter = adapter
 
@@ -54,10 +56,8 @@ class ForecastFragment : Fragment() {
 
     private fun linkTabLayoutAndViewPager(tabLayout: TabLayout) {
         TabLayoutMediator(tabLayout, viewPager) { tab, pos ->
-            tab.text = when (pos) {
-                0 -> PM10.code
-                1 -> PM25.code
-                else -> O3.code
+            if (pos <= tabTitles.size) {
+                tab.text = tabTitles[pos]
             }
         }.attach()
     }

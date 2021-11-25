@@ -5,7 +5,7 @@
     <string name="nav_header_subtitle">android.studio@android.com</string>
     <string name="nav_header_desc">Navigation header</string>
 
-    <string name="menu_current">현재위치</string>
+    <string name="menu_current">공기질</string>
     <string name="menu_search">주소검색</string>
     <string name="menu_select_address">주소선택</string>
     <string name="menu_yebo">예보정보</string>
@@ -90,6 +90,7 @@
     <string name="label_screen_search_address">주소검색</string>
     <string name="label_screen_settings">설정</string>
     <string name="label_screen_forecast">예보정보</string>
+    <string name="label_screen_informative">유용한사이트</string>
 
     <!-- Settings -->
     <string name="setting_key_new_address">KEY_NEW_ADDRESS</string>
@@ -104,5 +105,17 @@
     <string name="pager_button_o3">오존</string>
 
     <string name="forecast_notification_o3">오존은 4월15일부터 10월15일 기간에만 제공됩니다.</string>
+
+    <!-- Informative sites -->
+    <string name="informative_url_null_school">https://earth.nullschool.net/#current/particulates/surface/level/overlay=pm10/orthographic=-233.47,40.95,1034</string>
+    <string name="informative_url_kaq">http://www.kaq.or.kr/m.html#anima</string>
+    <string name="informative_url_tenki">http://www.tenki.jp/particulate_matter/</string>
+    <string name="informative_url_aqi">http://aqicn.org/here</string>
+
+    <string name="informative_from_text_null_school">* earth.nullschool.net에서 제공하는 정보입니다.
+  실시간 대기의 흐름을 확인 할 수 있습니다.</string>
+    <string name="informative_from_text_kaq">* 위 자료는 안양대학교 기후융합연구소에서 제공하는 예측자료이며 실시간으로 측정된 자료는 아닙니다.</string>
+    <string name="informative_from_text_tenki">* 일본 기상협회에서 제공하는 정보입니다.</string>
+    <string name="informative_from_text_aqi">* 두손가락으로 드래그하여 이동할 수 있습니다.</string>
 
 </resources>
