@@ -117,5 +117,6 @@
     <string name="informative_from_text_kaq">* 위 자료는 안양대학교 기후융합연구소에서 제공하는 예측자료이며 실시간으로 측정된 자료는 아닙니다.</string>
     <string name="informative_from_text_tenki">* 일본 기상협회에서 제공하는 정보입니다.</string>
     <string name="informative_from_text_aqi">* 두손가락으로 드래그하여 이동할 수 있습니다.</string>
+    <string name="message_for_back_pressed">한번 더 뒤로가기를 누르면 종료됩니다.</string>
 
 </resources>

@@ -7,4 +7,6 @@ object Constants {
     const val FORCE_GPS = "현재위치"
 
     const val TIMEZONE_SEOUL = "Asia/Seoul"
+
+    const val BACK_PRESSED_INTERVAL: Int = 2000
 }

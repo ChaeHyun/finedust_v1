@@ -4,10 +4,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import ch.breatheinandout.R
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.viewpager2.widget.ViewPager2
+import ch.breatheinandout.common.Constants
 import ch.breatheinandout.domain.forecast.O3
 import ch.breatheinandout.domain.forecast.PM10
 import ch.breatheinandout.domain.forecast.PM25
@@ -25,6 +28,26 @@ class ForecastFragment : Fragment() {
     private lateinit var viewPager: ViewPager2
 
     private val tabTitles = listOf(PM10.code, PM25.code, O3.code)
+    private var backPressedTime : Long = 0
+    private val callback: OnBackPressedCallback = object : OnBackPressedCallback(true) {
+        override fun handleOnBackPressed() {
+            try {
+                val currentTime = System.currentTimeMillis()
+                val intervalTime = currentTime - backPressedTime
+
+                if (intervalTime in 0..Constants.BACK_PRESSED_INTERVAL) {
+                    isEnabled = false
+                    requireActivity().onBackPressed()
+                }
+                else {
+                    backPressedTime = currentTime
+                    Toast.makeText(requireContext(), getString(R.string.message_for_back_pressed), Toast.LENGTH_SHORT).show()
+                }
+            } catch (ie : IllegalStateException) {
+                Logger.e("Failed to get the context from requireContext()")
+            }
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -36,6 +59,7 @@ class ForecastFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, callback)
         viewModel.forecastLiveData.observe(viewLifecycleOwner, {
             Logger.v("Check Group -> $it")
 
@@ -47,6 +71,7 @@ class ForecastFragment : Fragment() {
             val tabLayout: TabLayout = view.findViewById(R.id.tab_layout)
             linkTabLayoutAndViewPager(tabLayout)
         })
+
     }
 
     override fun onStart() {
@@ -61,6 +86,4 @@ class ForecastFragment : Fragment() {
             }
         }.attach()
     }
-
-
 }

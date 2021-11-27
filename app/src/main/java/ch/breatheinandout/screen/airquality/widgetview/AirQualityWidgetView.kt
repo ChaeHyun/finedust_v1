@@ -25,4 +25,7 @@ abstract class AirQualityWidgetView(
     abstract fun showToastMessage(message: String)
 
     abstract fun resetToolbarColor()
+
+    abstract fun isDrawerOpen(): Boolean
+    abstract fun closeDrawer()
 }

@@ -131,10 +131,10 @@ class AirQualityViewModel @Inject constructor(
                 when (result.message) {
                     UpdateLocationUseCase.FAIL_ACTIVATE_GPS -> {
                         // TODO: Ask the user to turn on the gps feature.
-                        postEvent(Toast("GPS 기능을 켜주세요."))
+                        postEvent(ToastMessage("GPS 기능을 켜주세요."))
                     }
                     UpdateLocationUseCase.FAIL_LOCATION_HANDLER -> {
-                        postEvent(Toast("위치정보 권한허용이 필요합니다."))
+                        postEvent(ToastMessage("위치정보 권한허용이 필요합니다."))
                         postEvent(Permission(PermissionMember.FineLocation))
                     }
                 }

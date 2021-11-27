@@ -14,9 +14,9 @@ import ch.breatheinandout.screen.widgetview.WidgetViewFactory
 import com.google.android.material.navigation.NavigationView
 
 class NavDrawerWidgetViewImpl(
-    private val inflater: LayoutInflater,
-    private val parent: ViewGroup?,
-    private val widgetViewFactory: WidgetViewFactory
+    inflater: LayoutInflater,
+    parent: ViewGroup?,
+    widgetViewFactory: WidgetViewFactory
 ) : NavDrawerWidgetView(inflater, parent, R.layout.activity_main) {
 
     private val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)

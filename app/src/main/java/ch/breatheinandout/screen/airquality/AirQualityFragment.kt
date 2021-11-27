@@ -5,9 +5,11 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.viewModels
 import ch.breatheinandout.R
 import ch.breatheinandout.common.Constants
+import ch.breatheinandout.common.Constants.BACK_PRESSED_INTERVAL
 import ch.breatheinandout.common.event.EventObserver
 import ch.breatheinandout.common.utils.FeatureAvailability
 import ch.breatheinandout.common.permissions.PermissionMember
@@ -31,6 +33,23 @@ class AirQualityFragment : Fragment(), AirQualityWidgetView.Listener ,Permission
     private val viewModel : AirQualityViewModel by viewModels()
     private lateinit var widgetView: AirQualityWidgetView
 
+    private var backPressedTime : Long = 0
+    private val callback: OnBackPressedCallback = object : OnBackPressedCallback(true) {
+        override fun handleOnBackPressed() {
+            val currentTime = System.currentTimeMillis()
+            val intervalTime = currentTime - backPressedTime
+
+            if (intervalTime in 0..BACK_PRESSED_INTERVAL) {
+                isEnabled = false
+                requireActivity().onBackPressed()
+            }
+            else {
+                backPressedTime = currentTime
+                consumeEvent(ToastMessage(getString(R.string.message_for_back_pressed)))
+            }
+        }
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
@@ -43,6 +62,7 @@ class AirQualityFragment : Fragment(), AirQualityWidgetView.Listener ,Permission
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         Logger.v("onViewCreated()")
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, callback)
         lifecycle.addObserver(viewModel)
 
         viewModel.viewState.observe(viewLifecycleOwner, { state -> render(state) })
@@ -52,6 +72,7 @@ class AirQualityFragment : Fragment(), AirQualityWidgetView.Listener ,Permission
         Logger.i("check(SearchedAddress) -> $argAddress")
         viewModel.getLocation(argAddress)
     }
+
 
     private fun getAddressFromBundle(key: String): SearchedAddress? {
         if (arguments != null && requireArguments().containsKey(key)) {
@@ -72,6 +93,9 @@ class AirQualityFragment : Fragment(), AirQualityWidgetView.Listener ,Permission
         permissionRequester.unregisterListener(this)
         widgetView.unregisterListener(this)
         widgetView.resetToolbarColor()
+
+        // onBackPressedCallback detach
+//        callback.remove()
     }
 
     private fun render(viewState: AirQualityViewState) {
@@ -93,7 +117,7 @@ class AirQualityFragment : Fragment(), AirQualityWidgetView.Listener ,Permission
             is Permission -> {
                 requestPermission(event.permission)
             }
-            is Toast -> {
+            is ToastMessage -> {
                 widgetView.showToastMessage(event.message)
             }
         }

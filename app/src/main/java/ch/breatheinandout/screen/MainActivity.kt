@@ -3,6 +3,7 @@ package ch.breatheinandout.screen
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.WindowManager
+import android.widget.Toast
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
@@ -24,7 +25,6 @@ class MainActivity : BaseActivity(), NavDrawerHelper, Listener {
     @Inject lateinit var screenNavigator: ScreenNavigator
 
     private lateinit var widgetView: NavDrawerWidgetView
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -56,6 +56,14 @@ class MainActivity : BaseActivity(), NavDrawerHelper, Listener {
     override fun onStop() {
         super.onStop()
         widgetView.unregisterListener(this)
+    }
+
+    override fun onBackPressed() {
+        if (isDrawerOpen()) {
+            closeDrawer()
+        } else {
+            super.onBackPressed()
+        }
     }
 
     override fun onRequestPermissionsResult(
@@ -97,5 +105,13 @@ class MainActivity : BaseActivity(), NavDrawerHelper, Listener {
             addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
             statusBarColor = resId
         }
+    }
+
+    override fun isDrawerOpen(): Boolean {
+        return widgetView.isDrawerOpen()
+    }
+
+    override fun closeDrawer() {
+        widgetView.closeDrawer()
     }
 }

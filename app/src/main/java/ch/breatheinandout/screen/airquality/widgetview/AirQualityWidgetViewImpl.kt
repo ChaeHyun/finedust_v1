@@ -12,14 +12,13 @@ import ch.breatheinandout.R
 import ch.breatheinandout.domain.airquality.model.*
 import ch.breatheinandout.screen.airquality.*
 import ch.breatheinandout.screen.navdrawer.NavDrawerHelper
-import com.orhanobut.logger.Logger
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class AirQualityWidgetViewImpl constructor(
-    private val inflater: LayoutInflater,
-    private val parent: ViewGroup?,
+    inflater: LayoutInflater,
+    parent: ViewGroup?,
     private val navDrawerHelper: NavDrawerHelper    // in order to propagate orders to NavDrawer
 ) : AirQualityWidgetView(inflater, parent, R.layout.fragment_airquality) {
 
@@ -31,14 +30,14 @@ class AirQualityWidgetViewImpl constructor(
     private val textLocation: TextView = findViewById(R.id.text_content_location)
     private val textStation: TextView = findViewById(R.id.text_content_station)
 
-    private data class AirQualityFactor(val img: ImageView, val value: TextView)
-    private val khai: AirQualityFactor = AirQualityFactor(findViewById(R.id.img_khai), findViewById(R.id.text_value_khai))
-    private val pm10: AirQualityFactor = AirQualityFactor(findViewById(R.id.img_pm10), findViewById(R.id.text_value_pm10))
-    private val pm25: AirQualityFactor = AirQualityFactor(findViewById(R.id.img_pm25), findViewById(R.id.text_value_pm25))
-    private val o3: AirQualityFactor = AirQualityFactor(findViewById(R.id.img_o3), findViewById(R.id.text_value_o3))
-    private val no2: AirQualityFactor = AirQualityFactor(findViewById(R.id.img_no2), findViewById(R.id.text_value_no2))
-    private val co: AirQualityFactor = AirQualityFactor(findViewById(R.id.img_co), findViewById(R.id.text_value_co))
-    private val so2: AirQualityFactor = AirQualityFactor(findViewById(R.id.img_so2), findViewById(R.id.text_value_so2))
+    private data class AirQualityFactor(val img: ImageView, val value: TextView, val scale: TextView?)
+    private val khai: AirQualityFactor = AirQualityFactor(findViewById(R.id.img_khai), findViewById(R.id.text_value_khai), findViewById(R.id.text_gram_general))
+    private val pm10: AirQualityFactor = AirQualityFactor(findViewById(R.id.img_pm10), findViewById(R.id.text_value_pm10), findViewById(R.id.text_gram_pm10))
+    private val pm25: AirQualityFactor = AirQualityFactor(findViewById(R.id.img_pm25), findViewById(R.id.text_value_pm25), findViewById(R.id.text_gram_pm25))
+    private val o3: AirQualityFactor = AirQualityFactor(findViewById(R.id.img_o3), findViewById(R.id.text_value_o3), null)
+    private val no2: AirQualityFactor = AirQualityFactor(findViewById(R.id.img_no2), findViewById(R.id.text_value_no2), null)
+    private val co: AirQualityFactor = AirQualityFactor(findViewById(R.id.img_co), findViewById(R.id.text_value_co), null)
+    private val so2: AirQualityFactor = AirQualityFactor(findViewById(R.id.img_so2), findViewById(R.id.text_value_so2), null)
     private val airQualityFactors = listOf(pm10, pm25, o3, co, no2, so2)
 
     init {
@@ -106,6 +105,10 @@ class AirQualityWidgetViewImpl constructor(
         navDrawerHelper.applyStatusBarColor(DefaultColor.defaultColor[1])
     }
 
+    override fun isDrawerOpen(): Boolean = navDrawerHelper.isDrawerOpen()
+
+    override fun closeDrawer() = navDrawerHelper.closeDrawer()
+
     override fun showToastMessage(message: String) {
         Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show()
     }
@@ -114,10 +117,12 @@ class AirQualityWidgetViewImpl constructor(
         val grade = parseGradeStr(gradeStr)
         factor.value.setTextColor(TextColor.textColor[grade])
         factor.value.text = valueStr
+        factor.scale?.let { it.setTextColor(TextColor.textColor[grade]) }
         setGradeImageResource(factor.img, type, grade)
 
-        if (factor.value.id == R.id.text_value_khai)
+        if (factor.value.id == R.id.text_value_khai) {
             changeToolbarColor(grade)
+        }
     }
 
     private fun setGradeImageResource(img: ImageView, type: ImgType, grade: Int) {
