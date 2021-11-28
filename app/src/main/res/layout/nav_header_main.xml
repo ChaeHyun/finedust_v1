@@ -19,21 +19,20 @@
         android:gravity="center_vertical|end">
         <ImageView
             android:id="@+id/imageView"
-            android:layout_width="50dp"
+            android:layout_width="60dp"
             android:layout_height="wrap_content"
             android:contentDescription="@string/missing_img"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="60dp"
             android:layout_marginBottom="5dp"
             android:src="@drawable/img_mask"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp" />
+            android:layout_marginLeft="10dp" />
     </LinearLayout>
 
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
+        android:layout_marginStart="15dp"
         android:layout_marginEnd="8dp"
         android:padding="8dp"
         android:gravity="center_vertical|end">

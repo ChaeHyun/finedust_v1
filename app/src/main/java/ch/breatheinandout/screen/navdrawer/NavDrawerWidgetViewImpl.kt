@@ -12,6 +12,7 @@ import ch.breatheinandout.R
 import ch.breatheinandout.screen.toolbar.ToolbarWidgetView
 import ch.breatheinandout.screen.widgetview.WidgetViewFactory
 import com.google.android.material.navigation.NavigationView
+import com.orhanobut.logger.Logger
 
 class NavDrawerWidgetViewImpl(
     inflater: LayoutInflater,
@@ -25,6 +26,19 @@ class NavDrawerWidgetViewImpl(
 
     private val toolbarContainer: Toolbar = findViewById(R.id.toolbar_container)      // This is parent, the container frame of the toolbar
     private val toolbarWidgetView: ToolbarWidgetView = widgetViewFactory.getToolbarWidgetView(toolbarContainer)
+
+    private val toolbarMenuItemClickListener = Toolbar.OnMenuItemClickListener { item ->
+        when (item.itemId) {
+            R.id.menu_action_settings -> {
+                getListeners().map { it.onNavItemClicked(DrawerItem.Setting) }
+            }
+            R.id.menu_action_test -> {
+                Logger.d("  option item -> $item , ${item.itemId}")
+                toolbarWidgetView.clearOptionsMenuMenu()
+            }
+        }
+        false
+    }
 
     init {
         toolbarContainer.setContentInsetsRelative(0, 0)
@@ -59,6 +73,8 @@ class NavDrawerWidgetViewImpl(
         else
             toolbarContainer.visibility = View.GONE
     }
+    override fun setupToolbarOptionsMenu() = toolbarWidgetView.setupOptionsMenu(R.menu.main, toolbarMenuItemClickListener)
+    override fun clearToolbarOptionsMenu() = toolbarWidgetView.clearOptionsMenuMenu()
 
     // ------- Features of NavDrawer -------
     override fun isDrawerOpen(): Boolean = drawerLayout.isOpen

@@ -3,7 +3,6 @@ package ch.breatheinandout.screen
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.WindowManager
-import android.widget.Toast
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
@@ -87,17 +86,11 @@ class MainActivity : BaseActivity(), NavDrawerHelper, Listener {
     }
 
     // ------- Features of Toolbar -------
-    override fun setToolbarTitle(title: String) {
-        widgetView.setToolbarTitle(title)
-    }
-
-    override fun setToolbarBackgroundColor(color: ColorDrawable) {
-        widgetView.setToolbarBackgroundColor(color)
-    }
-
-    override fun setToolbarVisibility(visible: Boolean) {
-        widgetView.setToolbarVisibility(visible)
-    }
+    override fun setToolbarTitle(title: String) = widgetView.setToolbarTitle(title)
+    override fun setToolbarBackgroundColor(color: ColorDrawable) = widgetView.setToolbarBackgroundColor(color)
+    override fun setToolbarVisibility(visible: Boolean) = widgetView.setToolbarVisibility(visible)
+    override fun setupToolbarOptionsMenu() = widgetView.setupToolbarOptionsMenu()
+    override fun clearToolbarOptionsMenu() = widgetView.clearToolbarOptionsMenu()
 
     override fun applyStatusBarColor(resId: Int) {
         val window = this.window
@@ -107,11 +100,7 @@ class MainActivity : BaseActivity(), NavDrawerHelper, Listener {
         }
     }
 
-    override fun isDrawerOpen(): Boolean {
-        return widgetView.isDrawerOpen()
-    }
+    override fun isDrawerOpen(): Boolean = widgetView.isDrawerOpen()
+    override fun closeDrawer() = widgetView.closeDrawer()
 
-    override fun closeDrawer() {
-        widgetView.closeDrawer()
-    }
 }

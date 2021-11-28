@@ -130,7 +130,6 @@ class AirQualityViewModel @Inject constructor(
                 Logger.v("Update Location failed -> ${result.message}")
                 when (result.message) {
                     UpdateLocationUseCase.FAIL_ACTIVATE_GPS -> {
-                        // TODO: Ask the user to turn on the gps feature.
                         postEvent(ToastMessage("GPS 기능을 켜주세요."))
                     }
                     UpdateLocationUseCase.FAIL_LOCATION_HANDLER -> {

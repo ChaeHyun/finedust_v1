@@ -30,7 +30,7 @@ class AirQualityWidgetViewImpl constructor(
     private val textLocation: TextView = findViewById(R.id.text_content_location)
     private val textStation: TextView = findViewById(R.id.text_content_station)
 
-    private data class AirQualityFactor(val img: ImageView, val value: TextView, val scale: TextView?)
+    private data class AirQualityFactor(val img: ImageView, val value: TextView, val unit: TextView?)
     private val khai: AirQualityFactor = AirQualityFactor(findViewById(R.id.img_khai), findViewById(R.id.text_value_khai), findViewById(R.id.text_gram_general))
     private val pm10: AirQualityFactor = AirQualityFactor(findViewById(R.id.img_pm10), findViewById(R.id.text_value_pm10), findViewById(R.id.text_gram_pm10))
     private val pm25: AirQualityFactor = AirQualityFactor(findViewById(R.id.img_pm25), findViewById(R.id.text_value_pm25), findViewById(R.id.text_gram_pm25))
@@ -50,7 +50,7 @@ class AirQualityWidgetViewImpl constructor(
         }
 
         clickableLayout.setOnClickListener {
-            getListeners().forEach { it.onClickButton() }
+            getListeners().forEach { it.onShowDialogClicked() }
         }
     }
 
@@ -88,25 +88,18 @@ class AirQualityWidgetViewImpl constructor(
         swipeRefresh.isRefreshing = false
     }
 
-    override fun setToolbarTitle(title: String) {
-        navDrawerHelper.setToolbarTitle(title)
-    }
-
-    override fun setToolbarBackgroundColor(color: ColorDrawable) {
-        navDrawerHelper.setToolbarBackgroundColor(color)
-    }
-
-    override fun setToolbarVisibility(visible: Boolean) {
-        navDrawerHelper.setToolbarVisibility(visible)
-    }
-
+    override fun setToolbarTitle(title: String) = navDrawerHelper.setToolbarTitle(title)
+    override fun setToolbarBackgroundColor(color: ColorDrawable) = navDrawerHelper.setToolbarBackgroundColor(color)
+    override fun setToolbarVisibility(visible: Boolean) = navDrawerHelper.setToolbarVisibility(visible)
     override fun resetToolbarColor() {
         setToolbarBackgroundColor(ColorDrawable(DefaultColor.defaultColor[0]))
         navDrawerHelper.applyStatusBarColor(DefaultColor.defaultColor[1])
     }
 
-    override fun isDrawerOpen(): Boolean = navDrawerHelper.isDrawerOpen()
+    override fun setupToolbarOptionsMenu() = navDrawerHelper.setupToolbarOptionsMenu()
+    override fun clearToolbarOptionsMenu() = navDrawerHelper.clearToolbarOptionsMenu()
 
+    override fun isDrawerOpen(): Boolean = navDrawerHelper.isDrawerOpen()
     override fun closeDrawer() = navDrawerHelper.closeDrawer()
 
     override fun showToastMessage(message: String) {
@@ -117,7 +110,7 @@ class AirQualityWidgetViewImpl constructor(
         val grade = parseGradeStr(gradeStr)
         factor.value.setTextColor(TextColor.textColor[grade])
         factor.value.text = valueStr
-        factor.scale?.let { it.setTextColor(TextColor.textColor[grade]) }
+        factor.unit?.let { it.setTextColor(TextColor.textColor[grade]) }
         setGradeImageResource(factor.img, type, grade)
 
         if (factor.value.id == R.id.text_value_khai) {

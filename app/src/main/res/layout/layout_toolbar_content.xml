@@ -7,4 +7,6 @@
     android:layout_width="match_parent"
     android:fadingEdge="vertical"
     android:background="?attr/colorPrimary"
+    android:elevation="4dp"
+    android:theme="@style/ThemeOverlay.Toolbar"
     app:popupTheme="@style/ThemeOverlay.Toolbar" />

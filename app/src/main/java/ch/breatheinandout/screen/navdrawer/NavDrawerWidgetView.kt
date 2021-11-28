@@ -42,5 +42,8 @@ abstract class NavDrawerWidgetView(
 
     abstract fun getToolbarWidgetView(): Toolbar
 
+    abstract fun setupToolbarOptionsMenu()
+    abstract fun clearToolbarOptionsMenu()
+
 }
 

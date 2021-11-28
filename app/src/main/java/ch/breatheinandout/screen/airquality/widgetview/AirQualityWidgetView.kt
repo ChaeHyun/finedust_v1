@@ -14,7 +14,7 @@ abstract class AirQualityWidgetView(
     @LayoutRes private val layoutId: Int
 ) : BaseObservableWidgetView<AirQualityWidgetView.Listener>(layoutInflater, parent, layoutId), ToolbarHelper {
     interface Listener {
-        fun onClickButton()
+        fun onShowDialogClicked()
         fun onTriggerSwipeRefresh()
     }
 
@@ -25,6 +25,8 @@ abstract class AirQualityWidgetView(
     abstract fun showToastMessage(message: String)
 
     abstract fun resetToolbarColor()
+    abstract fun setupToolbarOptionsMenu()
+    abstract fun clearToolbarOptionsMenu()
 
     abstract fun isDrawerOpen(): Boolean
     abstract fun closeDrawer()

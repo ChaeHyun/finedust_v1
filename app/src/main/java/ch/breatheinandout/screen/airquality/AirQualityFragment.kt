@@ -1,10 +1,8 @@
 package ch.breatheinandout.screen.airquality
 
 import android.os.Bundle
+import android.view.*
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.viewModels
 import ch.breatheinandout.R
@@ -55,7 +53,6 @@ class AirQualityFragment : Fragment(), AirQualityWidgetView.Listener ,Permission
         savedInstanceState: Bundle?,
     ): View {
         widgetView = widgetViewFactory.createAirQualityWidgetView(container)
-        // Inflate the layout for this fragment
         return widgetView.getRootView()
     }
 
@@ -73,7 +70,6 @@ class AirQualityFragment : Fragment(), AirQualityWidgetView.Listener ,Permission
         viewModel.getLocation(argAddress)
     }
 
-
     private fun getAddressFromBundle(key: String): SearchedAddress? {
         if (arguments != null && requireArguments().containsKey(key)) {
             return requireArguments().getSerializable(key) as SearchedAddress
@@ -84,6 +80,7 @@ class AirQualityFragment : Fragment(), AirQualityWidgetView.Listener ,Permission
     override fun onStart() {
         super.onStart()
         widgetView.setToolbarVisibility(true)
+        widgetView.setupToolbarOptionsMenu()
         widgetView.registerListener(this)
         permissionRequester.registerListener(this)
     }
@@ -93,9 +90,7 @@ class AirQualityFragment : Fragment(), AirQualityWidgetView.Listener ,Permission
         permissionRequester.unregisterListener(this)
         widgetView.unregisterListener(this)
         widgetView.resetToolbarColor()
-
-        // onBackPressedCallback detach
-//        callback.remove()
+        widgetView.clearToolbarOptionsMenu()
     }
 
     private fun render(viewState: AirQualityViewState) {
@@ -123,8 +118,7 @@ class AirQualityFragment : Fragment(), AirQualityWidgetView.Listener ,Permission
         }
     }
 
-    // when the Test button clicked
-    override fun onClickButton() {
+    override fun onShowDialogClicked() {
         screenNavigator.showDialog(R.id.AddressListDialog)
     }
 
@@ -133,20 +127,6 @@ class AirQualityFragment : Fragment(), AirQualityWidgetView.Listener ,Permission
         viewModel.getLocation(getAddressFromBundle(Constants.KEY_SELECTED_ADDRESS))
     }
 
-
-    // TODO: checking GPS is ON or OFF.
-    private fun getLastLocation(address: SearchedAddress?) {
-        if (permissionRequester.hasPermission(PermissionMember.FineLocation)) {
-            if (!featureAvailability.isGpsFeatureOn()) {
-                widgetView.showToastMessage("PLEASE TURN ON THE GPS.")
-                return
-            }
-            viewModel.getLocation(address)
-        } else {
-            // Request Location Permission
-            permissionRequester.requestPermission(PermissionMember.FineLocation, PermissionMember.REQUEST_CODE_PERMISSION)
-        }
-    }
     private fun requestPermission(permission: PermissionMember) {
         if (!permissionRequester.hasPermission(permission)) {
             permissionRequester.requestPermission(permission, PermissionMember.REQUEST_CODE_PERMISSION)
@@ -162,7 +142,7 @@ class AirQualityFragment : Fragment(), AirQualityWidgetView.Listener ,Permission
         result.doNotAsk.map { Logger.v("# DoNotAsk: ${it.getAndroidPermission()}") }
 
         if (result.granted.contains(PermissionMember.FineLocation)) {
-            Logger.d("권한이 허용 됐을 때, 바로 시작하기.")
+            // Start the main feature as soon as acquired the permission of FineLocation.
             viewModel.getLocation(null)
         }
         if (result.denied.contains(PermissionMember.FineLocation)) {
