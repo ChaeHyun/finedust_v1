@@ -21,6 +21,7 @@ class GetForecastUseCase @Inject constructor(
     suspend fun getForecastFromLocal() : ForecastInfoGroup? {
         try {
             val currentTimeString = currentTime()
+            Logger.d("currentTimeString -> $currentTimeString")
             val retrieved: List<ForecastInfo> = readForecastUseCase.read(currentTimeString)
 
             return if (retrieved.isNotEmpty()) {
@@ -57,6 +58,12 @@ class GetForecastUseCase @Inject constructor(
     private fun currentTime(): String {
         val nowWithZeroMinute: Calendar = Calendar.getInstance(timeZoneKorea)
         nowWithZeroMinute.set(Calendar.MINUTE, 0)       // cuz "yyyy-MM-dd HH:00" is the format of the Database accepts
+
+        val hour = nowWithZeroMinute.get(Calendar.HOUR_OF_DAY)
+        if (hour <= 5) {
+            nowWithZeroMinute.add(Calendar.DATE, -1)
+            nowWithZeroMinute.set(Calendar.HOUR_OF_DAY, 23)
+        }
         return dateFormat.format(nowWithZeroMinute.time)
     }
 }

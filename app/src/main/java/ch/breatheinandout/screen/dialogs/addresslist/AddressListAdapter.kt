@@ -1,4 +1,4 @@
-package ch.breatheinandout.screen.dialogs
+package ch.breatheinandout.screen.dialogs.addresslist
 
 import android.view.LayoutInflater
 import android.view.View

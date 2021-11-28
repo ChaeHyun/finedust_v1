@@ -31,20 +31,17 @@ class ForecastFragment : Fragment() {
     private var backPressedTime : Long = 0
     private val callback: OnBackPressedCallback = object : OnBackPressedCallback(true) {
         override fun handleOnBackPressed() {
-            try {
-                val currentTime = System.currentTimeMillis()
-                val intervalTime = currentTime - backPressedTime
+            val currentTime = System.currentTimeMillis()
+            val intervalTime = currentTime - backPressedTime
 
-                if (intervalTime in 0..Constants.BACK_PRESSED_INTERVAL) {
-                    isEnabled = false
-                    requireActivity().onBackPressed()
-                }
-                else {
-                    backPressedTime = currentTime
-                    Toast.makeText(requireContext(), getString(R.string.message_for_back_pressed), Toast.LENGTH_SHORT).show()
-                }
-            } catch (ie : IllegalStateException) {
-                Logger.e("Failed to get the context from requireContext()")
+            if (intervalTime in 0..Constants.BACK_PRESSED_INTERVAL) {
+                isEnabled = false
+                requireActivity().onBackPressed()
+                activity?.onBackPressed()
+            }
+            else {
+                backPressedTime = currentTime
+                activity?.let { Toast.makeText(it, getString(R.string.message_for_back_pressed), Toast.LENGTH_SHORT).show() }
             }
         }
     }

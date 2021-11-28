@@ -38,7 +38,7 @@
 
     <dialog
         android:id="@+id/AddressListDialog"
-        android:name="ch.breatheinandout.screen.dialogs.AddressListDialog"
+        android:name="ch.breatheinandout.screen.dialogs.addresslist.AddressListDialog"
         android:label="AddressListDialog"
         tools:layout="@layout/dialog_address_list">
         <action
@@ -47,6 +47,12 @@
             app:popUpTo="@id/AirQualityFragment"
             app:popUpToInclusive="true" />
     </dialog>
+
+    <dialog
+        android:id="@+id/AppInfoDialog"
+        android:name="ch.breatheinandout.screen.dialogs.AppInfoDialog"
+        android:label="AppInfoDialog"
+        tools:layout="@layout/dialog_app_info" />
 
     <fragment
         android:id="@+id/SettingsFragment"
@@ -75,6 +81,7 @@
     <fragment
         android:id="@+id/InformativeFragment"
         android:name="ch.breatheinandout.screen.informative.InformativeFragment"
-        android:label="@string/label_screen_informative">
+        android:label="@string/label_screen_informative"
+        tools:layout="@layout/fragment_informative">
     </fragment>
 </navigation>

@@ -29,6 +29,7 @@ abstract class NavDrawerWidgetView(
         object Forecast : DrawerItem(R.id.ForecastFragment)
         object Informative : DrawerItem(R.id.InformativeFragment)
         object Setting : DrawerItem(R.id.SettingsFragment)
+        object AppInfoDialog : DrawerItem(R.id.AppInfoDialog)
     }
 
     abstract fun isDrawerOpen(): Boolean

@@ -8,6 +8,7 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
 import ch.breatheinandout.R
 import ch.breatheinandout.common.permissions.PermissionRequester
+import ch.breatheinandout.screen.dialogs.AppInfoDialog
 import ch.breatheinandout.screen.navdrawer.NavDrawerHelper
 import ch.breatheinandout.screen.navdrawer.NavDrawerWidgetView
 import ch.breatheinandout.screen.navdrawer.NavDrawerWidgetView.*
@@ -82,6 +83,10 @@ class MainActivity : BaseActivity(), NavDrawerHelper, Listener {
             DrawerItem.SelectAddress -> { screenNavigator.showDialog(item.resId) }
             DrawerItem.Forecast, DrawerItem.Home, DrawerItem.Search,
             DrawerItem.Informative, DrawerItem.Setting -> { screenNavigator.navigate(item.resId) }
+            DrawerItem.AppInfoDialog -> {
+                Logger.d("AppInfoDialog selected")
+                AppInfoDialog().show(supportFragmentManager, "AppInfoDialog")
+            }
         }
     }
 

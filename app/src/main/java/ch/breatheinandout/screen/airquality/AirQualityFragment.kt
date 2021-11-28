@@ -39,7 +39,7 @@ class AirQualityFragment : Fragment(), AirQualityWidgetView.Listener ,Permission
 
             if (intervalTime in 0..BACK_PRESSED_INTERVAL) {
                 isEnabled = false
-                requireActivity().onBackPressed()
+                activity?.onBackPressed()
             }
             else {
                 backPressedTime = currentTime

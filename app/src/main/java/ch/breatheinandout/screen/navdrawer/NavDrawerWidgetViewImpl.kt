@@ -32,9 +32,10 @@ class NavDrawerWidgetViewImpl(
             R.id.menu_action_settings -> {
                 getListeners().map { it.onNavItemClicked(DrawerItem.Setting) }
             }
-            R.id.menu_action_test -> {
+            R.id.menu_action_app_info -> {
                 Logger.d("  option item -> $item , ${item.itemId}")
-                toolbarWidgetView.clearOptionsMenuMenu()
+//                toolbarWidgetView.clearOptionsMenuMenu()
+                getListeners().map { it.onNavItemClicked(DrawerItem.AppInfoDialog) }
             }
         }
         false

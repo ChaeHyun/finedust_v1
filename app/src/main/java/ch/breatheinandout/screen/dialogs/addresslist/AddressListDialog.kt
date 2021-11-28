@@ -1,4 +1,4 @@
-package ch.breatheinandout.screen.dialogs
+package ch.breatheinandout.screen.dialogs.addresslist
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -16,7 +16,6 @@ import ch.breatheinandout.domain.searchaddress.model.SearchedAddress
 import ch.breatheinandout.screen.ScreenNavigator
 import ch.breatheinandout.screen.searchaddress.*
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.orhanobut.logger.Logger
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
