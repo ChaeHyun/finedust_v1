@@ -9,4 +9,6 @@ object Constants {
     const val TIMEZONE_SEOUL = "Asia/Seoul"
 
     const val BACK_PRESSED_INTERVAL: Int = 2000
+
+    const val TOAST_OFFSET_Y = 250
 }

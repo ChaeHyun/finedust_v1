@@ -8,6 +8,7 @@ interface NavDrawerHelper {
 
     fun setToolbarVisibility(visible: Boolean)
     fun applyStatusBarColor(resId: Int)
+    fun resetToolbarColor()
 
     fun setupToolbarOptionsMenu()
     fun clearToolbarOptionsMenu()

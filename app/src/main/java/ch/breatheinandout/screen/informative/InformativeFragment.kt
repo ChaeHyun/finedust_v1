@@ -1,5 +1,6 @@
 package ch.breatheinandout.screen.informative
 
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -7,12 +8,17 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.widget.ViewPager2
 import ch.breatheinandout.R
+import ch.breatheinandout.screen.airquality.DefaultColor
+import ch.breatheinandout.screen.airquality.ToolbarColor
+import ch.breatheinandout.screen.widgetview.WidgetViewFactory
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class InformativeFragment : Fragment() {
+    @Inject lateinit var widgetViewFactory: WidgetViewFactory
 
     private lateinit var adapter: InformativePageAdapter
     private lateinit var viewPager: ViewPager2
@@ -41,6 +47,7 @@ class InformativeFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        widgetViewFactory.getNavDrawerHelper().resetToolbarColor()
         return inflater.inflate(R.layout.fragment_informative, container, false)
     }
 
@@ -65,4 +72,5 @@ class InformativeFragment : Fragment() {
             }
         }.attach()
     }
+
 }

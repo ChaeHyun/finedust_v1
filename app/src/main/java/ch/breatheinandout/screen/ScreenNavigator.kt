@@ -16,7 +16,7 @@ class ScreenNavigator constructor(
     private val className = ScreenNavigator::class.simpleName
     private lateinit var navController: NavController
 
-    private val dialogs: List<Int> = listOf(R.id.AddressListDialog)
+    private val dialogs: List<Int> = listOf(R.id.AddressListDialog, R.id.AppInfoDialog)
     private val topLevelDestinations: List<Int> = listOf(R.id.AirQualityFragment, R.id.ForecastFragment)
 
     fun initNavController(navHostId: Int) {
@@ -49,7 +49,6 @@ class ScreenNavigator constructor(
             navController.graph[R.id.ForecastFragment] -> {
                 fromForecastFragmentTo(target)
             }
-            // TODO : fromInformativeFragment
             navController.graph[R.id.InformativeFragment] -> {
                 fromInformativeFragmentTo(target)
             }

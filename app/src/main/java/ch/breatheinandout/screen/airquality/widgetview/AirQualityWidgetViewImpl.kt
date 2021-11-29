@@ -1,6 +1,7 @@
 package ch.breatheinandout.screen.airquality.widgetview
 
 import android.graphics.drawable.ColorDrawable
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,6 +10,7 @@ import android.widget.Toast
 import androidx.core.content.res.ResourcesCompat
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import ch.breatheinandout.R
+import ch.breatheinandout.common.Constants
 import ch.breatheinandout.domain.airquality.model.*
 import ch.breatheinandout.screen.airquality.*
 import ch.breatheinandout.screen.navdrawer.NavDrawerHelper
@@ -91,10 +93,7 @@ class AirQualityWidgetViewImpl constructor(
     override fun setToolbarTitle(title: String) = navDrawerHelper.setToolbarTitle(title)
     override fun setToolbarBackgroundColor(color: ColorDrawable) = navDrawerHelper.setToolbarBackgroundColor(color)
     override fun setToolbarVisibility(visible: Boolean) = navDrawerHelper.setToolbarVisibility(visible)
-    override fun resetToolbarColor() {
-        setToolbarBackgroundColor(ColorDrawable(DefaultColor.defaultColor[0]))
-        navDrawerHelper.applyStatusBarColor(DefaultColor.defaultColor[1])
-    }
+    override fun resetToolbarColor() = navDrawerHelper.resetToolbarColor()
 
     override fun setupToolbarOptionsMenu() = navDrawerHelper.setupToolbarOptionsMenu()
     override fun clearToolbarOptionsMenu() = navDrawerHelper.clearToolbarOptionsMenu()
@@ -103,7 +102,10 @@ class AirQualityWidgetViewImpl constructor(
     override fun closeDrawer() = navDrawerHelper.closeDrawer()
 
     override fun showToastMessage(message: String) {
-        Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show()
+        Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).apply {
+            setGravity(Gravity.CENTER, 0, Constants.TOAST_OFFSET_Y)
+            show()
+        }
     }
 
     private fun setTextColorAndImageResource(factor: AirQualityFactor, type: ImgType, gradeStr: String?, valueStr: String?) {

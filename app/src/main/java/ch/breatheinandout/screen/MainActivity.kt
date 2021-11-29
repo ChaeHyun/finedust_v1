@@ -3,12 +3,13 @@ package ch.breatheinandout.screen
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.WindowManager
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
 import ch.breatheinandout.R
 import ch.breatheinandout.common.permissions.PermissionRequester
-import ch.breatheinandout.screen.dialogs.AppInfoDialog
+import ch.breatheinandout.screen.airquality.DefaultColor
 import ch.breatheinandout.screen.navdrawer.NavDrawerHelper
 import ch.breatheinandout.screen.navdrawer.NavDrawerWidgetView
 import ch.breatheinandout.screen.navdrawer.NavDrawerWidgetView.*
@@ -16,6 +17,7 @@ import ch.breatheinandout.screen.widgetview.WidgetViewFactory
 import com.orhanobut.logger.Logger
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
+
 
 @AndroidEntryPoint
 class MainActivity : BaseActivity(), NavDrawerHelper, Listener {
@@ -25,14 +27,16 @@ class MainActivity : BaseActivity(), NavDrawerHelper, Listener {
     @Inject lateinit var screenNavigator: ScreenNavigator
 
     private lateinit var widgetView: NavDrawerWidgetView
+    private var isReady = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        installSplashScreen()
         widgetView = widgetViewFactory.createNavDrawerWidgetView(null)
         setContentView(widgetView.getRootView())
         syncToolbarAndDrawer()
         screenNavigator.initNavController(widgetView.getFrameLayout().id)
+
     }
 
     private fun syncToolbarAndDrawer() {
@@ -80,13 +84,9 @@ class MainActivity : BaseActivity(), NavDrawerHelper, Listener {
     override fun onNavItemClicked(item: DrawerItem) {
         Logger.v(" # [NavDrawerItem.Click] check -> ${item::class.simpleName}")
         when (item) {
-            DrawerItem.SelectAddress -> { screenNavigator.showDialog(item.resId) }
+            DrawerItem.SelectAddress, DrawerItem.AppInfoDialog -> { screenNavigator.showDialog(item.resId) }
             DrawerItem.Forecast, DrawerItem.Home, DrawerItem.Search,
             DrawerItem.Informative, DrawerItem.Setting -> { screenNavigator.navigate(item.resId) }
-            DrawerItem.AppInfoDialog -> {
-                Logger.d("AppInfoDialog selected")
-                AppInfoDialog().show(supportFragmentManager, "AppInfoDialog")
-            }
         }
     }
 
@@ -96,6 +96,10 @@ class MainActivity : BaseActivity(), NavDrawerHelper, Listener {
     override fun setToolbarVisibility(visible: Boolean) = widgetView.setToolbarVisibility(visible)
     override fun setupToolbarOptionsMenu() = widgetView.setupToolbarOptionsMenu()
     override fun clearToolbarOptionsMenu() = widgetView.clearToolbarOptionsMenu()
+    override fun resetToolbarColor() {
+        setToolbarBackgroundColor(ColorDrawable(DefaultColor.defaultColor[0]))
+        applyStatusBarColor(DefaultColor.defaultColor[1])
+    }
 
     override fun applyStatusBarColor(resId: Int) {
         val window = this.window

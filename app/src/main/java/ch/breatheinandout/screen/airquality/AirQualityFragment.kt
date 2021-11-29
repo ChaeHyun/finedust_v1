@@ -89,8 +89,12 @@ class AirQualityFragment : Fragment(), AirQualityWidgetView.Listener ,Permission
         super.onStop()
         permissionRequester.unregisterListener(this)
         widgetView.unregisterListener(this)
-        widgetView.resetToolbarColor()
         widgetView.clearToolbarOptionsMenu()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        widgetView.resetToolbarColor()
     }
 
     private fun render(viewState: AirQualityViewState) {

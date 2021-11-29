@@ -7,7 +7,7 @@ plugins {
 }
 
 android {
-    compileSdkVersion 30
+    compileSdkVersion 31
 
     defaultConfig {
         applicationId "ch.breatheinandout"
@@ -55,6 +55,7 @@ dependencies {
     implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.preference:preference-ktx:1.1.1'
+    implementation 'androidx.core:core-splashscreen:1.0.0-alpha02'
 
     def logger_version = '2.2.0'
     implementation "com.orhanobut:logger:$logger_version"

@@ -1,6 +1,7 @@
 package ch.breatheinandout.screen.dialogs.addresslist
 
 import android.os.Bundle
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -79,7 +80,10 @@ class AddressListDialog : DialogFragment() {
         if (position == 0) {
             bundle.putSerializable(Constants.KEY_SELECTED_ADDRESS, dummyOnTop[0])
         } else {
-            Toast.makeText(context, "${item.addressLine.umdName}으로 변경", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, "${item.addressLine.umdName}으로 변경", Toast.LENGTH_SHORT).apply {
+                setGravity(Gravity.CENTER, 0, Constants.TOAST_OFFSET_Y)
+                show()
+            }
             bundle.putSerializable(Constants.KEY_SELECTED_ADDRESS, item)
         }
         screenNavigator.navigateWithBundle(R.id.AirQualityFragment, bundle)

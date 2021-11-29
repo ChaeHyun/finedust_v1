@@ -67,6 +67,8 @@ class ForecastFragment : Fragment() {
 
             val tabLayout: TabLayout = view.findViewById(R.id.tab_layout)
             linkTabLayoutAndViewPager(tabLayout)
+            tabLayout.selectTab(tabLayout.getTabAt(1))      // To load the next page earlier.
+            tabLayout.selectTab(tabLayout.getTabAt(0))
         })
 
     }
