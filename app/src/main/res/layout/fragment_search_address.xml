@@ -11,9 +11,9 @@
         android:background="?attr/colorPrimary"
         android:elevation="4dp"
         android:fadingEdge="vertical"
+        android:theme="@style/ThemeOverlay.CustomSearchLayout"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:theme="@style/ThemeOverlay.CustomSearchLayout">
+        app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
             android:id="@+id/img_as_up"
@@ -29,6 +29,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:focusable="true"
             app:goIcon="@drawable/ic_check_24"
             app:searchIcon="@null"
             app:searchHintIcon="@null"

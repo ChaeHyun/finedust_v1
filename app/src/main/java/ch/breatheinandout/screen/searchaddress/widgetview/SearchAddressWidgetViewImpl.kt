@@ -39,10 +39,13 @@ class SearchAddressWidgetViewImpl(
         Toast.makeText(getContext(), item.addressLine.umdName, Toast.LENGTH_SHORT).show()
     }
 
-    private val popUpSoftKeyboard =  View.OnFocusChangeListener { _, hasFocus ->
+    private val popUpSoftKeyboard =  View.OnFocusChangeListener { view, hasFocus ->
         val imm : InputMethodManager = getContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+
         if (hasFocus) {
-            imm.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT, InputMethodManager.HIDE_IMPLICIT_ONLY)
+            val isShowing = imm.showSoftInput(view.findFocus(), InputMethodManager.SHOW_IMPLICIT)
+            if (!isShowing)
+                imm.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT, InputMethodManager.HIDE_IMPLICIT_ONLY)
         }
     }
 
