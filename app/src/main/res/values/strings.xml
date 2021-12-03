@@ -96,6 +96,14 @@
     <string name="setting_title_list_address">주소목록</string>
     <string name="setting_title_list_address_summary">저장된 주소 중 하나를 사용합니다.</string>
 
+    <string name="setting_title_etc">기타</string>
+    <string name="setting_key_ask_mail">KEY_ASK_MAIL</string>
+    <string name="setting_title_ask_mail">문의하기</string>
+    <string name="setting_title_ask_mail_summary">불편사항을 메일로 보내주세요.</string>
+    <string name="setting_key_recommend">KEY_RECOMMEND</string>
+    <string name="setting_title_recommend">추천하기</string>
+    <string name="setting_title_recommend_summary">들숨날숨 사용을 추천해보세요.</string>
+
     <!-- ForecastFragment -->
     <string name="pager_button_fine_dust">미세먼지</string>
     <string name="pager_button_ultra_fine_dust">초미세먼지</string>

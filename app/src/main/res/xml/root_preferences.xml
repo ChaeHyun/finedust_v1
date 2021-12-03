@@ -4,7 +4,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <PreferenceCategory
-        app:layout="@layout/layout_setting_title"
+        app:layout="@layout/layout_setting_title_for_address"
         app:allowDividerBelow="true">
 
         <Preference
@@ -18,6 +18,23 @@
             app:key="@string/setting_key_list_address"
             app:summary="@string/setting_title_list_address_summary"
             app:title="@string/setting_title_list_address"/>
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        app:layout="@layout/layout_setting_title_for_etc"
+        app:allowDividerBelow="true">
+        <Preference
+            app:icon="@drawable/ic_baseline_email_24"
+            app:title="@string/setting_title_ask_mail"
+            app:summary="@string/setting_title_ask_mail_summary"
+            app:key="@string/setting_key_ask_mail" />
+
+        <Preference
+            app:icon="@drawable/ic_baseline_thumb_up_24"
+            app:title="@string/setting_title_recommend"
+            app:summary="@string/setting_title_recommend_summary"
+            app:key="@string/setting_key_recommend" />
+
     </PreferenceCategory>
 
     <PreferenceCategory app:title="TEST"

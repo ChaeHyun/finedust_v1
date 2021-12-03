@@ -26,7 +26,7 @@
     </style>
 
     <style name="ThemeOverlay.AppBar" parent="ThemeOverlay.MaterialComponents.Dark.ActionBar" />
-    <style name="ThemeOverlay.Toolbar" parent="ThemeOverlay.MaterialComponents.Light" />
+    <style name="ThemeOverlay.Toolbar" parent="ThemeOverlay.MaterialComponents.Dark" />
 
     <style name="Theme.SettingScreenColorTheme" parent="PreferenceThemeOverlay">
         <item name="colorAccent">@color/darkGray</item>
