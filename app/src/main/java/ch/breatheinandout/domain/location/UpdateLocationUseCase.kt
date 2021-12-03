@@ -2,7 +2,7 @@ package ch.breatheinandout.domain.location
 
 import ch.breatheinandout.common.Constants
 import ch.breatheinandout.common.utils.FeatureAvailability
-import ch.breatheinandout.domain.lastused.LastUsedLocation
+import ch.breatheinandout.domain.lastused.model.LastUsedLocation
 import ch.breatheinandout.domain.lastused.ReadLastUsedLocationUseCase
 import ch.breatheinandout.domain.lastused.SaveLastUsedLocationUseCase
 import ch.breatheinandout.domain.location.provider.FindAddressLine

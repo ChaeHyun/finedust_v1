@@ -1,6 +1,5 @@
 package ch.breatheinandout.screen.informative
 
-import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,9 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.widget.ViewPager2
 import ch.breatheinandout.R
-import ch.breatheinandout.screen.airquality.DefaultColor
-import ch.breatheinandout.screen.airquality.ToolbarColor
-import ch.breatheinandout.screen.widgetview.WidgetViewFactory
+import ch.breatheinandout.screen.common.widgetview.WidgetViewFactory
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import dagger.hilt.android.AndroidEntryPoint

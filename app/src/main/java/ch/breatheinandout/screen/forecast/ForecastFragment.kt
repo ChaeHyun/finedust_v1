@@ -11,9 +11,10 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.viewpager2.widget.ViewPager2
 import ch.breatheinandout.common.Constants
-import ch.breatheinandout.domain.forecast.O3
-import ch.breatheinandout.domain.forecast.PM10
-import ch.breatheinandout.domain.forecast.PM25
+import ch.breatheinandout.domain.forecast.model.O3
+import ch.breatheinandout.domain.forecast.model.PM10
+import ch.breatheinandout.domain.forecast.model.PM25
+import ch.breatheinandout.screen.forecast.pages.ForecastPageAdapter
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.orhanobut.logger.Logger

@@ -4,9 +4,9 @@ import android.app.Activity
 import android.view.LayoutInflater
 import androidx.appcompat.app.AppCompatActivity
 import ch.breatheinandout.common.permissions.PermissionRequester
-import ch.breatheinandout.screen.ScreenNavigator
-import ch.breatheinandout.screen.imageloader.ImageLoader
-import ch.breatheinandout.screen.navdrawer.NavDrawerHelper
+import ch.breatheinandout.screen.common.ScreenNavigator
+import ch.breatheinandout.screen.common.imageloader.ImageLoader
+import ch.breatheinandout.screen.common.navdrawer.NavDrawerHelper
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

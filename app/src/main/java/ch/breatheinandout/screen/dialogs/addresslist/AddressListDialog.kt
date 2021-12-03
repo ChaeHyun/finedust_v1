@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.RecyclerView
 import ch.breatheinandout.R
 import ch.breatheinandout.common.Constants
 import ch.breatheinandout.domain.searchaddress.model.SearchedAddress
-import ch.breatheinandout.screen.ScreenNavigator
+import ch.breatheinandout.screen.common.ScreenNavigator
 import ch.breatheinandout.screen.searchaddress.*
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint

@@ -1,7 +1,9 @@
 package ch.breatheinandout.domain.forecast
 
+import ch.breatheinandout.domain.forecast.model.ForecastInfo
+import ch.breatheinandout.domain.forecast.model.ForecastInfoGroup
+import ch.breatheinandout.domain.forecast.model.ForecastInfoGroupMapper
 import ch.breatheinandout.network.airkorea.forecast.IForecastRemoteDataSource
-import ch.breatheinandout.screen.forecast.ForecastInfoGroupMapper
 import com.orhanobut.logger.Logger
 import java.text.SimpleDateFormat
 import java.util.*

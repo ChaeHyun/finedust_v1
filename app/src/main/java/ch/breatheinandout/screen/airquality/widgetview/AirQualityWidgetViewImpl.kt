@@ -13,7 +13,7 @@ import ch.breatheinandout.R
 import ch.breatheinandout.common.Constants
 import ch.breatheinandout.domain.airquality.model.*
 import ch.breatheinandout.screen.airquality.*
-import ch.breatheinandout.screen.navdrawer.NavDrawerHelper
+import ch.breatheinandout.screen.common.navdrawer.NavDrawerHelper
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -87,7 +87,10 @@ class AirQualityWidgetViewImpl constructor(
 
     override fun hideProgressIndication() {
         layoutContent.visibility = View.VISIBLE
-        swipeRefresh.isRefreshing = false
+        CoroutineScope(Dispatchers.IO).launch {
+            Thread.sleep(500)      // Pretend there is a few delay to see the progress icon.
+            swipeRefresh.isRefreshing = false
+        }
     }
 
     override fun setToolbarTitle(title: String) = navDrawerHelper.setToolbarTitle(title)
@@ -112,7 +115,7 @@ class AirQualityWidgetViewImpl constructor(
         val grade = parseGradeStr(gradeStr)
         factor.value.setTextColor(TextColor.textColor[grade])
         factor.value.text = valueStr
-        factor.unit?.let { it.setTextColor(TextColor.textColor[grade]) }
+        factor.unit?.setTextColor(TextColor.textColor[grade])
         setGradeImageResource(factor.img, type, grade)
 
         if (factor.value.id == R.id.text_value_khai) {
@@ -129,7 +132,7 @@ class AirQualityWidgetViewImpl constructor(
         return when (grade) {
             null -> 0
             "", " ", "-" -> 0
-            else -> Integer.parseInt(grade)         // parameter 가 "-" 일 때 runtime error
+            else -> Integer.parseInt(grade)
         }
     }
 

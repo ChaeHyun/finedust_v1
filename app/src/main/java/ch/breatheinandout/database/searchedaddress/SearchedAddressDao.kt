@@ -1,6 +1,7 @@
 package ch.breatheinandout.database.searchedaddress
 
 import androidx.room.*
+import ch.breatheinandout.database.searchedaddress.entity.SearchedAddressEntity
 
 @Dao
 interface SearchedAddressDao {

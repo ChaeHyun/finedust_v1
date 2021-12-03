@@ -2,6 +2,7 @@ package ch.breatheinandout.database.forecast
 
 import androidx.room.*
 import ch.breatheinandout.database.converters.MapTypeConverter
+import ch.breatheinandout.database.forecast.entity.ForecastEntity
 import java.util.*
 
 @Dao

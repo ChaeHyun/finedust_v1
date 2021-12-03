@@ -1,6 +1,6 @@
 package ch.breatheinandout.database.forecast
 
-import ch.breatheinandout.domain.forecast.ForecastInfo
+import ch.breatheinandout.domain.forecast.model.ForecastInfo
 
 interface IForecastLocalDataSource {
     suspend fun get(dataTime: String) : List<ForecastInfo>

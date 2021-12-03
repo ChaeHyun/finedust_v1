@@ -1,6 +1,7 @@
 package ch.breatheinandout.database.airquality
 
 import androidx.room.*
+import ch.breatheinandout.database.airquality.entity.AirQualityEntity
 
 @Dao
 interface AirQualityDao {

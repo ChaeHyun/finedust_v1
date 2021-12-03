@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import ch.breatheinandout.R
-import ch.breatheinandout.screen.ScreenNavigator
+import ch.breatheinandout.screen.common.ScreenNavigator
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 

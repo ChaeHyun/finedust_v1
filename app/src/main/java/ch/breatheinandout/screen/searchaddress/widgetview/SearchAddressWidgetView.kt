@@ -3,8 +3,8 @@ package ch.breatheinandout.screen.searchaddress.widgetview
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.annotation.LayoutRes
-import ch.breatheinandout.screen.toolbar.ToolbarHelper
-import ch.breatheinandout.screen.widgetview.BaseObservableWidgetView
+import ch.breatheinandout.screen.common.toolbar.ToolbarHelper
+import ch.breatheinandout.screen.common.widgetview.BaseObservableWidgetView
 import ch.breatheinandout.domain.searchaddress.model.SearchedAddress
 import ch.breatheinandout.screen.searchaddress.SearchAddressViewState
 

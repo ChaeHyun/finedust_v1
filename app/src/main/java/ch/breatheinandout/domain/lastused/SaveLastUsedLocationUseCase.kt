@@ -1,6 +1,7 @@
 package ch.breatheinandout.domain.lastused
 
 import ch.breatheinandout.common.utils.PreferencesUtils
+import ch.breatheinandout.domain.lastused.model.LastUsedLocation
 import ch.breatheinandout.domain.location.model.LocationPoint
 import com.orhanobut.logger.Logger
 import javax.inject.Inject

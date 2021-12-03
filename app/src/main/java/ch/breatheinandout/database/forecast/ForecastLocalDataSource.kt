@@ -1,6 +1,7 @@
 package ch.breatheinandout.database.forecast
 
-import ch.breatheinandout.domain.forecast.ForecastInfo
+import ch.breatheinandout.database.forecast.entity.ForecastEntityMapper
+import ch.breatheinandout.domain.forecast.model.ForecastInfo
 import com.orhanobut.logger.Logger
 import java.text.SimpleDateFormat
 import java.util.*

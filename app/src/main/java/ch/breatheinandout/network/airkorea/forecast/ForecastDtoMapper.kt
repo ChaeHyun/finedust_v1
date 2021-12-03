@@ -1,7 +1,7 @@
 package ch.breatheinandout.network.airkorea.forecast
 
 import ch.breatheinandout.common.mapper.DataMapper
-import ch.breatheinandout.domain.forecast.Forecast
+import ch.breatheinandout.domain.forecast.model.Forecast
 import javax.inject.Inject
 
 class ForecastDtoMapper @Inject constructor(): DataMapper<ForecastDto, Forecast> {

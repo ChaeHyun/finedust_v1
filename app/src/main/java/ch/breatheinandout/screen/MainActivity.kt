@@ -10,10 +10,12 @@ import androidx.navigation.ui.setupWithNavController
 import ch.breatheinandout.R
 import ch.breatheinandout.common.permissions.PermissionRequester
 import ch.breatheinandout.screen.airquality.DefaultColor
-import ch.breatheinandout.screen.navdrawer.NavDrawerHelper
-import ch.breatheinandout.screen.navdrawer.NavDrawerWidgetView
-import ch.breatheinandout.screen.navdrawer.NavDrawerWidgetView.*
-import ch.breatheinandout.screen.widgetview.WidgetViewFactory
+import ch.breatheinandout.screen.common.BaseActivity
+import ch.breatheinandout.screen.common.ScreenNavigator
+import ch.breatheinandout.screen.common.navdrawer.NavDrawerHelper
+import ch.breatheinandout.screen.common.navdrawer.NavDrawerWidgetView
+import ch.breatheinandout.screen.common.navdrawer.NavDrawerWidgetView.*
+import ch.breatheinandout.screen.common.widgetview.WidgetViewFactory
 import com.orhanobut.logger.Logger
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject

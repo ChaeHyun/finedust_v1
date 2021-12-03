@@ -1,6 +1,7 @@
 package ch.breatheinandout.domain.forecast
 
 import ch.breatheinandout.database.forecast.IForecastLocalDataSource
+import ch.breatheinandout.domain.forecast.model.ForecastInfo
 import com.orhanobut.logger.Logger
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext

@@ -1,6 +1,7 @@
 package ch.breatheinandout.database.airquality
 
 
+import ch.breatheinandout.database.airquality.entity.AirQualityEntityMapper
 import ch.breatheinandout.domain.airquality.model.AirQuality
 import javax.inject.Inject
 

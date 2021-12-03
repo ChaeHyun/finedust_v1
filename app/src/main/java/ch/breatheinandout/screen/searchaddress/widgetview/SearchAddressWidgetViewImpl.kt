@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import ch.breatheinandout.R
-import ch.breatheinandout.screen.navdrawer.NavDrawerHelper
+import ch.breatheinandout.screen.common.navdrawer.NavDrawerHelper
 import ch.breatheinandout.screen.searchaddress.*
 import com.google.android.material.snackbar.Snackbar
 import com.orhanobut.logger.Logger

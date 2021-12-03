@@ -1,5 +1,6 @@
 package ch.breatheinandout.database.searchedaddress
 
+import ch.breatheinandout.database.searchedaddress.entity.SearchedAddressEntityMapper
 import ch.breatheinandout.domain.searchaddress.model.SearchedAddress
 import javax.inject.Inject
 
