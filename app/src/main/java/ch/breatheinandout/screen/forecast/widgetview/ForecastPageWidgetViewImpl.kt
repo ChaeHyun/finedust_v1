@@ -56,7 +56,7 @@ class ForecastPageWidgetViewImpl(
                 }
             } else {
                 if (code == O3.code)
-                    todayOverall.text = getString(R.string.forecast_notification_o3)
+                    todayOverall.text = getString(R.string.screen_forecast_notification_o3)
             }
         } catch (e: Exception) {
             Logger.e("Error rendering the view.")

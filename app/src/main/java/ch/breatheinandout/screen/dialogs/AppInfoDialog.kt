@@ -10,7 +10,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.DialogFragment
 import ch.breatheinandout.R
-import ch.breatheinandout.screen.MainActivity
+import ch.breatheinandout.screen.activity.MainActivity
 import com.orhanobut.logger.Logger
 
 class AppInfoDialog : DialogFragment() {

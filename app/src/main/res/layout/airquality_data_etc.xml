@@ -23,7 +23,7 @@
         android:layout_marginStart="5dp"
         android:layout_marginTop="5dp"
         android:layout_toEndOf="@+id/icon_four"
-        android:text="@string/air_data_title_extra_data"
+        android:text="@string/screen_airquality_extra_data"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textStyle="bold" />
 
@@ -48,7 +48,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/air_data_o3_eng"
+                android:text="@string/screen_airquality_o3_eng"
                 android:id="@+id/textView2"
                 android:layout_marginBottom="5dp"
                 android:textColor="#b9000000" />
@@ -57,7 +57,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceSmall"
-                android:text="@string/air_data_o3"
+                android:text="@string/screen_airquality_o3"
                 android:id="@+id/textView3"
                 android:layout_marginBottom="5dp"
                 android:textColor="#000000"
@@ -99,7 +99,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/air_data_no2_eng"
+                android:text="@string/screen_airquality_no2_eng"
                 android:id="@+id/textView5"
                 android:layout_marginBottom="5dp"
                 android:textColor="#b9000000" />
@@ -108,7 +108,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceSmall"
-                android:text="@string/air_data_no2"
+                android:text="@string/screen_airquality_no2"
                 android:id="@+id/textView6"
                 android:layout_marginBottom="5dp"
                 android:textColor="#000000"
@@ -150,7 +150,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/air_data_co_eng"
+                android:text="@string/screen_airquality_co_eng"
                 android:id="@+id/textView8"
                 android:layout_marginBottom="5dp"
                 android:textColor="#b9000000" />
@@ -159,7 +159,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceSmall"
-                android:text="@string/air_data_co"
+                android:text="@string/screen_airquality_co"
                 android:id="@+id/textView9"
                 android:layout_marginBottom="5dp"
                 android:textColor="#000000"
@@ -201,7 +201,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/air_data_so2_eng"
+                android:text="@string/screen_airquality_so2_eng"
                 android:id="@+id/textView11"
                 android:layout_marginBottom="5dp"
                 android:textColor="#b9000000" />
@@ -210,7 +210,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceSmall"
-                android:text="@string/air_data_so2"
+                android:text="@string/screen_airquality_so2"
                 android:id="@+id/textView12"
                 android:layout_marginBottom="5dp"
                 android:textColor="#000000"

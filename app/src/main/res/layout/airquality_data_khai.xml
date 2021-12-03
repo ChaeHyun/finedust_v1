@@ -22,7 +22,7 @@
         android:layout_marginStart="5dp"
         android:layout_marginTop="5dp"
         android:layout_toEndOf="@+id/icon_one"
-        android:text="@string/air_data_title_general"
+        android:text="@string/screen_airquality_general"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textIsSelectable="false"
         android:textStyle="bold" />
@@ -76,7 +76,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceSmall"
-                android:text="@string/air_data_measure"
+                android:text="@string/screen_airquality__measure"
                 android:id="@+id/text_gram_general"
                 android:layout_gravity="center"
                 android:layout_marginStart="15dp"

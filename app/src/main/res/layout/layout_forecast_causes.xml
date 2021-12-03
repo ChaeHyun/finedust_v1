@@ -24,7 +24,7 @@
         android:layout_marginStart="5dp"
         android:layout_marginTop="5dp"
         android:layout_toEndOf="@+id/icon_one"
-        android:text="@string/forecast_title_causes"
+        android:text="@string/screen_forecast_title_causes"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textStyle="bold" />
 

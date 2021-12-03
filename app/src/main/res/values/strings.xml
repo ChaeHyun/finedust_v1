@@ -1,10 +1,9 @@
 <resources>
     <string name="app_name">들숨날숨</string>
 
-    <string name="nav_header_title">Android Studio</string>
-    <string name="nav_header_subtitle">android.studio@android.com</string>
-    <string name="nav_header_desc">Navigation header</string>
+    <string name="missing_img" />
 
+    <!-- Drawer Nav Items -->
     <string name="menu_nav_current">공기질</string>
     <string name="menu_nav_search">주소검색</string>
     <string name="menu_nav_select_address">주소선택</string>
@@ -12,73 +11,14 @@
     <string name="menu_nav_kaq">유용한사이트</string>
     <string name="menu_nav_setting">설정</string>
 
-    <string name="navigation_drawer_open">Open navigation drawer</string>
-    <string name="navigation_drawer_close">Close navigation drawer</string>
-
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-
     <string name="nav_header_message">실시간 대기오염정보 확인하고</string>
     <string name="nav_header_message2">깨끗한 공기를 들!숨!날!숨!</string>
-
-    <string name="air_data_title_location">위치정보</string>
-    <string name="air_data_title_general">통합대기환경</string>
-    <string name="air_data_title_pm10">미세먼지</string>
-    <string name="air_data_title_pm25">초미세먼지</string>
-    <string name="air_data_title_extra_data">기타대기정보</string>
-    <string name="air_data_title_station_info">측정소정보</string>
-    <string name="forecast_title_today">오늘개황</string>
-    <string name="forecast_title_tomorrow">내일개황</string>
-    <string name="forecast_title_causes">대기정보</string>
-    <string name="forecast_title_grade">시도별등급</string>
-
-    <string name="settings_title_search_address">주소검색</string>
-    <string name="change_grade_airkorea_standard">에어코리아 기준</string>
-    <string name="change_grade_who_standard">WHO 권고기준</string>
-    <string name="change_grade_explain_msg">* 기준값은 좋음 &lt; 보통 &lt; 나쁨의 크기 순서로 설정해주세요.</string>
-    <string name="change_grade_explain_msg2">* 세계보건기구(WHO) 기준은 국내 기준과 다를 수 있습니다.</string>
-
-    <string name="notice_for_change_grade">*해당 등급변경은 미세먼지, 초미세먼지의 등급판정에만 적용됩니다.</string>
-    <string name="notice_for_change_grade1">*세계보건기구(WHO) 혹은 별도 기준을 통해 미세먼지의 등급을\n \ 지정할 수 있습니다.</string>
-    <string name="notice_for_change_grade2">*설정 시 위젯의 등급변경에도 동일하게 적용됩니다.</string>
-
-    <string name="air_data_o3">오존</string>
-    <string name="air_data_o3_eng">O3</string>
-    <string name="air_data_no2">이산화질소</string>
-    <string name="air_data_no2_eng">NO2</string>
-    <string name="air_data_co">일산화탄소</string>
-    <string name="air_data_co_eng">CO</string>
-    <string name="air_data_so2">아황산가스</string>
-    <string name="air_data_so2_eng">SO2</string>
-
-    <string name="air_data_measure">㎍/㎥</string>
-
-    <string name="missing_img"></string>
-
-    <string name="setting_change_grade">등급변경</string>
-    <string name="setting_change_grade_pm10">(PM10)</string>
-    <string name="setting_change_grade_pm25">(PM2.5)</string>
-
-    <string name="setting_etc">기타설정</string>
-    <string name="setting_etc_ask_questions">문의하기 - 불편사항 문의하기</string>
-    <string name="setting_etc_recommend">추천하기 - 친구에게 추천하기</string>
-    <string name="setting_etc_faq">추천하기 - 친구에게 추천하기</string>
 
     <!-- Options Menu for Toolbar -->
     <string name="menu_action_settings">설정</string>
     <string name="menu_action_app_info">앱 정보</string>
     <string name="menu_action_mail">문의하기</string>
     <string name="menu_action_recommend">추천하기</string>
-
-    <string name="title_activity_main">MainActivity</string>
-    <!-- Strings used for fragments for navigation -->
-
-
-    <!-- SearchAddressFragment -->
-    <string name="as_up_arrow">asUpArrow</string>
-    <string name="search_hint">동/면/읍을 입력하세요.</string>
-    <string name="dialog_title_select_address">주소선택</string>
-    <string name="searching_address">주소검색 기능은 한국환경공단에서 제공하는 주소정보에 의해 동작합니다.</string>
-    <string name="no_search_result">검색결과가 없습니다.</string>
 
     <!-- Screen labels -->
     <string name="label_screen_airquality">공기질</string>
@@ -87,7 +27,48 @@
     <string name="label_screen_forecast">예보정보</string>
     <string name="label_screen_informative">유용한사이트</string>
 
-    <!-- Settings -->
+    <!-- Screen : AirQuality Fragment -->
+    <string name="screen_airquality_title_location">위치정보</string>
+    <string name="screen_airquality_general">통합대기환경</string>
+    <string name="screen_airquality_pm10">미세먼지</string>
+    <string name="screen_airquality_pm25">초미세먼지</string>
+    <string name="screen_airquality_extra_data">기타대기정보</string>
+    <string name="screen_airquality_station_info">측정소정보</string>
+
+    <string name="screen_airquality_o3">오존</string>
+    <string name="screen_airquality_o3_eng">O3</string>
+    <string name="screen_airquality_no2">이산화질소</string>
+    <string name="screen_airquality_no2_eng">NO2</string>
+    <string name="screen_airquality_co">일산화탄소</string>
+    <string name="screen_airquality_co_eng">CO</string>
+    <string name="screen_airquality_so2">아황산가스</string>
+    <string name="screen_airquality_so2_eng">SO2</string>
+
+    <string name="screen_airquality__measure">㎍/㎥</string>
+
+
+    <!-- Screen : Forecast Fragment -->
+    <string name="screen_forecast_title_today">오늘개황</string>
+    <string name="screen_forecast_title_tomorrow">내일개황</string>
+    <string name="screen_forecast_title_causes">대기정보</string>
+    <string name="screen_forecast_title_grade">시도별등급</string>
+
+    <string name="pager_button_fine_dust">미세먼지</string>
+    <string name="pager_button_ultra_fine_dust">초미세먼지</string>
+    <string name="pager_button_o3">오존</string>
+
+    <string name="screen_forecast_notification_o3">오존은 4월15일부터 10월15일 기간에만 제공됩니다.</string>
+
+
+    <!-- Screen : SearchAddressFragment -->
+    <string name="as_up_arrow">asUpArrow</string>
+    <string name="search_hint">동/면/읍을 입력하세요.</string>
+    <string name="dialog_title_select_address">주소선택</string>
+    <string name="searching_address">주소검색 기능은 한국환경공단에서 제공하는 주소정보에 의해 동작합니다.</string>
+    <string name="no_search_result">검색결과가 없습니다.</string>
+
+
+    <!-- Screen : Settings Fragment -->
     <string name="setting_title_search">주소</string>
     <string name="setting_key_new_address">KEY_NEW_ADDRESS</string>
     <string name="setting_title_add_address">주소검색</string>
@@ -104,14 +85,8 @@
     <string name="setting_title_recommend">추천하기</string>
     <string name="setting_title_recommend_summary">들숨날숨 사용을 추천해보세요.</string>
 
-    <!-- ForecastFragment -->
-    <string name="pager_button_fine_dust">미세먼지</string>
-    <string name="pager_button_ultra_fine_dust">초미세먼지</string>
-    <string name="pager_button_o3">오존</string>
 
-    <string name="forecast_notification_o3">오존은 4월15일부터 10월15일 기간에만 제공됩니다.</string>
-
-    <!-- Informative sites -->
+    <!-- Screen : Informative Fragment -->
     <string name="informative_url_null_school">https://earth.nullschool.net/#current/particulates/surface/level/overlay=pm10/orthographic=-233.47,40.95,1034</string>
     <string name="informative_url_kaq">http://www.kaq.or.kr/m.html#anima</string>
     <string name="informative_url_tenki">http://www.tenki.jp/particulate_matter/</string>
@@ -122,10 +97,26 @@
     <string name="informative_from_text_aqi">* 두손가락으로 드래그하여 이동할 수 있습니다.</string>
     <string name="message_for_back_pressed">한번 더 뒤로가기를 누르면 종료됩니다.</string>
 
-    <!-- AppInfo Dialog -->
+
+    <!-- Dialog : AppInfo -->
     <string name="app_info_version_name">버전정보 : %1$s</string>
     <string name="app_info_rights_reserved">ⓒ CH All rights reserved.</string>
     <string name="app_info_text_line1">* 대기측정정보는 에어코리아의 실시간 데이터를 바탕으로 합니다. 실시간 관측자료이므로 오류가 있을 수 있습니다.</string>
     <string name="app_info_text_line2">* 각 측정소는 매시간마다 업데이트되며 처리과정 상 10~30분 지연이 발생할 수 있습니다.</string>
     <string name="app_info_text_line3">* 측정소에서 누락된 정보는 가까운 측정소의 정보로 대신합니다.</string>
+
+
+    <!-- Custom Grade settings -->
+    <string name="change_grade_airkorea_standard">에어코리아 기준</string>
+    <string name="change_grade_who_standard">WHO 권고기준</string>
+    <string name="change_grade_explain_msg">* 기준값은 좋음 &lt; 보통 &lt; 나쁨의 크기 순서로 설정해주세요.</string>
+    <string name="change_grade_explain_msg2">* 세계보건기구(WHO) 기준은 국내 기준과 다를 수 있습니다.</string>
+    <string name="notice_for_change_grade">*해당 등급변경은 미세먼지, 초미세먼지의 등급판정에만 적용됩니다.</string>
+    <string name="notice_for_change_grade1">*세계보건기구(WHO) 혹은 별도 기준을 통해 미세먼지의 등급을\n \ 지정할 수 있습니다.</string>
+    <string name="notice_for_change_grade2">*설정 시 위젯의 등급변경에도 동일하게 적용됩니다.</string>
+
+    <string name="setting_change_grade">등급변경</string>
+    <string name="setting_change_grade_pm10">(PM10)</string>
+    <string name="setting_change_grade_pm25">(PM2.5)</string>
+
 </resources>

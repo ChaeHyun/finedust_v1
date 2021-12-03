@@ -28,7 +28,7 @@
             android:layout_marginStart="5dp"
             android:layout_marginTop="5dp"
             android:layout_toEndOf="@+id/icon_two"
-            android:text="@string/air_data_title_pm10"
+            android:text="@string/screen_airquality_pm10"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:textIsSelectable="false"
             android:textStyle="bold" />
@@ -84,7 +84,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:text="@string/air_data_measure"
+                    android:text="@string/screen_airquality__measure"
                     android:id="@+id/text_gram_pm10"
                     android:layout_gravity="center_vertical"
                     android:layout_marginStart="15dp"
@@ -121,7 +121,7 @@
             android:layout_marginStart="5dp"
             android:layout_marginTop="5dp"
             android:layout_toEndOf="@+id/icon_three"
-            android:text="@string/air_data_title_pm25"
+            android:text="@string/screen_airquality_pm25"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:textStyle="bold" />
 
@@ -176,7 +176,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:text="@string/air_data_measure"
+                    android:text="@string/screen_airquality__measure"
                     android:id="@+id/text_gram_pm25"
                     android:layout_gravity="center_vertical"
                     android:layout_marginStart="15dp"

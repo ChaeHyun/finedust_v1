@@ -1,6 +1,7 @@
 package ch.breatheinandout.screen.forecast
 
 import android.os.Bundle
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -42,7 +43,12 @@ class ForecastFragment : Fragment() {
             }
             else {
                 backPressedTime = currentTime
-                activity?.let { Toast.makeText(it, getString(R.string.message_for_back_pressed), Toast.LENGTH_SHORT).show() }
+                activity?.let {
+                    Toast.makeText(it, getString(R.string.message_for_back_pressed), Toast.LENGTH_SHORT).apply {
+                        setGravity(Gravity.CENTER, 0, Constants.TOAST_OFFSET_Y)
+                        show()
+                    }
+                }
             }
         }
     }
