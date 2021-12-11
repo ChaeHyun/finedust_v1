@@ -47,7 +47,7 @@
 
 
 
-# 실행화면
+# 사용 라이브러리
 
 - Retrofit, OkHttp : REST API와 통신하기 위해 사용합니다.
 - Dagger-Hilt : Dependency Injection을 위해 사용합니다.
