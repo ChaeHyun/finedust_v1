@@ -12,6 +12,7 @@ import ch.breatheinandout.domain.location.model.LocationPoint
 import ch.breatheinandout.domain.searchaddress.model.SearchedAddress
 import com.orhanobut.logger.Logger
 import kotlinx.coroutines.*
+import java.io.IOException
 import javax.inject.Inject
 
 class UpdateLocationUseCase @Inject constructor(
@@ -35,9 +36,14 @@ class UpdateLocationUseCase @Inject constructor(
         // Fail Message
         const val FAIL_LOCATION_HANDLER = "Failed to find a WGS coordinates."
         const val FAIL_ACTIVATE_GPS = "Please turn on the gps."
+        const val FAIL_ACTIVATE_NETWORK = "Please turn on the network."
     }
 
     suspend fun update(address: SearchedAddress?) : Result = withContext(Dispatchers.IO) {
+        if (!featureAvailability.isNetworkActive()) {
+            return@withContext Result.Failure(FAIL_ACTIVATE_NETWORK, NullPointerException())
+        }
+
         if (address == null) {
             val lastUsedLocation = hasValidLastLocation()
             Logger.v("[HasValidLastLocation()] -> $lastUsedLocation")
@@ -74,22 +80,26 @@ class UpdateLocationUseCase @Inject constructor(
         val wgsCoords = locationHandler.getLocationDeferred()
         if (wgsCoords == null) {
             Logger.e("wgsCoord is NULL.")
-            // TODO: GPS is not available. Ask user to turn on the GPS.
             return Result.Failure(FAIL_LOCATION_HANDLER, NullPointerException())
         } else {
-            val addressLine = findAddressLine.findAddress(wgsCoords)
-            val retrieved = getStoredLocationUseCase.getStoredLocation(addressLine.sidoName, addressLine.umdName)
-            retrieved?.let {
-                saveLastUsedLocationUseCase.save(GPS, retrieved.locationPoint)
-                return Result.Success(retrieved.locationPoint)
-            }
+            try {
+                val addressLine = findAddressLine.findAddress(wgsCoords)
+                val retrieved = getStoredLocationUseCase.getStoredLocation(addressLine.sidoName, addressLine.umdName)
+                retrieved?.let {
+                    saveLastUsedLocationUseCase.save(GPS, retrieved.locationPoint)
+                    return Result.Success(retrieved.locationPoint)
+                }
 
-            val tmCoords = handleTransCoordsResult(transCoordinatesUseCase.translateWgsToTmCoordinates(wgsCoords))
-            return tmCoords?.let {
-                val locPoint = LocationPoint(addressLine, tmCoords, wgsCoords)
-                saveLastUsedLocationUseCase.save(GPS, locPoint)
-                Result.Success(locPoint)
-            } ?: Result.Failure("Failed to translate coords", NullPointerException())
+                val tmCoords = handleTransCoordsResult(transCoordinatesUseCase.translateWgsToTmCoordinates(wgsCoords))
+                return tmCoords?.let {
+                    val locPoint = LocationPoint(addressLine, tmCoords, wgsCoords)
+                    saveLastUsedLocationUseCase.save(GPS, locPoint)
+                    Result.Success(locPoint)
+                } ?: Result.Failure("Failed to translate coords", NullPointerException())
+            } catch (ie: IOException) {
+                // Failed the GeoCoder#getFromLocation() because the network is unavailable.
+                return Result.Failure(FAIL_ACTIVATE_NETWORK, NullPointerException())
+            }
         }
     }
 

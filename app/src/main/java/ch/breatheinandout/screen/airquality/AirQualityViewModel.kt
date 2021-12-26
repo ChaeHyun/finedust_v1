@@ -132,6 +132,9 @@ class AirQualityViewModel @Inject constructor(
                     UpdateLocationUseCase.FAIL_ACTIVATE_GPS -> {
                         postEvent(ToastMessage("GPS 기능을 켜주세요."))
                     }
+                    UpdateLocationUseCase.FAIL_ACTIVATE_NETWORK -> {
+                        postEvent(ToastMessage("네트워크 연결상태를 확인해주세요."))
+                    }
                     UpdateLocationUseCase.FAIL_LOCATION_HANDLER -> {
                         postEvent(ToastMessage("위치정보 권한허용이 필요합니다."))
                         postEvent(Permission(PermissionMember.FineLocation))

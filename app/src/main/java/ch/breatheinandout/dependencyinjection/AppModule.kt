@@ -3,6 +3,7 @@ package ch.breatheinandout.dependencyinjection
 import android.app.Application
 import android.content.Context
 import android.location.LocationManager
+import android.net.ConnectivityManager
 import ch.breatheinandout.common.utils.PreferencesUtils
 import ch.breatheinandout.database.airquality.AirQualityLocalDataSource
 import ch.breatheinandout.database.airquality.IAirQualityLocalDataSource
@@ -47,6 +48,10 @@ object AppModule {
     @AppScoped
     @Provides
     fun locationManager(context: Context): LocationManager = context.getSystemService(Context.LOCATION_SERVICE) as LocationManager
+
+    @AppScoped
+    @Provides
+    fun connectivityManager(context: Context) : ConnectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
 
     @AppScoped
     @Provides
